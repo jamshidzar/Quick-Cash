@@ -22,7 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    EditText name, email, password;
+    EditText name, email, password, creditcard;
+
     Button Registration;
 
     FirebaseFirestore db;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         name = findViewById(R.id.NameText);
         email = findViewById(R.id.EmailText);
         password = findViewById(R.id.PasswordText);
+        creditcard = findViewById(R.id.TextNumber);
         Registration = findViewById(R.id.RegisterButton);
         Registration.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,11 +50,15 @@ public class MainActivity extends AppCompatActivity {
                 String Name = name.getText().toString();
                 String Email = email.getText().toString();
                 String Password = password.getText().toString();
+                String CreditCard = creditcard.getText().toString();
+                CredentialValidator validator = new CredentialValidator();
+                String errorMessage;
 
                 Map<String, Object> user = new HashMap<>();
                 user.put("Name", Name);
                 user.put("Email", Email);
                 user.put("Password", Password);
+                user.put("Credit Card", CreditCard);
 
                 db.collection("user").add(user)
                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
