@@ -23,7 +23,8 @@ public class CredentialValidator {
     }
 
     protected boolean isValidName(String name){
-        String regex = "^[A-Z]{1}[a-z]+ [A-Z]{1}[a-z]";
+        // Full Name must start capitalized and accounts for multiple last names with hyphens
+        String regex = "^[A-Z]{1}[a-z]+ ([A-Z]{1}[a-z]+-?)+";
         if(Pattern.compile(regex).matcher(name).matches()){
             return true;
         }
@@ -33,7 +34,7 @@ public class CredentialValidator {
     }
 
     protected boolean isValidEmail(String email){
-        String regex = "^[a-zA-Z0-9._-]+@[a-zA-Z]+.[a-zA-Z]{2,8}";
+        String regex = "^[a-zA-Z0-9._\\-$%]+@[a-zA-Z]+.[a-zA-Z]{2,8}";
         if(Pattern.compile(regex).matcher(email).matches()){
             return true;
         }
@@ -43,7 +44,7 @@ public class CredentialValidator {
     }
 
     protected boolean isValidPassword(String password){
-        String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+        String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&_-])[A-Za-z\\d@$!%*?&_-]{8,}$";
 
         if(Pattern.compile(regex).matcher(password).matches()){
             return true;
