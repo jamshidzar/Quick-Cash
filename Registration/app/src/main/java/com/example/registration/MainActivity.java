@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -23,6 +24,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     EditText name, email, password, creditcard;
+    TextView statusLabel;
 
     Button Registration;
 
@@ -39,10 +41,13 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         db = FirebaseFirestore.getInstance();
+
         name = findViewById(R.id.NameText);
         email = findViewById(R.id.EmailText);
         password = findViewById(R.id.PasswordText);
-        creditcard = findViewById(R.id.TextNumber);
+        creditcard = findViewById(R.id.CreditCard);
+        statusLabel = findViewById(R.id.statusLabel);
+
         Registration = findViewById(R.id.RegisterButton);
         Registration.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +58,26 @@ public class MainActivity extends AppCompatActivity {
                 String CreditCard = creditcard.getText().toString();
                 CredentialValidator validator = new CredentialValidator();
                 String errorMessage;
+
+                if(Name.isEmpty()){
+                    statusLabel.setText("Name cannot be empty");
+                    return;
+                }
+
+                if(Email.isEmpty()){
+                    statusLabel.setText("Email cannot be empty");
+                    return;
+                }
+
+                if(Password.isEmpty()){
+                    statusLabel.setText("Password cannot be empty");
+                    return;
+                }
+
+                if(CreditCard.isEmpty()){
+                    statusLabel.setText("Credit Card cannot be empty");
+                    return;
+                }
 
                 Map<String, Object> user = new HashMap<>();
                 user.put("Name", Name);
