@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Registration</string>
+    <string name = "INVALID_NAME">Invalid Name</string>
+    <string name = "INVALID_EMAIL">Invalid Email</string>
+    <string name = "INVALID_PASSWORD">Invalid Password</string>
+    <string name = "INVALID_CREDIT_CARD">Invalid Credit Card</string>
+    <string name = "EMPTY_STRING"></string>
+    <string name = "MISSING_INFO">Missing Information</string>
 </resources>
