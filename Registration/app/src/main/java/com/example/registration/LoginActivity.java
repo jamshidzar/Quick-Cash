@@ -75,6 +75,45 @@ public class LoginActivity extends AppCompatActivity {
 
     // Method to log in the user with Firebase Authentication
     // Method to log in the user with Firebase Authentication
+//    private void loginUser(String email, String password) {
+//        auth.signInWithEmailAndPassword(email, password)
+//                .addOnCompleteListener(this, task -> {
+//                    if (task.isSuccessful()) {
+//                        // Sign in success
+//                        FirebaseUser user = auth.getCurrentUser();
+//                        Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
+//
+//                        // TODO: Navigate to the main app screen or user-specific dashboard
+//
+//                    } else {
+//                        // If sign in fails, check the exception
+//                        Exception exception = task.getException();
+//                        if (exception instanceof FirebaseAuthException) {
+//                            FirebaseAuthException authException = (FirebaseAuthException) exception;
+//
+//                            // Log the exact error code to identify the issue
+//                            String errorCode = authException.getErrorCode();
+//                            Log.d("FirebaseAuth", "Error code: " + errorCode);
+//
+//                            // Handle specific error codes
+//                            if (errorCode.equals("ERROR_USER_NOT_FOUND")) {
+//                                Toast.makeText(LoginActivity.this, "You don't have an account. Please register.", Toast.LENGTH_LONG).show();
+//                            } else if (errorCode.equals("ERROR_WRONG_PASSWORD")) {
+//                                Toast.makeText(LoginActivity.this, "Incorrect password. Please try again.", Toast.LENGTH_LONG).show();
+//                            } else if (errorCode.equals("ERROR_OPERATION_NOT_ALLOWED")) {
+//                                Toast.makeText(LoginActivity.this, "Email/password accounts are disabled. Please enable in Firebase Console.", Toast.LENGTH_LONG).show();
+//                            } else {
+//                                // Display general authentication failure message
+//                                Toast.makeText(LoginActivity.this, "Authentication failed: " + authException.getMessage(), Toast.LENGTH_LONG).show();
+//                            }
+//                        } else {
+//                            // Handle other types of exceptions, if any
+//                            Toast.makeText(LoginActivity.this, "Authentication failed. Please try again.", Toast.LENGTH_LONG).show();
+//                        }
+//                    }
+//                });
+
+
     private void loginUser(String email, String password) {
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
@@ -104,17 +143,21 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(LoginActivity.this, "Email/password accounts are disabled. Please enable in Firebase Console.", Toast.LENGTH_LONG).show();
                             } else {
                                 // Display general authentication failure message
+                                Log.d("FirebaseAuth", "Authentication failed: " + authException.getMessage());
                                 Toast.makeText(LoginActivity.this, "Authentication failed: " + authException.getMessage(), Toast.LENGTH_LONG).show();
                             }
                         } else {
                             // Handle other types of exceptions, if any
+                            Log.d("FirebaseAuth", "Authentication failed with general error: " + exception.getMessage());
                             Toast.makeText(LoginActivity.this, "Authentication failed. Please try again.", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
     }
 
-
-
-
 }
+
+
+
+
+
