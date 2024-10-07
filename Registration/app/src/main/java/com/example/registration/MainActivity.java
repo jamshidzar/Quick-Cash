@@ -1,5 +1,6 @@
 package com.example.registration;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -28,7 +29,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     EditText name, email, password, creditcard;
     TextView errMSG;
-    Button Registration;
+    Button Registration, Login;
 
     FirebaseFirestore db;
 
@@ -48,7 +49,10 @@ public class MainActivity extends AppCompatActivity {
         password = findViewById(R.id.PasswordText);
         creditcard = findViewById(R.id.TextNumber);
         Registration = findViewById(R.id.RegisterButton);
+        Login = findViewById(R.id.goToLoginButton);
         errMSG = findViewById(R.id.errorMSG);
+
+        setUpLoginButton();
 
         Registration.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
                                     Toast.makeText(MainActivity.this, "Registration Failed", Toast.LENGTH_LONG).show();
                                 }
                             });
+
+                    moveToLoginPage();
                 }
             }
         });
@@ -116,5 +122,13 @@ public class MainActivity extends AppCompatActivity {
         errorMessage.setBackgroundColor(Color.RED);
         errorMessage.setTextColor(Color.WHITE);
         errorMessage.setPadding(30, 10, 30, 10);
+    }
+
+    protected void setUpLoginButton(){
+//        Login.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), LoginActivity.class)));
+    }
+
+    protected void moveToLoginPage(){
+//        MainActivity.this.startActivity(new Intent(getApplicationContext(), LoginActivity.class));
     }
 }
