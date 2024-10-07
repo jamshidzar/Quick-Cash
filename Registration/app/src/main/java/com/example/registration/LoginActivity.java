@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,28 +47,30 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // Method for handling login button click
-    private void onLoginClick() {
+    protected void onLoginClick() {
         String email = emailInput.getText().toString().trim(); // Retrieve the email entered by the user
         String password = passwordInput.getText().toString().trim(); // Retrieve the password entered by the user
         UserCredential validator = new UserCredential();
+        String error = new String();
         // Validate input fields
         if (validator.emailIsEmpty(email)) {
             // Display a message asking the user to enter the email
-            Toast.makeText(LoginActivity.this, "Please enter your email", Toast.LENGTH_SHORT).show();
+            error = "Please enter Email";
         } else if (validator.passwordIsEmpty(password)) {
             // Display a message asking the user to enter the password
-            Toast.makeText(LoginActivity.this, "Please enter your password", Toast.LENGTH_SHORT).show();
-        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            error = "Please enter password";
+        } else if (!validator.emailPattern(email)) {
             // Display a message if the email format is not valid
-            Toast.makeText(LoginActivity.this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
+            error = "Invalid email";
         } else {
             // If all validations pass, proceed with login logic
             loginUser(email, password); // Call the loginUser method to authenticate with Firebase
         }
+        setStatusMessage(error);
     }
 
     // Method for handling register button click
-    private void onRegisterClick() {
+    protected void onRegisterClick() {
         // Create an intent to navigate to MainActivity (Registration Page)
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
@@ -75,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
 
     // Method to log in the user with Firebase Authentication
     // Method to log in the user with Firebase Authentication
-    private void loginUser(String email, String password) {
+    protected void loginUser(String email, String password) {
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
@@ -113,9 +116,9 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
-
-
+    protected void setStatusMessage(String message) {
+        TextView statusLabel = findViewById(R.id.statusLabel);
+        statusLabel.setText(message.trim());
+    }
 
 }
