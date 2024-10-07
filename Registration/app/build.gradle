@@ -37,8 +37,11 @@ dependencies {
     implementation libs.activity
     implementation libs.constraintlayout
     implementation libs.firebase.auth
-    testImplementation libs.junit
-    androidTestImplementation libs.ext.junit
+    implementation libs.firebase.database
+    implementation libs.junit.junit
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation project(path: ':app')
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation libs.espresso.core
     implementation(platform('com.google.firebase:firebase-bom:33.3.0'))
     implementation ('com.google.firebase:firebase-analytics')

@@ -49,12 +49,12 @@ public class LoginActivity extends AppCompatActivity {
     private void onLoginClick() {
         String email = emailInput.getText().toString().trim(); // Retrieve the email entered by the user
         String password = passwordInput.getText().toString().trim(); // Retrieve the password entered by the user
-
+        UserCredential validator = new UserCredential();
         // Validate input fields
-        if (email.isEmpty()) {
+        if (validator.emailIsEmpty(email)) {
             // Display a message asking the user to enter the email
             Toast.makeText(LoginActivity.this, "Please enter your email", Toast.LENGTH_SHORT).show();
-        } else if (password.isEmpty()) {
+        } else if (validator.passwordIsEmpty(password)) {
             // Display a message asking the user to enter the password
             Toast.makeText(LoginActivity.this, "Please enter your password", Toast.LENGTH_SHORT).show();
         } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -113,6 +113,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
+
 
 
 
