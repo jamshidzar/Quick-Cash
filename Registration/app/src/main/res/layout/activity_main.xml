@@ -41,7 +41,7 @@
         tools:layout_editor_absoluteY="295dp" />
 
     <EditText
-        android:id="@+id/TextNumber"
+        android:id="@+id/CreditCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -71,5 +71,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TextNumber" />
+        app:layout_constraintTop_toBottomOf="@+id/CreditCard" />
 </androidx.constraintlayout.widget.ConstraintLayout>
