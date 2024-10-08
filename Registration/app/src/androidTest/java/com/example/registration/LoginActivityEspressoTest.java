@@ -48,5 +48,9 @@ public class LoginActivityEspressoTest {
         onView(withId(R.id.loginButton)).perform(click());
         onView(withId(R.id.statusLabel)).check(matches(withText("Invalid email")));
     }
+    /*@Test
+    public void UserAuthentication(){
+        onView(with)
+    }*/
 
 }

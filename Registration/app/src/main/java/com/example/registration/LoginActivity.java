@@ -77,7 +77,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // Method to log in the user with Firebase Authentication
-    // Method to log in the user with Firebase Authentication
     protected void loginUser(String email, String password) {
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
