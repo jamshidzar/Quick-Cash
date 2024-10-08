@@ -48,9 +48,20 @@ public class LoginActivityEspressoTest {
         onView(withId(R.id.loginButton)).perform(click());
         onView(withId(R.id.statusLabel)).check(matches(withText("Invalid email")));
     }
-    /*@Test
-    public void UserAuthentication(){
-        onView(with)
-    }*/
-
+    @Test
+    public void UserAuthenticationWithValidUser() throws InterruptedException {
+        onView(withId(R.id.emailInput)).perform(typeText("12@google.com"));
+        onView(withId(R.id.passwordInput)).perform(typeText("PassWo00rd!"));
+        onView(withId(R.id.loginButton)).perform(click());
+        Thread.sleep(2000);
+        onView(withId(R.id.statusLabel)).check(matches(withText("Login Successful")));
+    }
+    @Test
+    public void UserAuthenticationWithInvalidUser() throws InterruptedException {
+        onView(withId(R.id.emailInput)).perform(typeText("tanishika@gmail.com"));
+        onView(withId(R.id.passwordInput)).perform(typeText("PassWord!"));
+        onView(withId(R.id.loginButton)).perform(click());
+        Thread.sleep(2000);
+        onView(withId(R.id.statusLabel)).check(matches(withText("You don't have an account, please register.")));
+    }
 }

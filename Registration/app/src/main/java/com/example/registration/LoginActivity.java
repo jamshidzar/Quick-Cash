@@ -8,11 +8,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -22,8 +26,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;     // Button to trigger the login process
     private Button registerButton;  // Button to navigate to the registration page
 
-    // Declare Firebase Auth
-    private FirebaseAuth auth;
+    // Declare Firestore
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +36,8 @@ public class LoginActivity extends AppCompatActivity {
         // Sets the content view to the activity_login.xml layout
         setContentView(R.layout.activity_login);
 
-        // Initialize Firebase Auth
-         auth = FirebaseAuth.getInstance();
+        // Initialize Firestore
+        db = FirebaseFirestore.getInstance();
 
         // Initialize the UI elements by linking them to the corresponding elements in the XML layout
         emailInput = findViewById(R.id.emailInput);        // Find the email input field by its ID
@@ -64,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
             error = "Invalid email";
         } else {
             // If all validations pass, proceed with login logic
-            loginUser(email, password); // Call the loginUser method to authenticate with Firebase
+            loginUser(email, password); // Call the loginUser method to authenticate with Firestore
         }
         setStatusMessage(error);
     }
@@ -76,48 +80,49 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // Method to log in the user with Firebase Authentication
+    // Method to log in the user with Firestore
     protected void loginUser(String email, String password) {
-        auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        // Sign in success
-                        FirebaseUser user = auth.getCurrentUser();
-                        Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
 
-                        // TODO: Navigate to the main app screen or user-specific dashboard
+        // Query Firestore collection "user" to find a document with the matching email
+        db.collection("user")
+                .whereEqualTo("Email", email)
+                .whereEqualTo("Password", password) // You should hash passwords for security
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    String error = new String();
 
-                    } else {
-                        // If sign in fails, check the exception
-                        Exception exception = task.getException();
-                        if (exception instanceof FirebaseAuthException) {
-                            FirebaseAuthException authException = (FirebaseAuthException) exception;
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                            // Log the exact error code to identify the issue
-                            String errorCode = authException.getErrorCode();
-                            Log.d("FirebaseAuth", "Error code: " + errorCode);
-
-                            // Handle specific error codes
-                            if (errorCode.equals("ERROR_USER_NOT_FOUND")) {
-                                Toast.makeText(LoginActivity.this, "You don't have an account. Please register.", Toast.LENGTH_LONG).show();
-                            } else if (errorCode.equals("ERROR_WRONG_PASSWORD")) {
-                                Toast.makeText(LoginActivity.this, "Incorrect password. Please try again.", Toast.LENGTH_LONG).show();
-                            } else if (errorCode.equals("ERROR_OPERATION_NOT_ALLOWED")) {
-                                Toast.makeText(LoginActivity.this, "Email/password accounts are disabled. Please enable in Firebase Console.", Toast.LENGTH_LONG).show();
+                        if (task.isSuccessful()) {
+                            boolean userExists = false;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // If document is found, user is authenticated
+                                userExists = true;
+                                break;
+                            }
+                            if (userExists) {
+                                error = "Login Successful";
+                                //TODO: Navigate to the main app screen or user-specific dashboard
                             } else {
-                                // Display general authentication failure message
-                                Toast.makeText(LoginActivity.this, "Authentication failed: " + authException.getMessage(), Toast.LENGTH_LONG).show();
+                                error = "You don't have an account, please register.";
                             }
                         } else {
-                            // Handle other types of exceptions, if any
-                            Toast.makeText(LoginActivity.this, "Authentication failed. Please try again.", Toast.LENGTH_LONG).show();
+                            // If task failed
+                            Log.d("Firestore", "Error getting documents: ", task.getException());
+                            error = "Authentication failed. Please try again.";
                         }
+                        setStatusMessage(error);
                     }
                 });
     }
+
     protected void setStatusMessage(String message) {
         TextView statusLabel = findViewById(R.id.statusLabel);
         statusLabel.setText(message.trim());
     }
-
 }
+
+
+
+
