@@ -8,9 +8,6 @@
       <SelectionState runConfigName="checkIfEmailIsValid()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="LoginActivity">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="UserAuthenticationWithValidUser()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
@@ -18,6 +15,9 @@
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
       <SelectionState runConfigName="checkIfEmailIsEmpty()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="checkIfLoginPageIsVisible()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

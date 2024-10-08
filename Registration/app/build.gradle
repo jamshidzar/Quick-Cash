@@ -39,6 +39,7 @@ dependencies {
     implementation libs.firebase.auth
     implementation libs.firebase.database
     implementation libs.junit.junit
+    implementation libs.uiautomator
     testImplementation 'junit:junit:4.13.2'
     testImplementation project(path: ':app')
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
