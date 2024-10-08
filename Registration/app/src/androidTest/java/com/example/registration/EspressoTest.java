@@ -64,10 +64,19 @@ public class EspressoTest {
     public void checkIfCreditCardIsEmpty() {
         onView(withId(R.id.NameText)).perform(typeText("Bob Joe"), closeSoftKeyboard());
         onView(withId(R.id.EmailText)).perform(typeText("bob@gmail.com"), closeSoftKeyboard());
-        onView(withId(R.id.PasswordText)).perform(typeText("pass123"), closeSoftKeyboard());
+        onView(withId(R.id.PasswordText)).perform(typeText("Password1!"), closeSoftKeyboard());
         onView(withId(R.id.RegisterButton)).perform(click());
         onView(withId(R.id.errorMSG)).check(matches(withText(R.string.EMPTY_CREDITCARD)));
     }
 
+    @Test
+    public void checkIfValidRegistration() {
+        onView(withId(R.id.NameText)).perform(typeText("Bob Joe"), closeSoftKeyboard());
+        onView(withId(R.id.EmailText)).perform(typeText("bob@gmail.com"), closeSoftKeyboard());
+        onView(withId(R.id.PasswordText)).perform(typeText("Password1!"), closeSoftKeyboard());
+        onView(withId(R.id.CreditCard)).perform(typeText("1111222233334444"), closeSoftKeyboard());
+        onView(withId(R.id.RegisterButton)).perform(click());
+        onView(withId(R.id.errorMSG)).check(matches(withText("")));
+    }
     
 }
