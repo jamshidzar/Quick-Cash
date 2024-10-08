@@ -49,5 +49,29 @@ public class RegistrationUIAutomatorTest {
         assertTrue("Email text box is not visible", emailText.exists());
         assertTrue("Register button is not visible", registerButton.exists());
     }
+
+    @Test
+    public void checkIfMove2LoginPage() throws UiObjectNotFoundException {
+        UiObject nameTextBox = device.findObject(new UiSelector().text("Full Name"));
+        UiObject emailTextBox = device.findObject(new UiSelector().text("Email"));
+        UiObject passwordTextBox = device.findObject(new UiSelector().text("Password"));
+        UiObject creditCardTextBox = device.findObject(new UiSelector().text("Credit Card"));
+
+        assertTrue("Full Name text box is not visible", nameTextBox.exists());
+        assertTrue("Email text box is not visible", emailTextBox.exists());
+        assertTrue("Password text box is not visible", passwordTextBox.exists());
+        assertTrue("Credit Card text box is not visible", creditCardTextBox.exists());
+
+        nameTextBox.setText("John Doe");
+        emailTextBox.setText("johndoe@example.com");
+        passwordTextBox.setText("Password1!");
+        creditCardTextBox.setText("1111222233334444");
+
+        UiObject registerButton = device.findObject(new UiSelector().text("Register"));
+        registerButton.clickAndWaitForNewWindow();
+        UiObject noAccountText = device.findObject(new UiSelector().text("Don't have an account? Register here"));
+        assertTrue(noAccountText.exists());
+    }
 }
+
 
