@@ -67,25 +67,6 @@ public class MainActivity extends AppCompatActivity {
                 String errorMessage = new String();
                 boolean validRegistration = true;
 
-//                if(Name.isEmpty()){
-//                    validRegistration = false;
-//                    errorMessage = getResources().getString(R.string.EMPTY_NAME).trim();
-//                }
-
-//                if(Email.isEmpty()){
-//                    validRegistration = false;
-//                    errorMessage = getResources().getString(R.string.EMPTY_EMAIL).trim();
-//                }
-
-//                if(Password.isEmpty()){
-//                    validRegistration = false;
-//                    errorMessage = getResources().getString(R.string.EMPTY_PASSWORD).trim();
-//                }
-
-//                if(CreditCard.isEmpty()){
-//                    validRegistration = false;
-//                    errorMessage = getResources().getString(R.string.EMPTY_CREDITCARD).trim();
-//                }
 
                 if (!Name.isEmpty()) {
                     if (!validator.isValidName(Name)) {
