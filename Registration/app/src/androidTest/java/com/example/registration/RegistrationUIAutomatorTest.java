@@ -72,6 +72,13 @@ public class RegistrationUIAutomatorTest {
         UiObject noAccountText = device.findObject(new UiSelector().text("Don't have an account? Register here"));
         assertTrue(noAccountText.exists());
     }
+
+    public void checkIfMoveToLoginOnButton() throws UiObjectNotFoundException {
+        UiObject loginButton = device.findObject(new UiSelector().text("Login"));
+        loginButton.clickAndWaitForNewWindow();
+        UiObject registerText = device.findObject(new UiSelector().text("Don't have an account? Register here."));
+        assertTrue(registerText.exists());
+    }
 }
 
 
