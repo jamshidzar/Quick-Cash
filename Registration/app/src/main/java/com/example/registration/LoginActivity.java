@@ -21,7 +21,7 @@ public class LoginActivity extends AppCompatActivity {
 
     // Declare UI elements
     private EditText emailInput;    // Input field for the email
-    private EditText passwordInput; // Input field for the password
+    private EditText passwordInput; // Input field for the passwordgit
     private Button loginButton;     // Button to trigger the login process
     private Button registerButton;  // Button to navigate to the registration page
 
@@ -75,6 +75,8 @@ public class LoginActivity extends AppCompatActivity {
         // Create an intent to navigate to MainActivity (Registration Page)
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
+
+        startActivity(intent);
     }
 
     // Method to log in the user with Firestore
@@ -109,6 +111,8 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+        //HomepageActivity
     }
 }
 

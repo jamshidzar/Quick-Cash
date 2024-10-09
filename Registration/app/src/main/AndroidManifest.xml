@@ -28,6 +28,11 @@
             android:name=".LoginActivity"
             android:exported="true" />
 
+        <!-- HomepageActivity: Home Screen -->
+        <activity
+            android:name=".HomepageActivity"
+            android:exported="true" />
+
     </application>
 
 </manifest>
