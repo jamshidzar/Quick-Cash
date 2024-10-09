@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -50,28 +51,30 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // Method for handling login button click
-    private void onLoginClick() {
+    protected void onLoginClick() {
         String email = emailInput.getText().toString().trim(); // Retrieve the email entered by the user
         String password = passwordInput.getText().toString().trim(); // Retrieve the password entered by the user
-
+        UserCredential validator = new UserCredential();
+        String error = new String();
         // Validate input fields
-        if (email.isEmpty()) {
+        if (validator.emailIsEmpty(email)) {
             // Display a message asking the user to enter the email
-            Toast.makeText(LoginActivity.this, "Please enter your email", Toast.LENGTH_SHORT).show();
-        } else if (password.isEmpty()) {
+            error = "Please enter Email";
+        } else if (validator.passwordIsEmpty(password)) {
             // Display a message asking the user to enter the password
-            Toast.makeText(LoginActivity.this, "Please enter your password", Toast.LENGTH_SHORT).show();
-        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            error = "Please enter password";
+        } else if (!validator.emailPattern(email)) {
             // Display a message if the email format is not valid
-            Toast.makeText(LoginActivity.this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
+            error = "Invalid email";
         } else {
             // If all validations pass, proceed with login logic
             loginUser(email, password); // Call the loginUser method to authenticate with Firestore
         }
+        setStatusMessage(error);
     }
 
     // Method for handling register button click
-    private void onRegisterClick() {
+    protected void onRegisterClick() {
         // Create an intent to navigate to MainActivity (Registration Page)
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
@@ -80,17 +83,19 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // Method to log in the user with Firestore
-    private void loginUser(String email, String password) {
+    protected void loginUser(String email, String password) {
+
         // Query Firestore collection "user" to find a document with the matching email
         db.collection("user")
                 .whereEqualTo("Email", email)
                 .whereEqualTo("Password", password) // You should hash passwords for security
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-
+                    String error = new String();
 
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
                         if (task.isSuccessful()) {
                             boolean userExists = false;
                             for (QueryDocumentSnapshot document : task.getResult()) {
@@ -99,27 +104,28 @@ public class LoginActivity extends AppCompatActivity {
                                 break;
                             }
                             if (userExists) {
-                                Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
-                                // TODO: Navigate to the main app screen or user-specific dashboard
+                                error = "Login Successful";
+                                //TODO: Navigate to the main app screen or user-specific dashboard
                             } else {
-                                Toast.makeText(LoginActivity.this, "You don't have an account. Please register.", Toast.LENGTH_LONG).show();
+                                error = "You don't have an account, please register.";
                             }
                         } else {
                             // If task failed
                             Log.d("Firestore", "Error getting documents: ", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed. Please try again.", Toast.LENGTH_LONG).show();
+                            error = "Authentication failed. Please try again.";
                         }
+                        setStatusMessage(error);
                     }
                 });
 
         //HomepageActivity
     }
+
+    protected void setStatusMessage(String message) {
+        TextView statusLabel = findViewById(R.id.statusLabel);
+        statusLabel.setText(message.trim());
+    }
 }
-
-
-
-
-
 
 
 
