@@ -26,11 +26,11 @@ public class Employee extends AppCompatActivity {
         setContentView(R.layout.empolyee);  // Ensure you're using the correct layout file
         db = FirebaseFirestore.getInstance();
         Intent welcome = getIntent();
-        String name = welcome.getStringExtra("Name");
+        String email = welcome.getStringExtra("Email");
 
 
-        if (name != null && !name.isEmpty()) {
-            db.collection("user").whereEqualTo("Name", name).get()
+        if (email != null && !email.isEmpty()) {
+            db.collection("user").whereEqualTo("Email", email).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -38,7 +38,7 @@ public class Employee extends AppCompatActivity {
                                 QuerySnapshot querySnapshot = task.getResult();
                                 if (!querySnapshot.isEmpty()) {
                                     DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
-                                    String email = documentSnapshot.getString("Email");
+                                    String name = documentSnapshot.getString("Name");
                                     String password = documentSnapshot.getString("Password");
                                     String creditCard = documentSnapshot.getString("Credit Card");
                                     String message = "Name: " + name + "\nEmail: " + email + "\nPassword: " + password + "\nCredit Card: " + creditCard;
@@ -47,7 +47,7 @@ public class Employee extends AppCompatActivity {
                                     tv.setText(message);
                                 } else {
                                     TextView tv = findViewById(R.id.empolyeeText);
-                                    tv.setText("No user found with the name: " + name);
+                                    tv.setText("No user found with the email: " + email);
                                 }
                             } else {
                                 Log.d("Firestore", "Error getting documents: ", task.getException());
