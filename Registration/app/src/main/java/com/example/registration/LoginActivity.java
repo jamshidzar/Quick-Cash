@@ -84,7 +84,6 @@ public class LoginActivity extends AppCompatActivity {
 
     // Method to log in the user with Firestore
     protected void loginUser(String email, String password) {
-
         // Query Firestore collection "user" to find a document with the matching email
         db.collection("user")
                 .whereEqualTo("Email", email)
@@ -117,8 +116,6 @@ public class LoginActivity extends AppCompatActivity {
                         setStatusMessage(error);
                     }
                 });
-
-        //HomepageActivity
     }
 
     protected void setStatusMessage(String message) {
