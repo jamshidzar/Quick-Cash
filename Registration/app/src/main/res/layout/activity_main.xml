@@ -16,7 +16,8 @@
         android:inputType="text"
         android:textSize="24sp"
         tools:layout_editor_absoluteX="66dp"
-        tools:layout_editor_absoluteY="202dp" />
+        tools:layout_editor_absoluteY="202dp"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/PasswordText"
@@ -27,7 +28,8 @@
         android:inputType="text"
         android:textSize="24sp"
         tools:layout_editor_absoluteX="66dp"
-        tools:layout_editor_absoluteY="381dp" />
+        tools:layout_editor_absoluteY="381dp"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/EmailText"
@@ -38,7 +40,8 @@
         android:inputType="textEmailAddress"
         android:textSize="24sp"
         tools:layout_editor_absoluteX="66dp"
-        tools:layout_editor_absoluteY="295dp" />
+        tools:layout_editor_absoluteY="295dp"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/TextNumber"
@@ -49,7 +52,8 @@
         android:inputType="number"
         android:textSize="24sp"
         tools:layout_editor_absoluteX="66dp"
-        tools:layout_editor_absoluteY="472dp" />
+        tools:layout_editor_absoluteY="472dp"
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/RegisterButton"
@@ -58,5 +62,6 @@
         android:text="Register"
         android:textColorLink="#3F51B5"
         tools:layout_editor_absoluteX="153dp"
-        tools:layout_editor_absoluteY="573dp" />
+        tools:layout_editor_absoluteY="573dp"
+        tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>
