@@ -105,7 +105,12 @@ public class LoginActivity extends AppCompatActivity {
                             }
                             if (userExists) {
                                 error = "Login Successful";
-                                //TODO: Navigate to the main app screen or user-specific dashboard
+
+                                // Navigate to HomepageActivity after successful login
+                                Intent intent = new Intent(LoginActivity.this, HomepageActivity.class);
+                                intent.putExtra("Name", email); // Pass the email (or name) to HomepageActivity
+                                startActivity(intent);
+
                             } else {
                                 error = "You don't have an account, please register.";
                             }
@@ -117,9 +122,8 @@ public class LoginActivity extends AppCompatActivity {
                         setStatusMessage(error);
                     }
                 });
-
-        //HomepageActivity
     }
+
 
     protected void setStatusMessage(String message) {
         TextView statusLabel = findViewById(R.id.statusLabel);
