@@ -123,7 +123,6 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-
     protected void setStatusMessage(String message) {
         TextView statusLabel = findViewById(R.id.statusLabel);
         statusLabel.setText(message.trim());

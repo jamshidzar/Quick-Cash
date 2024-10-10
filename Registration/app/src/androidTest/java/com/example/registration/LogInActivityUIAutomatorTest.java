@@ -63,10 +63,12 @@ public class LogInActivityUIAutomatorTest {
         loginButton.clickAndWaitForNewWindow();
         UiObject dashboard = device.findObject(new UiSelector().textContains("quickCash"));
         assertTrue(dashboard.exists());
-        UiObject logoutButton = device.findObject(new UiSelector().text("logout"));
+        UiObject logoutButton = device.findObject(new UiSelector().text("Logout"));
         logoutButton.clickAndWaitForNewWindow();
+        UiObject confirmButton = device.findObject(new UiSelector().text("Yes"));
+        confirmButton.clickAndWaitForNewWindow();
         UiObject email_login = device.findObject(new UiSelector().text("Email"));
-        assertTrue(email_login.exists());
+        assertTrue("Login page not visible", email_login.exists());
         UiObject password_login = device.findObject(new UiSelector().text("Password"));
         assertTrue(password_login.exists());
         UiObject loginButton_login = device.findObject(new UiSelector().text("Login"));

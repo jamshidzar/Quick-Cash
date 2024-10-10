@@ -23,7 +23,6 @@ public class HomepageActivity extends AppCompatActivity {
         employer = findViewById(R.id.employer);
         welcome = getIntent();
         email = welcome.getStringExtra("Email");
-
         employee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -32,7 +31,6 @@ public class HomepageActivity extends AppCompatActivity {
                 startActivity(homePage);
             }
         });
-
         employer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,8 +47,7 @@ public class HomepageActivity extends AppCompatActivity {
             }
         });
     }
-
-    private void showLogoutConfirmationDialog() {
+    protected void showLogoutConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(HomepageActivity.this);
         builder.setMessage("Are you sure you want to log out?")
                 .setCancelable(false)
@@ -67,15 +64,13 @@ public class HomepageActivity extends AppCompatActivity {
         AlertDialog alert = builder.create();
         alert.show();
     }
-
-    private void performLogout() {
+    protected void performLogout() {
         // Perform logout actions, such as clearing stored user data
         // For example, clear shared preferences or Firebase auth sign-out
         // Clear user session and redirect to login screen
-        Intent intent = new Intent(HomepageActivity.this, MainActivity.class);
+        Intent intent = new Intent(HomepageActivity.this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish(); // Finish current activity so the user can't go back
     }
-
 }
