@@ -33,6 +33,10 @@
             android:name=".HomepageActivity"
             android:exported="true" />
 
+        <activity android:name=".HomepageActivity" android:exported="true" />
+        <activity android:name=".Employee" android:exported="true" />
+        <activity android:name=".Employer" android:exported="true">
+        </activity>>
     </application>
 
 </manifest>
