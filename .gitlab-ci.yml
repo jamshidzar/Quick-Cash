@@ -67,7 +67,6 @@ lintDebug:
   stage: build
   script:
     - cd Registration
-    - chmod +x ./gradlew
     - .gradlew -Pci --console=plain :app:lintDebug -PbuildDir=lint
 
 # Make Project
