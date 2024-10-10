@@ -11,6 +11,9 @@
       <SelectionState runConfigName="checkIfValidRegistration()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="checkIfMoveToEmployee()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>
