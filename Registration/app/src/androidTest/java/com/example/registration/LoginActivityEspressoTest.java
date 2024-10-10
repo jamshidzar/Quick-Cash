@@ -54,7 +54,7 @@ public class LoginActivityEspressoTest {
         onView(withId(R.id.passwordInput)).perform(typeText("PassWo00rd!"));
         onView(withId(R.id.loginButton)).perform(click());
         Thread.sleep(2000);
-        onView(withId(R.id.statusLabel)).check(matches(withText("Login Successful")));
+        onView(withId(R.id.title)).check(matches(withText("QuickCash")));
     }
     @Test
     public void UserAuthenticationWithInvalidUser() throws InterruptedException {
