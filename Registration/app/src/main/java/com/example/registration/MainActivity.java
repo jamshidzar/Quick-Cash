@@ -19,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.w3c.dom.Text;
@@ -45,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         db = FirebaseFirestore.getInstance();
-
         name = findViewById(R.id.NameText);
         email = findViewById(R.id.EmailText);
         password = findViewById(R.id.PasswordText);
@@ -66,6 +66,10 @@ public class MainActivity extends AppCompatActivity {
                 CredentialValidator validator = new CredentialValidator();
                 String errorMessage = new String();
                 boolean validRegistration = true;
+                if(validRegistration){
+                    Intent intent = new Intent(MainActivity.this, HomepageActivity.class);
+                    startActivity(intent);
+                }
 
 
                 if (!Name.isEmpty()) {
@@ -124,7 +128,6 @@ public class MainActivity extends AppCompatActivity {
                     user.put("Password", Password);
                     user.put("Credit Card", CreditCard);
 
-
                     db.collection("user").add(user)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                 @Override
@@ -137,7 +140,9 @@ public class MainActivity extends AppCompatActivity {
                                     Toast.makeText(MainActivity.this, "Registration Failed", Toast.LENGTH_LONG).show();
                                 }
                             });
-
+                    Intent welcome = new Intent(MainActivity.this , HomepageActivity.class);
+                    welcome.putExtra("Name" , Name);
+                    startActivity(welcome);
                     moveToLoginPage();
                 }
             }
@@ -153,7 +158,6 @@ public class MainActivity extends AppCompatActivity {
         errorMessage.setTextColor(Color.WHITE);
         errorMessage.setPadding(30, 10, 30, 10);
     }
-
     protected void setUpLoginButton(){
         Login.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), LoginActivity.class)));
     }
@@ -161,4 +165,5 @@ public class MainActivity extends AppCompatActivity {
     protected void moveToLoginPage(){
         MainActivity.this.startActivity(new Intent(getApplicationContext(), LoginActivity.class));
     }
+
 }

@@ -12,27 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Registration"
         tools:targetApi="31">
-
-        <!-- MainActivity: Registration Screen -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- LoginActivity: Login Screen -->
-        <activity
-            android:name=".LoginActivity"
-            android:exported="true" />
-
-        <!-- HomepageActivity: Home Screen -->
-        <activity
-            android:name=".HomepageActivity"
-            android:exported="true" />
-
     </application>
 
 </manifest>
