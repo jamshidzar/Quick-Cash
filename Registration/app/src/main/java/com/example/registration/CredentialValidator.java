@@ -56,7 +56,6 @@ public class CredentialValidator {
 
     protected boolean isValidCreditCard(String creditcard){
         String regex = "[0-9]{16}";
-
         if(Pattern.compile(regex).matcher(creditcard).matches()){
             return true;
         }
