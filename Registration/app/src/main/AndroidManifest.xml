@@ -17,10 +17,13 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".HomepageActivity" android:exported="true" />
+        <activity android:name=".Employee" android:exported="true" />
+        <activity android:name=".Employer" android:exported="true">
+        </activity>>
     </application>
 
 </manifest>
