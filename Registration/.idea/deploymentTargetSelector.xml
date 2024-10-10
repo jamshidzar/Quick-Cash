@@ -9,8 +9,10 @@
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
       <SelectionState runConfigName="UserAuthenticationWithValidUser()">
+      <SelectionState runConfigName="checkIfEmailIsEmpty() (1)">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="checkIfValidRegistration()">
       <SelectionState runConfigName="RegistrationUIAutomatorTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>

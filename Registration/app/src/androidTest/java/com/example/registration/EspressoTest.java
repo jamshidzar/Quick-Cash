@@ -70,13 +70,14 @@ public class EspressoTest {
     }
 
     @Test
-    public void checkIfValidRegistration() {
+    public void checkIfValidRegistration() throws InterruptedException {
         onView(withId(R.id.NameText)).perform(typeText("Bob Joe"), closeSoftKeyboard());
         onView(withId(R.id.EmailText)).perform(typeText("bob@gmail.com"), closeSoftKeyboard());
         onView(withId(R.id.PasswordText)).perform(typeText("Password1!"), closeSoftKeyboard());
         onView(withId(R.id.CreditCard)).perform(typeText("1111222233334444"), closeSoftKeyboard());
         onView(withId(R.id.RegisterButton)).perform(click());
-        onView(withId(R.id.errorMSG)).check(matches(withText("")));
+        Thread.sleep(2000);
+        onView(withId(R.id.registerPrompt)).check(matches(withText("Don't have an account? Register here.")));
     }
 
     @Test
