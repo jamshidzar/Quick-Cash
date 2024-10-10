@@ -8,9 +8,6 @@
       <SelectionState runConfigName="checkIfEmailIsEmpty()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="checkIfMoveToLoginOnButton()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="checkIfMove2LoginPage()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
