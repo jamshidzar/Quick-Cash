@@ -76,7 +76,8 @@ assembleDebug:
     - ./Registration/gradlew assembleDebug
   artifacts:
     paths:
-      - app/build/outputs/
+      #- app/build/outputs/
+     -Registration/app/build/outputs
 
 # Run all tests, if any fails, interrupt the pipeline(fail it)
 debugTests:
@@ -93,4 +94,5 @@ unit_tests:
     when: always
     expire_in: 30 days
     paths:
-      - app/build/reports/tests/
+     # - app/build/reports/tests/
+     - Registration/app/build/reports/tests
