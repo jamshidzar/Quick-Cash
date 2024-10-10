@@ -28,6 +28,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     EditText name, email, password, creditcard;
+
     TextView errMSG;
     Button Registration, Login;
 
@@ -44,10 +45,11 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         db = FirebaseFirestore.getInstance();
+
         name = findViewById(R.id.NameText);
         email = findViewById(R.id.EmailText);
         password = findViewById(R.id.PasswordText);
-        creditcard = findViewById(R.id.TextNumber);
+        creditcard = findViewById(R.id.CreditCard);
         Registration = findViewById(R.id.RegisterButton);
         Login = findViewById(R.id.goToLoginButton);
         errMSG = findViewById(R.id.errorMSG);
@@ -65,21 +67,49 @@ public class MainActivity extends AppCompatActivity {
                 String errorMessage = new String();
                 boolean validRegistration = true;
 
-                if (!validator.isValidName(Name)){
-                    validRegistration = false;
-                    errorMessage = getResources().getString(R.string.INVALID_NAME).trim();
+
+                if (!Name.isEmpty()) {
+                    if (!validator.isValidName(Name)) {
+                        validRegistration = false;
+                        errorMessage = getResources().getString(R.string.INVALID_NAME).trim();
+                    }
                 }
-                if (!validator.isValidEmail(Email)){
+                else{
                     validRegistration = false;
-                    errorMessage = getResources().getString(R.string.INVALID_EMAIL).trim();
+                    errorMessage = getResources().getString(R.string.EMPTY_NAME).trim();
                 }
-                if(!validator.isValidPassword(Password)){
-                    validRegistration = false;
-                    errorMessage = getResources().getString(R.string.INVALID_PASSWORD).trim();
+
+                if (!Email.isEmpty()) {
+                    if (!validator.isValidEmail(Email)) {
+                        validRegistration = false;
+                        errorMessage = getResources().getString(R.string.INVALID_EMAIL).trim();
+                    }
                 }
-                if(!validator.isValidCreditCard(CreditCard)){
+                else{
                     validRegistration = false;
-                    errorMessage = getResources().getString(R.string.INVALID_CREDIT_CARD).trim();
+                    errorMessage = getResources().getString(R.string.EMPTY_EMAIL).trim();
+                }
+
+                if (!Password.isEmpty()) {
+                    if (!validator.isValidPassword(Password)) {
+                        validRegistration = false;
+                        errorMessage = getResources().getString(R.string.INVALID_PASSWORD).trim();
+                    }
+                }
+                else{
+                    validRegistration = false;
+                    errorMessage = getResources().getString(R.string.EMPTY_PASSWORD).trim();
+                }
+
+                if (!CreditCard.isEmpty()) {
+                    if (!validator.isValidCreditCard(CreditCard)) {
+                        validRegistration = false;
+                        errorMessage = getResources().getString(R.string.INVALID_CREDIT_CARD).trim();
+                    }
+                }
+                else{
+                    validRegistration = false;
+                    errorMessage = getResources().getString(R.string.EMPTY_CREDITCARD).trim();
                 }
 
                 setErrorMessage(errorMessage);
@@ -125,10 +155,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void setUpLoginButton(){
-//        Login.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), LoginActivity.class)));
+        Login.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), LoginActivity.class)));
     }
 
     protected void moveToLoginPage(){
-//        MainActivity.this.startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        MainActivity.this.startActivity(new Intent(getApplicationContext(), LoginActivity.class));
     }
 }
