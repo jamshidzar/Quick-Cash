@@ -66,14 +66,17 @@ lintDebug:
   interruptible: true
   stage: build
   script:
-    - ./Registration/gradlew -Pci --console=plain :app:lintDebug -PbuildDir=lint
+    - cd Registration
+    - chmod +x ./gradlew
+    - .gradlew -Pci --console=plain :app:lintDebug -PbuildDir=lint
 
 # Make Project
 assembleDebug:
   interruptible: true
   stage: build
   script:
-    - ./Registration/gradlew assembleDebug
+    - cd Registration
+    - ./gradlew assembleDebug
   artifacts:
     paths:
       #- app/build/outputs/
@@ -84,12 +87,14 @@ debugTests:
   interruptible: true
   stage: test
   script:
-    - ./Registration/gradlew -Pci --console=plain :app:testDebug
+    - cd Registration
+    - ./gradlew -Pci --console=plain :app:testDebug
 
 unit_tests:
   stage: test
   script:
-    - ./Registration/gradlew test
+    - cd Registration
+    - ./gradlew test
   artifacts:
     when: always
     expire_in: 30 days
