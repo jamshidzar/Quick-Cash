@@ -66,10 +66,6 @@ public class MainActivity extends AppCompatActivity {
                 CredentialValidator validator = new CredentialValidator();
                 String errorMessage = new String();
                 boolean validRegistration = true;
-                if(validRegistration){
-                    Intent intent = new Intent(MainActivity.this, HomepageActivity.class);
-                    startActivity(intent);
-                }
 
 
                 if (!Name.isEmpty()) {
@@ -140,9 +136,7 @@ public class MainActivity extends AppCompatActivity {
                                     Toast.makeText(MainActivity.this, "Registration Failed", Toast.LENGTH_LONG).show();
                                 }
                             });
-                    Intent welcome = new Intent(MainActivity.this , HomepageActivity.class);
-                    welcome.putExtra("Name" , Name);
-                    startActivity(welcome);
+
                     moveToLoginPage();
                 }
             }

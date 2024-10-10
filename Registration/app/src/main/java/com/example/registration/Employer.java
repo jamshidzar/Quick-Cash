@@ -23,9 +23,9 @@ public class Employer extends AppCompatActivity {
         setContentView(R.layout.empolyer);
         db = FirebaseFirestore.getInstance();
         welcome = getIntent();
-        String name = welcome.getStringExtra("Name");
-        if (!name.isEmpty()) {
-            db.collection("user").whereEqualTo("Name", name).get()
+        String email = welcome.getStringExtra("Email");
+        if (!email.isEmpty()) {
+            db.collection("user").whereEqualTo("Email", email).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -33,7 +33,7 @@ public class Employer extends AppCompatActivity {
                                 QuerySnapshot querySnapshot = task.getResult();
                                 if (!querySnapshot.isEmpty()) {
                                     DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
-                                    String email = documentSnapshot.getString("Email");
+                                    String name = documentSnapshot.getString("Name");
                                     String password = documentSnapshot.getString("Password");
                                     String creditCard = documentSnapshot.getString("Credit Card");
                                     String message = "Name: " + name + "\nEmail: " + email + "\nPassword: " + password + "\nCredit Card: " + creditCard;
@@ -41,7 +41,7 @@ public class Employer extends AppCompatActivity {
                                     tv.setText(message);
                                 } else {
                                     TextView tv = findViewById(R.id.employerText);
-                                    tv.setText("No user found with the name: " + name);
+                                    tv.setText("No user found with the email: " + email);
                                 }
                             } else {
                                 TextView tv = findViewById(R.id.employerText);

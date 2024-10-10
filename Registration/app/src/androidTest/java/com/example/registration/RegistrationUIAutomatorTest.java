@@ -73,6 +73,7 @@ public class RegistrationUIAutomatorTest {
         assertTrue(noAccountText.exists());
     }
 
+    @Test
     public void checkIfMoveToLoginOnButton() throws UiObjectNotFoundException {
         UiObject loginButton = device.findObject(new UiSelector().text("Login"));
         loginButton.clickAndWaitForNewWindow();
@@ -80,5 +81,6 @@ public class RegistrationUIAutomatorTest {
         assertTrue(registerText.exists());
     }
 }
+
 
 
