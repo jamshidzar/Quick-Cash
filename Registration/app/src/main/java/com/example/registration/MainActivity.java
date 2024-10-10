@@ -155,10 +155,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void setUpLoginButton(){
-//        Login.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), LoginActivity.class)));
+        Login.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), LoginActivity.class)));
     }
 
     protected void moveToLoginPage(){
-//        MainActivity.this.startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        MainActivity.this.startActivity(new Intent(getApplicationContext(), LoginActivity.class));
     }
 }
