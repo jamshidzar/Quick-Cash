@@ -108,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                 // Navigate to HomepageActivity after successful login
                                 Intent intent = new Intent(LoginActivity.this, HomepageActivity.class);
-                                intent.putExtra("Name", email); // Pass the email (or name) to HomepageActivity
+                                intent.putExtra("Email", email); // Pass the email (or name) to HomepageActivity
                                 startActivity(intent);
 
                             } else {

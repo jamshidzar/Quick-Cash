@@ -17,20 +17,22 @@ import java.util.jar.Attributes;
 
 public class HomepageActivity extends AppCompatActivity {
     Intent welcome;
+    private String email;
+    Button employee, employer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
-        Button employee = findViewById(R.id.employee);
-        Button employer = findViewById(R.id.employer);
+        employee = findViewById(R.id.employee);
+        employer = findViewById(R.id.employer);
+        welcome = getIntent();
+        email = welcome.getStringExtra("Email");
 
         employee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                welcome = getIntent();
-                String name = welcome.getStringExtra("Name");
                 Intent homePage = new Intent(HomepageActivity.this , Employee.class);
-                homePage.putExtra("Name" , name);
+                homePage.putExtra("Email" , email);
                 startActivity(homePage);
             }
         });
@@ -38,10 +40,8 @@ public class HomepageActivity extends AppCompatActivity {
         employer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                welcome = getIntent();
-                String name = welcome.getStringExtra("Name");
                 Intent homePage = new Intent(HomepageActivity.this , Employer.class);
-                homePage.putExtra("Name" , name);
+                homePage.putExtra("Email" , email);
                 startActivity(homePage);
             }
         });
