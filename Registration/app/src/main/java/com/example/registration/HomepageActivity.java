@@ -2,12 +2,16 @@ package com.example.registration;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.jar.Attributes;
 
@@ -68,14 +72,18 @@ public class HomepageActivity extends AppCompatActivity {
         alert.show();
     }
 
-    private void performLogout() {
+    protected void performLogout() {
         // Perform logout actions, such as clearing stored user data
         // For example, clear shared preferences or Firebase auth sign-out
         // Clear user session and redirect to login screen
-        Intent intent = new Intent(HomepageActivity.this, MainActivity.class);
+        Intent intent = new Intent(HomepageActivity.this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
         startActivity(intent);
         finish(); // Finish current activity so the user can't go back
     }
+
+
+
 
 }
