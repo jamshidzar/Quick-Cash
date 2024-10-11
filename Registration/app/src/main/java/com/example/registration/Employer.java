@@ -24,7 +24,7 @@ public class Employer extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         welcome = getIntent();
         String email = welcome.getStringExtra("Email");
-        if (!email.isEmpty()) {
+        if (email != null && !email.isEmpty()) {
             db.collection("user").whereEqualTo("Email", email).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override

@@ -28,11 +28,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
+
+    // Input fields for name, email, password and credit card
     EditText name, email, password, creditcard;
 
+    // Text view for error message pop up on invalid registration
     TextView errMSG;
+
+    // Buttons for registration and move to login page
     Button Registration, Login;
 
+    // Database to store user info
     FirebaseFirestore db;
 
     @Override
@@ -45,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Initialize firestore database and UI elements
         db = FirebaseFirestore.getInstance();
         name = findViewById(R.id.NameText);
         email = findViewById(R.id.EmailText);
@@ -54,20 +62,28 @@ public class MainActivity extends AppCompatActivity {
         Login = findViewById(R.id.goToLoginButton);
         errMSG = findViewById(R.id.errorMSG);
 
+        // Call method to set up button that takes you to login page
         setUpLoginButton();
 
+        // Set up registration button
         Registration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // Get text input fields
                 String Name = name.getText().toString();
                 String Email = email.getText().toString();
                 String Password = password.getText().toString();
                 String CreditCard = creditcard.getText().toString();
+
+                // Create credential validator object
                 CredentialValidator validator = new CredentialValidator();
                 String errorMessage = new String();
+
+                // Boolean to keep track of valid registration
                 boolean validRegistration = true;
 
-
+                // Checking for any invalid credentials and setting appropriate error message
                 if (!Name.isEmpty()) {
                     if (!validator.isValidName(Name)) {
                         validRegistration = false;
@@ -112,10 +128,12 @@ public class MainActivity extends AppCompatActivity {
                     errorMessage = getResources().getString(R.string.EMPTY_CREDITCARD).trim();
                 }
 
+                // Call method to make error message appear
                 setErrorMessage(errorMessage);
 
+                // If registration is valid, submit data to firestore database and move to login page
                 if (validRegistration) {
-                    setErrorMessage(errorMessage); // clear text view containing error message upon valid credentials entered
+                    setErrorMessage(errorMessage);
                     errMSG.setVisibility(View.INVISIBLE);
 
                     Map<String, Object> user = new HashMap<>();
@@ -144,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // Method to set up the error message and its UI element
     protected void setErrorMessage(String message){
         TextView errorMessage = findViewById(R.id.errorMSG);
         errorMessage.setText(message.trim());
@@ -152,10 +171,13 @@ public class MainActivity extends AppCompatActivity {
         errorMessage.setTextColor(Color.WHITE);
         errorMessage.setPadding(30, 10, 30, 10);
     }
+
+    // Login button setup
     protected void setUpLoginButton(){
         Login.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), LoginActivity.class)));
     }
 
+    // Method to move you to login page after successful registration
     protected void moveToLoginPage(){
         MainActivity.this.startActivity(new Intent(getApplicationContext(), LoginActivity.class));
     }
