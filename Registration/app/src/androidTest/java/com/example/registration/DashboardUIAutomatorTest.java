@@ -25,6 +25,17 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 public class DashboardUIAutomatorTest {
 
+
+
+
+// Code review by Jamshid Zar:
+// The UI tests are well-structured and do a good job of testing navigation between different parts of the application.
+// The `setup()` method is properly initializing the `UiDevice` and launching the appropriate activity with a clear timeout, which is good.
+// Both test cases—`checkIfMoveToEmployee()` and `checkIfMoveToEmployer()`—correctly simulate button clicks and validate the existence of the appropriate UI elements.
+// As long as the tests pass consistently, they seem to be doing exactly what is needed.
+// Good job implementing functional UI tests!
+
+
     private static final int LAUNCH_TIMEOUT = 5000;
     final String launcherPackageName = "com.example.registration";
     private UiDevice device;

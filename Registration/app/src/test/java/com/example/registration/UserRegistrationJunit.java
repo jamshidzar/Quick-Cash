@@ -7,6 +7,14 @@ import org.junit.Test;
 
 public class UserRegistrationJunit {
     CredentialValidator validator;
+
+
+// Code review by Jamshid Zar:
+// The test cases are well-structured, covering all the essential validation checks for name, email, password, and credit card fields.
+// Each test method is named appropriately and makes use of clear assertions (`assertTrue`, `assertFalse`), ensuring the tests are easy to follow.
+// As long as all the tests are passing, they seem to be doing exactly what they need to.
+// No further comments, as the tests are well-written and focus on validating the key input fields. Good work!
+
     @Before
     public void setup(){
         validator = new CredentialValidator();
