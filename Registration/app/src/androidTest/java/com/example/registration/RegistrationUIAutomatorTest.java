@@ -1,6 +1,9 @@
 package com.example.registration;
 import static org.junit.Assert.assertTrue;
-
+/*
+* Code review done by Tanishika:
+* Get rid of all the unused library dependencies
+* */
 import android.content.Context;
 import android.content.Intent;
 
@@ -38,10 +41,6 @@ public class RegistrationUIAutomatorTest {
 // - The `checkIfMoveToLoginOnButton()` test ensures that the login button redirects the user correctly, making sure the navigation from registration to login works as expected.
 // - Suggestion: It might be a good idea to use string resources for text values like "Full Name", "Email", "Register", and "Don't have an account? Register here." instead of hardcoded text. This will improve maintainability, especially when UI text changes.
 // - As long as the tests pass consistently, the registration flow seems to be robust and well-tested. Good use of `clickAndWaitForNewWindow()` to ensure smooth transitions between activities.
-
-
-
-
 
     @Before
     public void setup() {
