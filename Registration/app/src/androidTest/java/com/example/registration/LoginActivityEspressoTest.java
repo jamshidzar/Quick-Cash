@@ -1,5 +1,9 @@
 package com.example.registration;
 
+/*
+* Code review done by Tanishika:
+* Get rid of unused library dependencies
+* */
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
