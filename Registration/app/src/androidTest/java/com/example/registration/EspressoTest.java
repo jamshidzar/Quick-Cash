@@ -33,6 +33,18 @@ public class EspressoTest {
         ActivityScenario.launch(MainActivity.class);
     }
 
+// Code review by Jamshid Zar:
+// - Overall, the test cases are well-written and cover a wide range of scenarios for the registration form.
+// - The use of `ActivityScenario.launch(MainActivity.class)` in the `setup()` method is a great way to initialize the activity for testing.
+// - Each test is focused on a specific field (name, email, password, credit card) and its validation, which is good practice for maintaining clear and concise tests.
+// - The use of `onView().perform()` followed by `check()` for UI interaction and validation is solid and standard practice for Espresso testing.
+// - The tests for invalid inputs (name, email, password, credit card) are thorough and should catch any input errors in the form validation.
+// - The `Thread.sleep(2000)` in `checkIfValidRegistration()` could be replaced with Espresso’s `IdlingResource` to make it more efficient and avoid hardcoding delays, but it's acceptable for now as long as the tests pass.
+// - As long as all tests are passing, they are functioning as expected and correctly validating the form input fields.
+
+
+
+
     @Test
     public void checkIfNameIsEmpty() {
         onView(withId(R.id.EmailText)).perform(typeText("example@gmail.com"), closeSoftKeyboard());

@@ -18,6 +18,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+
+
+
+/**
+ * This class handles the login functionality of the application.
+ * It allows users to enter their credentials (email and password), validates them,
+ * and then attempts to authenticate the user with Firestore.
+ * If the user does not have an account, they can navigate to the registration page.
+ *
+ * @author Jamshid Zar
+ */
 public class LoginActivity extends AppCompatActivity {
 
     // Declare UI elements
@@ -29,6 +40,18 @@ public class LoginActivity extends AppCompatActivity {
     // Declare Firestore
     private FirebaseFirestore db;
 
+
+
+
+    /**
+     * This method is called when the activity is created.
+     * It initializes Firestore and the UI elements (email, password fields, and buttons),
+     * and sets up click listeners for the login and register buttons.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down,
+     *                           this Bundle contains the data it most recently supplied.
+     * @author Jamshid Zar
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +73,17 @@ public class LoginActivity extends AppCompatActivity {
         registerButton.setOnClickListener(v -> onRegisterClick());
     }
 
-    // Method for handling login button click
+
+
+
+
+    /**
+     * This method is called when the login button is clicked.
+     * It validates the email and password fields, checks if the input is correct,
+     * and if valid, proceeds to log in the user by calling the loginUser method.
+     *
+     * @author Jamshid Zar
+     */
     protected void onLoginClick() {
         String email = emailInput.getText().toString().trim(); // Retrieve the email entered by the user
         String password = passwordInput.getText().toString().trim(); // Retrieve the password entered by the user
@@ -73,7 +106,12 @@ public class LoginActivity extends AppCompatActivity {
         setStatusMessage(error);
     }
 
-    // Method for handling register button click
+    /**
+     * This method is called when the register button is clicked.
+     * It navigates the user to the registration page (MainActivity).
+     *
+     * @author Jamshid Zar
+     */
     protected void onRegisterClick() {
         // Create an intent to navigate to MainActivity (Registration Page)
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -82,7 +120,17 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // Method to log in the user with Firestore
+
+
+    /**
+     * This method attempts to log in the user by querying the Firestore database.
+     * It checks if the user with the given email and password exists. If authentication is successful,
+     * the user is navigated to the homepage. If not, an error message is displayed.
+     *
+     * @param email    The email entered by the user.
+     * @param password The password entered by the user.
+     * @author Jamshid Zar
+     */
     protected void loginUser(String email, String password) {
 
         // Query Firestore collection "user" to find a document with the matching email
@@ -125,6 +173,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * This method updates the status message on the UI.
+     * It displays error or success messages to the user.
+     *
+     * @param message The message to be displayed.
+     * @author Jamshid Zar
+     */
     protected void setStatusMessage(String message) {
         TextView statusLabel = findViewById(R.id.statusLabel);
         statusLabel.setText(message.trim());

@@ -20,6 +20,16 @@ import com.google.firebase.firestore.QuerySnapshot;
 public class Employee extends AppCompatActivity {
     FirebaseFirestore db;
 
+
+
+
+// Code review by Jamshid Zar:
+// Overall, the onCreate method is well-structured, and the Firebase integration is solid.
+// A few suggestions for improvement:
+// - Consider adding null checks for the Intent to prevent potential crashes.
+// - Be cautious about displaying sensitive information such as passwords and credit card details in the UI.
+// - Ensure all user data fields are properly null-checked before using them to avoid null pointer exceptions.
+// - The error message in the else block references "name" when it should reference "email" as that is being checked.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

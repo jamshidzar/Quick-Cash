@@ -23,6 +23,21 @@ public class LogInActivityUIAutomatorTest {
     private static final int LAUNCH_TIMEOUT = 5000;
     final String launcherPackageName = "com.example.registration";
     private UiDevice device;
+
+
+
+// Code review by Jamshid Zar:
+// - Overall, this test class is well-written and effectively tests the login page UI and flow using UI Automator.
+// - The `setup()` method does a great job initializing the `UiDevice` and launching the login activity. Using `LAUNCH_TIMEOUT` to ensure the app is fully loaded is good practice.
+// - In the `checkIfLoginPageIsVisible()` test, you correctly check for the presence of key elements (email field, password field, login button), ensuring that the login page is displayed as expected.
+// - The test `checkIfMovedtoDashboard()` successfully simulates a valid login scenario and verifies that the user is redirected to the dashboard, which is good. The use of `clickAndWaitForNewWindow()` ensures the test waits for the dashboard to load.
+// - The `checkIfMovedToLoginPage()` test is comprehensive, as it not only tests login functionality but also verifies that the user can log out and return to the login page. Good use of the logout confirmation dialog handling.
+// - Suggestion: It’s good practice to use string resources for text such as "Email", "Password", and "Login" instead of hardcoding them directly in the test. This can make your tests more maintainable and less prone to breaking if the text changes in the app.
+// - As long as the tests pass consistently, they cover key aspects of the login flow and logout process, ensuring the user experience is smooth.
+
+
+
+
     @Before
     public void setup(){
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
