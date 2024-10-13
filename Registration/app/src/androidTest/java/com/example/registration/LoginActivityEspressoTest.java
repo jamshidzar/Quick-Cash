@@ -58,7 +58,7 @@ public class LoginActivityEspressoTest {
     }
     @Test
     public void UserAuthenticationWithInvalidUser() throws InterruptedException {
-        onView(withId(R.id.emailInput)).perform(typeText("tanishika@gmail.com"));
+        onView(withId(R.id.emailInput)).perform(typeText("tttanishika@gmail.com"));
         onView(withId(R.id.passwordInput)).perform(typeText("PassWord!"));
         onView(withId(R.id.loginButton)).perform(click());
         Thread.sleep(2000);
