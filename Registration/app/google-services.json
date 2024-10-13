@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "39854401562",
+    "project_id": "quickcash-df5e5",
+    "storage_bucket": "quickcash-df5e5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39854401562:android:222517d52a5edf8297c9a3",
+        "android_client_info": {
+          "package_name": "com.example.registration"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvv3lVrR5T2v7eDjaEMIJ_VCZ7BobJ3SM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
