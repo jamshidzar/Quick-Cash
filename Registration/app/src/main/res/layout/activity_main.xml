@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    tools:ignore="ExtraText">
 
     <EditText
         android:id="@+id/NameText"
@@ -16,11 +17,12 @@
         android:hint="Full Name"
         android:inputType="text"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/EmailText"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.265" />
 
     <EditText
         android:id="@+id/PasswordText"
@@ -31,10 +33,11 @@
         android:hint="Password"
         android:inputType="text"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/CreditCard"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/EmailText" />
+        app:layout_constraintTop_toBottomOf="@+id/EmailText"
+        app:layout_constraintVertical_bias="0.057" />
 
     <EditText
         android:id="@+id/EmailText"
@@ -45,11 +48,12 @@
         android:hint="Email"
         android:inputType="textEmailAddress"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/PasswordText"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/NameText" />
+        app:layout_constraintTop_toBottomOf="@+id/NameText"
+        app:layout_constraintVertical_bias="0.009" />
 
     <EditText
         android:id="@+id/CreditCard"
@@ -60,11 +64,12 @@
         android:hint="Credit Card"
         android:inputType="number"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/RegisterButton"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PasswordText" />
+        app:layout_constraintTop_toBottomOf="@+id/PasswordText"
+        app:layout_constraintVertical_bias="0.107" />
 
     <Button
         android:id="@+id/RegisterButton"
