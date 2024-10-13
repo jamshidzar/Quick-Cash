@@ -27,6 +27,15 @@ import org.w3c.dom.Text;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class handles the registration functionality of the application.
+ * It allows users to enter their credentials (name, email, password, credit card),
+ * validates them and then adds the new user to the Firestore database if the
+ * registration is valid.
+ * If the user has an account, they can navigate to the login page.
+ *
+ * @author Kevin Matheson
+ */
 public class MainActivity extends AppCompatActivity {
 
     // Input fields for name, email, password and credit card
@@ -50,6 +59,15 @@ public class MainActivity extends AppCompatActivity {
 // - Suggestion: Adding a progress bar during Firestore operations could improve user experience.
 
 
+    /**
+     * This method is called when the activity is created.
+     * It initializes Firestore and the UI elements,
+     * and sets up click listeners for the login and register buttons.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down,
+     *                           this Bundle contains the data it most recently supplied.
+     * @author Kevin Matheson
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -185,8 +203,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-    // Method to set up the error message and its UI element
+    /**
+     * This method updates the status message on the UI.
+     * It displays an error message upon invalid credentials being
+     * entered for registration.
+     *
+     * @param message The message to be displayed.
+     * @author Kevin Matheson
+     */
     protected void setErrorMessage(String message){
         TextView errorMessage = findViewById(R.id.errorMSG);
         errorMessage.setText(message.trim());
@@ -204,11 +228,23 @@ public class MainActivity extends AppCompatActivity {
 // - It might be worth adding `finish()` to this method, so the user can't return to the registration page using the back button after logging in.
 
 
+    /**
+     * This method sets up the login button such that
+     * when it is clicked it takes you to the login page activity.
+     *
+     * @author Kevin Matheson
+     */
     // Login button setup
     protected void setUpLoginButton(){
         Login.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), LoginActivity.class)));
     }
 
+    /**
+     * This method takes you to the login page activity.
+     * It is called only upon valid registration.
+     *
+     * @author Kevin Matheson
+     */
     // Method to move you to login page after successful registration
     protected void moveToLoginPage(){
         MainActivity.this.startActivity(new Intent(getApplicationContext(), LoginActivity.class));
