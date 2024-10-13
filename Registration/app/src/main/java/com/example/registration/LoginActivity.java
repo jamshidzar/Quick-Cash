@@ -1,5 +1,9 @@
 package com.example.registration;
-
+/*
+* Code review done by Tanishika:
+* Get rid of usused library dependencies
+* add string resources for error handing.
+* */
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
