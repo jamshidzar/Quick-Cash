@@ -14,10 +14,10 @@
       <SelectionState runConfigName="UserAuthenticationWithValidUser()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="checkIfEmailIsValid()">
+      <SelectionState runConfigName="checkIfMoveToEmployee()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="LoginActivity">
+      <SelectionState runConfigName="checkIfMoveToEmployer()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
