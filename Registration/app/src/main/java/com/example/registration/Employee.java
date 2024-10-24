@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -19,10 +22,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class Employee extends AppCompatActivity {
     FirebaseFirestore db;
-
-
-
-
 // Code review by Jamshid Zar:
 // Overall, the onCreate method is well-structured, and the Firebase integration is solid.
 // A few suggestions for improvement:
@@ -69,4 +68,21 @@ public class Employee extends AppCompatActivity {
             tv.setText("No name passed to the Employee activity.");
         }
     }
+    public boolean isJobAlertEnabled() {
+        return false;
+    }
+    public void setPreferredCriteria(String preference) {
+    }
+
+    public String getPreferredCriteria() {
+        return "no";
+    }
+    /*public void enableJobAlerts() {
+        Switch jobAlert = findViewById(R.id.AlertSwitch);
+        if(jobAlert.isChecked()){
+            //send notification
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.notification), "This is a Snackbar message", Snackbar.LENGTH_LONG);
+        }
+
+    }*/
 }

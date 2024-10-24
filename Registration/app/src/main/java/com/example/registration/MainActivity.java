@@ -33,7 +33,6 @@ import java.util.Map;
  * validates them and then adds the new user to the Firestore database if the
  * registration is valid.
  * If the user has an account, they can navigate to the login page.
- *
  * @author Kevin Matheson
  */
 public class MainActivity extends AppCompatActivity {
