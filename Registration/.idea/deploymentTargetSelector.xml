@@ -5,10 +5,17 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="checkIfEmailIsEmpty()">
+      <SelectionState runConfigName="UserAuthenticationWithInvalidUser()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+<<<<<<< HEAD
       <SelectionState runConfigName="checkIfMove2LoginPage()">
+=======
+      <SelectionState runConfigName="Tests in 'com.example.registration'">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="LoginActivityEspressoTest">
+>>>>>>> 10101a5eff9f16a167557c3293a70d296caf6764
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
