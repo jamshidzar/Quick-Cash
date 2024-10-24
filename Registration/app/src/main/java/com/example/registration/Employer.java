@@ -17,6 +17,16 @@ public class Employer extends AppCompatActivity {
     FirebaseFirestore db;
     Intent welcome;
 
+
+
+// Code review by Jamshid Zar:
+// Overall, the onCreate method is well-implemented and handles Firestore queries effectively.
+// A few suggestions for improvement:
+// - It's good that you're checking for a non-null and non-empty email before querying Firestore.
+// - Consider adding a null check for the Intent to prevent potential crashes.
+// - Avoid displaying sensitive information such as passwords and credit card details in a TextView for security reasons.
+// - Error handling is good, but ensure the message in the else block references the correct data (you're checking for an email, not a name, so update the error message accordingly).
+// - Good practice with logging and error handling for Firestore queries, but consider adding more robust error handling for user feedback.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +34,7 @@ public class Employer extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         welcome = getIntent();
         String email = welcome.getStringExtra("Email");
-        if (!email.isEmpty()) {
+        if (email != null && !email.isEmpty()) {
             db.collection("user").whereEqualTo("Email", email).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override

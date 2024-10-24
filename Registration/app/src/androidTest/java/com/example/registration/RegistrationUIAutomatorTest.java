@@ -1,6 +1,9 @@
 package com.example.registration;
 import static org.junit.Assert.assertTrue;
-
+/*
+* Code review done by Tanishika:
+* Get rid of all the unused library dependencies
+* */
 import android.content.Context;
 import android.content.Intent;
 
@@ -28,6 +31,16 @@ public class RegistrationUIAutomatorTest {
     private static final int LAUNCH_TIMEOUT = 5000;
     final String launcherPackageName = "com.example.registration";
     private UiDevice device;
+
+
+// Code review by Jamshid Zar:
+// - The test class is well-structured, and the use of UI Automator for testing the registration flow is properly implemented.
+// - The `setup()` method does a good job of initializing the `UiDevice` and launching the appropriate activity. The use of `LAUNCH_TIMEOUT` ensures the app is loaded before proceeding, which is essential for UI Automator tests.
+// - In the `checkIfLoginPageIsVisible()` test, you verify the presence of the essential UI components (`Full Name`, `Email`, and `Register` button). The assert messages are helpful in debugging, providing clear error messages if elements are not visible.
+// - The `checkIfMove2LoginPage()` test successfully simulates a valid registration flow. You’ve handled each input field correctly, ensuring they exist before interacting with them. The registration flow, including the final assertion, ensures that the user is correctly redirected to the next page.
+// - The `checkIfMoveToLoginOnButton()` test ensures that the login button redirects the user correctly, making sure the navigation from registration to login works as expected.
+// - Suggestion: It might be a good idea to use string resources for text values like "Full Name", "Email", "Register", and "Don't have an account? Register here." instead of hardcoded text. This will improve maintainability, especially when UI text changes.
+// - As long as the tests pass consistently, the registration flow seems to be robust and well-tested. Good use of `clickAndWaitForNewWindow()` to ensure smooth transitions between activities.
 
     @Before
     public void setup() {
