@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,9 +18,14 @@
         android:theme="@style/Theme.Registration"
         tools:targetApi="31">
 
+        <!-- Google Maps API key (ensure to get your own) -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyANFSYBzM3DEF3TjirgTjAaEg6BOC41-S8" />
+
         <!-- MainActivity Declaration -->
         <activity
-            android:name=".MainActivity"
+            android:name=".CurrentLocation"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +33,12 @@
             </intent-filter>
         </activity>
 
-        <!-- HomepageActivity Declaration -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:label="@string/title_activity_maps" />
+
+        <!-- Additional Activity Declarations -->
         <activity
             android:name=".LoginActivity"
             android:exported="true" />
@@ -35,8 +50,7 @@
             android:exported="true" />
         <activity
             android:name=".Employer"
-            android:exported="true"/>
-
+            android:exported="true" />
     </application>
 
 </manifest>

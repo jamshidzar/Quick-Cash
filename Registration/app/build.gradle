@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
 //    id 'com.android.application'
     id 'com.google.gms.google-services'
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
 
 android {
@@ -28,6 +29,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -39,6 +43,7 @@ dependencies {
     implementation libs.firebase.database
     implementation libs.junit.junit
     implementation libs.uiautomator
+    implementation libs.play.services.maps
     testImplementation 'junit:junit:4.13.2'
     testImplementation project(path: ':app')
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
@@ -47,4 +52,5 @@ dependencies {
     implementation ('com.google.firebase:firebase-analytics')
     implementation ('com.google.firebase:firebase-firestore')
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
+    implementation 'com.google.maps.android:android-maps-utils:2.2.3'
 }
