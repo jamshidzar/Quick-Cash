@@ -1,5 +1,6 @@
 package com.example.registration;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -41,7 +42,8 @@ public class JobPosting extends AppCompatActivity {
         setContentView(R.layout.job_posting);
 
         db = FirebaseFirestore.getInstance();
-        email = getIntent().getStringExtra("Email");
+        Intent intent = getIntent();
+        email = intent.getStringExtra("Email");
 
         jobName = findViewById(R.id.jobName);
         location = findViewById(R.id.location);
@@ -103,11 +105,14 @@ public class JobPosting extends AppCompatActivity {
         job.put("salary", salaryText);
         job.put("employerID", userID);
 
-        db.collection("user").add(job)
+        db.collection("job").add(job)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Toast.makeText(JobPosting.this, "Job Posting Successful", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(JobPosting.this, Employer.class);
+                        intent.putExtra("Email", email);
+                        startActivity(intent);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

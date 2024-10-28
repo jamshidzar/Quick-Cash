@@ -36,6 +36,9 @@
         <activity
             android:name=".Employer"
             android:exported="true"/>
+        <activity
+            android:name=".JobPosting"
+            android:exported="true"/>
 
     </application>
 

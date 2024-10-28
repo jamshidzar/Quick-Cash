@@ -36,7 +36,7 @@ public class Employer extends AppCompatActivity {
         welcome = getIntent();
         email = welcome.getStringExtra("Email");
         jobPosting = findViewById(R.id.button2);
-        setUpJobPostingButton();
+        jobPosting.setOnClickListener(v -> onJobPostClick());
 
         if (email != null && !email.isEmpty()) {
             db.collection("user").whereEqualTo("Email", email).get()
@@ -70,7 +70,10 @@ public class Employer extends AppCompatActivity {
         }
     }
 
-    protected void setUpJobPostingButton(){
-        jobPosting.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), JobPosting.class).putExtra("Email", email)));
+    protected void onJobPostClick(){
+        Intent intent = new Intent(Employer.this, JobPosting.class);
+        intent.putExtra("Email", email);
+        startActivity(intent);
+//        jobPosting.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), JobPosting.class).putExtra("Email", email)));
     }
 }

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".JobPosting">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+
+        <!-- Job Name -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Job Name"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+            android:id="@+id/jobName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter job name"
+            android:inputType="text" />
+
+        <!-- Location -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+            android:id="@+id/location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter job location"
+            android:inputType="text" />
+
+        <!-- Duration (in hours) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Duration (in hours)"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+            android:id="@+id/duration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter duration in hours"
+            android:inputType="number" />
+
+        <!-- Urgency (Dropdown) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Urgency"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+            android:id="@+id/urgency"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter level of urgency (High, Medium, Low)"
+            android:inputType="text" />
+
+        <!-- Salary ($/hr) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Salary ($/hr)"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+            android:id="@+id/salary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter salary per hour"
+            android:inputType="numberDecimal" />
+
+        <!-- Submit Button -->
+        <Button
+            android:id="@+id/postButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Post Job"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+</ScrollView>
