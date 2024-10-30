@@ -51,10 +51,10 @@ public class Employee extends AppCompatActivity {
                                     String name = documentSnapshot.getString("Name");
                                     String password = documentSnapshot.getString("Password");
                                     String creditCard = documentSnapshot.getString("Credit Card");
-                                    String message = "Name: " + name + "\nEmail: " + email + "\nPassword: " + password + "\nCredit Card: " + creditCard;
+                                    //String message = "Name: " + name + "\nEmail: " + email + "\nPassword: " + password + "\nCredit Card: " + creditCard;
 
-                                    TextView tv = findViewById(R.id.empolyeeText);
-                                    tv.setText(message);
+                                   // TextView tv = findViewById(R.id.empolyeeText);
+                                   // tv.setText(message);
                                 } else {
                                     TextView tv = findViewById(R.id.empolyeeText);
                                     tv.setText("No user found with the email: " + email);
