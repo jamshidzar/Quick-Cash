@@ -18,27 +18,31 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public class Employee extends AppCompatActivity {
-    FirebaseFirestore db;
+    private FirebaseFirestore db;
+    private Button jobApplyingButton;
 
-
-
-
-// Code review by Jamshid Zar:
-// Overall, the onCreate method is well-structured, and the Firebase integration is solid.
-// A few suggestions for improvement:
-// - Consider adding null checks for the Intent to prevent potential crashes.
-// - Be cautious about displaying sensitive information such as passwords and credit card details in the UI.
-// - Ensure all user data fields are properly null-checked before using them to avoid null pointer exceptions.
-// - The error message in the else block references "name" when it should reference "email" as that is being checked.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.empolyee);  // Ensure you're using the correct layout file
+
         db = FirebaseFirestore.getInstance();
         Intent welcome = getIntent();
         String email = welcome.getStringExtra("Email");
 
+        // Initialize the "Job Applying" button with the correct ID from XML
+        jobApplyingButton = findViewById(R.id.button); // Adjusted to match XML ID
 
+        // Set an OnClickListener to open JobListActivity
+        jobApplyingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Employee.this, JobListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // Existing code to fetch and display user information
         if (email != null && !email.isEmpty()) {
             db.collection("user").whereEqualTo("Email", email).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -51,10 +55,7 @@ public class Employee extends AppCompatActivity {
                                     String name = documentSnapshot.getString("Name");
                                     String password = documentSnapshot.getString("Password");
                                     String creditCard = documentSnapshot.getString("Credit Card");
-                                    //String message = "Name: " + name + "\nEmail: " + email + "\nPassword: " + password + "\nCredit Card: " + creditCard;
-
-                                   // TextView tv = findViewById(R.id.empolyeeText);
-                                   // tv.setText(message);
+                                    // Display or use the fetched user information as needed
                                 } else {
                                     TextView tv = findViewById(R.id.empolyeeText);
                                     tv.setText("No user found with the email: " + email);
