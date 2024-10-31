@@ -53,7 +53,6 @@ public class MapManager {
             e.printStackTrace();
         }
     }
-
     //using geocoder to search using query and calculating the distance
     public double searchLocationDistanceAndMark(Location currentLocation, String location){
         List <Address> addressList = null;

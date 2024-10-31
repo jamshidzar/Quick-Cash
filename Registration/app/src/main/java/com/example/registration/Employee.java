@@ -4,9 +4,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,9 +23,14 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Employee extends AppCompatActivity {
     FirebaseFirestore db;
-// Code review by Jamshid Zar:
+    private MapManager currentLocation;
+    List<String> preferenceList = new ArrayList<>();
+    // Code review by Jamshid Zar:
 // Overall, the onCreate method is well-structured, and the Firebase integration is solid.
 // A few suggestions for improvement:
 // - Consider adding null checks for the Intent to prevent potential crashes.
@@ -67,22 +75,52 @@ public class Employee extends AppCompatActivity {
             TextView tv = findViewById(R.id.empolyeeText);
             tv.setText("No name passed to the Employee activity.");
         }
+        enableJobAlerts();
+        sendJobNotification();
     }
-    public boolean isJobAlertEnabled() {
+    //sets the preferred criteria
+    public void setPreferredCriteria(String preference){
+        preferenceList.add(preference);
+    }
+    public String getPreferredCriteria() {
+        return null;
+    }
+    public String getCurrentLocation(){
+        return null;
+    }
+    public String getJobLocation(){
+        return null;
+    }
+    public boolean enableJobAlerts() {
+        CheckBox checkBox = findViewById(R.id.checkbox);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Toast.makeText(getApplicationContext(), "Job alerts enabled", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        if(checkBox.isChecked()){
+            return true;
+        }
         return false;
     }
-    public void setPreferredCriteria(String preference) {
-    }
-
-    public String getPreferredCriteria() {
-        return "no";
-    }
-    /*public void enableJobAlerts() {
-        Switch jobAlert = findViewById(R.id.AlertSwitch);
-        if(jobAlert.isChecked()){
-            //send notification
-            Snackbar snackbar = Snackbar.make(findViewById(R.id.notification), "This is a Snackbar message", Snackbar.LENGTH_LONG);
+    public void sendJobNotification(){
+        boolean enableNotification = enableJobAlerts();
+        if(enableNotification){
+            //get list of jobs
+            String[] Jobs = {"Tutor", "Walk dog", "baby sitting"};
+            String jobLocation = getJobLocation();
+            String preferedJob = getPreferredCriteria();
+            String userLocation = getCurrentLocation();
+            for(int i = 0 ; i < Jobs.length; i++){
+                if(preferedJob.equals(Jobs[i])){
+                    if(userLocation.equals(jobLocation)){
+                        Toast.makeText(getApplicationContext(), preferedJob+"job available in your area"+ userLocation, Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
         }
-
-    }*/
+    }
 }

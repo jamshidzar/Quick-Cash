@@ -63,5 +63,9 @@ public class Employer extends AppCompatActivity {
             TextView tv = findViewById(R.id.employerText);
             tv.setText("No name passed to the Employer activity.");
         }
+        addJobs();
+    }
+    public void addJobs(){
+
     }
 }
