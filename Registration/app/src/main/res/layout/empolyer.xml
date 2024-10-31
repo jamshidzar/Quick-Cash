@@ -12,7 +12,6 @@
         android:layout_height="123dp"
         android:layout_marginStart="66dp"
         android:layout_marginTop="80dp"
-        android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,4 +24,26 @@
         android:text="Job Posting"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/employerText" />
+
+    <Button
+        android:id="@+id/payEmployeeBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="220dp"
+        android:layout_marginTop="76dp"
+        android:text="Pay Employee"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
+
+    <EditText
+        android:id="@+id/payAmt"
+        android:layout_width="164dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="76dp"
+        android:ems="10"
+        android:hint="Enter Amount"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
 </androidx.constraintlayout.widget.ConstraintLayout>
