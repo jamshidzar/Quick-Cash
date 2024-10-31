@@ -96,7 +96,6 @@ public class JobPosting extends AppCompatActivity {
         String urgencyText = urgency.getText().toString();
         String salaryText = salary.getText().toString();
 
-
         Map<String, Object> job = new HashMap<>();
         job.put("jobName", jobNameText);
         job.put("location", locationText);
@@ -105,12 +104,39 @@ public class JobPosting extends AppCompatActivity {
         job.put("salary", salaryText);
         job.put("employerID", userID);
 
+
+        if (jobNameText.isEmpty()) {
+            jobName.setError("Job name cannot be blank");
+            return;
+        }
+
+        if (locationText.isEmpty()) {
+            location.setError("Location cannot be blank");
+            return;
+        }
+
+        if (durationText.isEmpty()) {
+            duration.setError("Duration cannot be blank");
+            return;
+        }
+
+        if (urgencyText.isEmpty()) {
+            urgency.setError("Urgency cannot be blank");
+            return;
+        }
+
+        if (salaryText.isEmpty()) {
+            salary.setError("Salary cannot be blank");
+            return;
+        }
+
+
         db.collection("job").add(job)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Toast.makeText(JobPosting.this, "Job Posting Successful", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(JobPosting.this, Employer.class);
+                        Intent intent = new Intent(JobPosting.this, JobList.class);
                         intent.putExtra("Email", email);
                         startActivity(intent);
                     }
