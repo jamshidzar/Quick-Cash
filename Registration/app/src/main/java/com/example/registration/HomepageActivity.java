@@ -18,9 +18,9 @@ import java.util.jar.Attributes;
 public class HomepageActivity extends AppCompatActivity {
     Intent welcome;
     private String email;
-    Button employee, employer;
+    Button employeeButton, employerButton;
+    Employee employee;
     @Override
-
 // Code review by Jamshid Zar:
 // This code looks well-structured and achieves the expected functionality. A few suggestions:
 // - Good job setting up the employee and employer buttons with appropriate intents to pass the email.
@@ -31,12 +31,12 @@ public class HomepageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
-        employee = findViewById(R.id.employee);
-        employer = findViewById(R.id.employer);
+        employeeButton = findViewById(R.id.employee);
+        employerButton = findViewById(R.id.employer);
         welcome = getIntent();
         email = welcome.getStringExtra("Email");
-
-        employee.setOnClickListener(new View.OnClickListener() {
+        employee = new Employee();
+        employeeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent homePage = new Intent(HomepageActivity.this , Employee.class);
@@ -45,7 +45,7 @@ public class HomepageActivity extends AppCompatActivity {
             }
         });
 
-        employer.setOnClickListener(new View.OnClickListener() {
+        employerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent homePage = new Intent(HomepageActivity.this , Employer.class);
@@ -103,8 +103,5 @@ public class HomepageActivity extends AppCompatActivity {
         startActivity(intent);
         finish(); // Finish current activity so the user can't go back
     }
-
-
-
 
 }

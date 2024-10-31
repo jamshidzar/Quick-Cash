@@ -51,6 +51,9 @@
         <activity
             android:name=".Employer"
             android:exported="true" />
+        <activity android:name=".JobListActivity"
+                  android:exported="true"/>
+
     </application>
 
 </manifest>

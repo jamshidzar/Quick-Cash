@@ -13,7 +13,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.registration.databinding.ActivityMapsBinding;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
 
@@ -29,7 +28,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.

@@ -24,10 +24,6 @@ import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class DashboardUIAutomatorTest {
-
-
-
-
 // Code review by Jamshid Zar:
 // The UI tests are well-structured and do a good job of testing navigation between different parts of the application.
 // The `setup()` method is properly initializing the `UiDevice` and launching the appropriate activity with a clear timeout, which is good.
