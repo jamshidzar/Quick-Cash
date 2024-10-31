@@ -55,6 +55,7 @@ public class JobPosting extends AppCompatActivity {
         getUserID(id -> {
             if (id != null){
                 userID = id;
+                Log.d("JobPosting", "User ID retrieved: " + userID);
             }
             else{
                 Log.d("Firestore", "User not found.");
