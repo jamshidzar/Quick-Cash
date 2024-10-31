@@ -2,6 +2,7 @@ package com.example.registration;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,8 +17,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 public class Employer extends AppCompatActivity {
     FirebaseFirestore db;
     Intent welcome;
-
-
+    Button jobPosting;
+    String email;
 
 // Code review by Jamshid Zar:
 // Overall, the onCreate method is well-implemented and handles Firestore queries effectively.
@@ -33,7 +34,10 @@ public class Employer extends AppCompatActivity {
         setContentView(R.layout.empolyer);
         db = FirebaseFirestore.getInstance();
         welcome = getIntent();
-        String email = welcome.getStringExtra("Email");
+        email = welcome.getStringExtra("Email");
+        jobPosting = findViewById(R.id.button2);
+        jobPosting.setOnClickListener(v -> onJobPostClick());
+
         if (email != null && !email.isEmpty()) {
             db.collection("user").whereEqualTo("Email", email).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -46,6 +50,7 @@ public class Employer extends AppCompatActivity {
                                     String name = documentSnapshot.getString("Name");
                                     String password = documentSnapshot.getString("Password");
                                     String creditCard = documentSnapshot.getString("Credit Card");
+                                    String ID = documentSnapshot.getId();
                                     String message = "Name: " + name + "\nEmail: " + email + "\nPassword: " + password + "\nCredit Card: " + creditCard;
                                     TextView tv = findViewById(R.id.employerText);
                                     tv.setText(message);
@@ -67,5 +72,12 @@ public class Employer extends AppCompatActivity {
     }
     public void addJobs(){
 
+    }
+
+    protected void onJobPostClick(){
+        Intent intent = new Intent(Employer.this, JobPosting.class);
+        intent.putExtra("Email", email);
+        startActivity(intent);
+//        jobPosting.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), JobPosting.class).putExtra("Email", email)));
     }
 }

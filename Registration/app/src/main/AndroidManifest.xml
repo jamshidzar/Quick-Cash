@@ -54,6 +54,12 @@
                   android:exported="true"/>
         <activity android:name=".notificationList"
             android:exported="true"/>
+        <activity
+            android:name=".JobPosting"
+            android:exported="true"/>
+        <activity android:name=".JobList" />
+
+
     </application>
 
 </manifest>
