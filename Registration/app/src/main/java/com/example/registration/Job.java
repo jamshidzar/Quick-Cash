@@ -1,48 +1,46 @@
 package com.example.registration;
 
-
-
 public class Job {
-    private String id;
-    private String jobTitle;
-    private String company;
+    private String id;           // Firestore document ID
+    private String jobName;      // Job title
+    private String employerID;   // Employer ID
+    private String location;     // Job location
+    private String duration;     // Job duration
+    private String salary;       // Job salary
+    private String urgency;      // Job urgency
 
     // Default constructor (required for Firestore)
     public Job() {}
 
-    // Constructor with parameters
-    public Job(String id, String jobTitle, String company) {
-        this.id = id;
-        this.jobTitle = jobTitle;
-        this.company = company;
+    // Constructor with parameters (without ID)
+    public Job(String jobName, String employerID, String location, String duration, String salary, String urgency) {
+        this.jobName = jobName;
+        this.employerID = employerID;
+        this.location = location;
+        this.duration = duration;
+        this.salary = salary;
+        this.urgency = urgency;
     }
 
-    // Getter for jobTitle
-    public String getJobTitle() {
-        return jobTitle;
-    }
+    // Getters and Setters for each field, including ID
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
-    // Setter for jobTitle
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
-    }
+    public String getJobName() { return jobName; }
+    public void setJobName(String jobName) { this.jobName = jobName; }
 
-    // Getter for company
-    public String getCompany() {
-        return company;
-    }
+    public String getEmployerID() { return employerID; }
+    public void setEmployerID(String employerID) { this.employerID = employerID; }
 
-    // Setter for company
-    public void setCompany(String company) {
-        this.company = company;
-    }
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
 
-    // Getter and Setter for id (optional if you need it)
-    public String getId() {
-        return id;
-    }
+    public String getDuration() { return duration; }
+    public void setDuration(String duration) { this.duration = duration; }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public String getSalary() { return salary; }
+    public void setSalary(String salary) { this.salary = salary; }
+
+    public String getUrgency() { return urgency; }
+    public void setUrgency(String urgency) { this.urgency = urgency; }
 }

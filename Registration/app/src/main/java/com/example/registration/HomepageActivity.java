@@ -11,9 +11,9 @@ import android.widget.Button;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.jar.Attributes;
+
+
 
 public class HomepageActivity extends AppCompatActivity {
     Intent welcome;

@@ -37,6 +37,8 @@ android {
 
 
 dependencies {
+
+
     implementation libs.appcompat
     implementation libs.material
     implementation libs.activity
@@ -46,6 +48,7 @@ dependencies {
     implementation libs.junit.junit
     implementation libs.uiautomator
     implementation libs.play.services.maps
+    implementation libs.recyclerview
     testImplementation 'junit:junit:4.13.2'
     testImplementation project(path: ':app')
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'

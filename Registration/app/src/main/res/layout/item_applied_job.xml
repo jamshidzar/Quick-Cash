@@ -1,36 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:orientation="vertical"
+    android:padding="16dp">
 
+    <!-- Job Name -->
     <TextView
         android:id="@+id/jobTitle"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Job Title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="4dp"/>
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
+    <!-- Employer ID (representing Company Name) -->
     <TextView
         android:id="@+id/companyName"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Company Name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/jobTitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="8dp"/>
+        android:textSize="14sp" />
 
+    <!-- Location -->
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location"
+        android:textSize="14sp" />
+
+    <!-- Duration -->
+    <TextView
+        android:id="@+id/duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Duration"
+        android:textSize="14sp" />
+
+    <!-- Salary -->
+    <TextView
+        android:id="@+id/salary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Salary"
+        android:textSize="14sp" />
+
+    <!-- Urgency -->
+    <TextView
+        android:id="@+id/urgency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Urgency"
+        android:textSize="14sp" />
+
+    <!-- Complete Button (or any other action button for applied jobs) -->
     <Button
         android:id="@+id/completeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Complete"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_gravity="end"
+        android:text="Complete" />
+
+
+
+</LinearLayout>
