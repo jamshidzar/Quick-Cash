@@ -8,9 +8,6 @@
       <SelectionState runConfigName="notificationList">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="JobListActivity">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="AppliedJobsActivity">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>

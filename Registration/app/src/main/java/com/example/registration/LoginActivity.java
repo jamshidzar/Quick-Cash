@@ -1,7 +1,7 @@
 package com.example.registration;
 /*
 * Code review done by Tanishika:
-* Get rid of usused library dependencies
+* Get rid of unused library dependencies
 * add string resources for error handing.
 * */
 import android.content.Intent;
@@ -43,7 +43,6 @@ public class LoginActivity extends AppCompatActivity {
 
     // Declare Firestore
     private FirebaseFirestore db;
-
 
 
 
