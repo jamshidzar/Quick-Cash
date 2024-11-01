@@ -38,7 +38,6 @@ public class Employee extends AppCompatActivity {
         Intent welcome = getIntent();
         String email = welcome.getStringExtra("Email");
 
-
         if (email != null && !email.isEmpty()) {
             db.collection("user").whereEqualTo("Email", email).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

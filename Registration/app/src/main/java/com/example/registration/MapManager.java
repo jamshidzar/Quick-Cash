@@ -39,7 +39,8 @@ public class MapManager {
         //geocoder will derive the location name, the country, and city of the user as a list
         try{
             List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            String addres = addresses.get(0).getCountryName();
+            String addres = addresses.get(0).getLocality() + ":";
+            addres += addresses.get(0).getCountryName();
             //combining long and lat to place the marker on google map
             LatLng latLng = new LatLng(latitude, longitude);
 
@@ -84,4 +85,5 @@ public class MapManager {
         }
     }
 }
+
 
