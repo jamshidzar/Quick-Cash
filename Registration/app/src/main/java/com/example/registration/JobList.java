@@ -78,11 +78,12 @@ public class JobList extends AppCompatActivity {
                                 for (DocumentSnapshot document : task.getResult()) {
                                     String jobName = document.getString("jobName");
                                     String location = document.getString("location");
+                                    String postalCode = document.getString("PostalCode");
                                     String duration = document.getString("duration");
                                     String urgency = document.getString("urgency");
                                     String salary = document.getString("salary");
 
-                                    String jobDetails = "Job: " + jobName + "\nLocation: " + location
+                                    String jobDetails = "Job: " + jobName + "\nLocation: " + location + "\nLocation: " +  "\nPostal Code:  " + postalCode
                                             + "\nDuration: " + duration + "\nUrgency: " + urgency
                                             + "\nSalary: " + salary;
 

@@ -41,7 +41,8 @@ public class JobPostingEspressoTest {
     @Test
     public void checkIfJobNameIsEmpty() {
         onView(withId(R.id.location)).perform(typeText("Halifax"), closeSoftKeyboard());
-        onView(withId(R.id.duration)).perform(typeText("6 months"), closeSoftKeyboard());
+        onView(withId(R.id.postalCode)).perform(typeText("B3L2A4"), closeSoftKeyboard());
+        onView(withId(R.id.duration)).perform(typeText("6"), closeSoftKeyboard());
         onView(withId(R.id.urgency)).perform(typeText("High"), closeSoftKeyboard());
         onView(withId(R.id.salary)).perform(typeText("50000"), closeSoftKeyboard());
         onView(withId(R.id.postButton)).perform(click());
@@ -52,7 +53,8 @@ public class JobPostingEspressoTest {
     @Test
     public void checkIfLocationIsEmpty() {
         onView(withId(R.id.jobName)).perform(typeText("Software Engineer"), closeSoftKeyboard());
-        onView(withId(R.id.duration)).perform(typeText("6 months"), closeSoftKeyboard());
+        onView(withId(R.id.duration)).perform(typeText("6"), closeSoftKeyboard());
+        onView(withId(R.id.postalCode)).perform(typeText("B3L2A4"), closeSoftKeyboard());
         onView(withId(R.id.urgency)).perform(typeText("High"), closeSoftKeyboard());
         onView(withId(R.id.salary)).perform(typeText("50000"), closeSoftKeyboard());
         onView(withId(R.id.postButton)).perform(click());
@@ -64,16 +66,30 @@ public class JobPostingEspressoTest {
         onView(withId(R.id.jobName)).perform(typeText("Software Engineer"), closeSoftKeyboard());
         onView(withId(R.id.location)).perform(typeText("Halifax"), closeSoftKeyboard());
         onView(withId(R.id.urgency)).perform(typeText("High"), closeSoftKeyboard());
+        onView(withId(R.id.postalCode)).perform(typeText("B3L2A4"), closeSoftKeyboard());
         onView(withId(R.id.salary)).perform(typeText("50000"), closeSoftKeyboard());
         onView(withId(R.id.postButton)).perform(click());
         onView(withId(R.id.errorMessage)).check(matches(withText("Duration cannot be blank")));
     }
+    @Test
+    public void checkIfPostalCodeIsEmpty() {
+        onView(withId(R.id.jobName)).perform(typeText("Software Engineer"), closeSoftKeyboard());
+        onView(withId(R.id.location)).perform(typeText("Halifax"), closeSoftKeyboard());
+        onView(withId(R.id.urgency)).perform(typeText("High"), closeSoftKeyboard());
+        onView(withId(R.id.salary)).perform(typeText("50000"), closeSoftKeyboard());
+        onView(withId(R.id.duration)).perform(typeText("6"), closeSoftKeyboard());
+        onView(withId(R.id.postButton)).perform(click());
+        onView(withId(R.id.errorMessage)).check(matches(withText("Postal Code cannot be blank")));
+
+    }
+
 
     @Test
     public void checkIfUrgencyIsEmpty() {
         onView(withId(R.id.jobName)).perform(typeText("Software Engineer"), closeSoftKeyboard());
         onView(withId(R.id.location)).perform(typeText("Halifax"), closeSoftKeyboard());
-        onView(withId(R.id.duration)).perform(typeText("6 months"), closeSoftKeyboard());
+        onView(withId(R.id.duration)).perform(typeText("6"), closeSoftKeyboard());
+        onView(withId(R.id.postalCode)).perform(typeText("B3L2A4"), closeSoftKeyboard());
         onView(withId(R.id.salary)).perform(typeText("50000"), closeSoftKeyboard());
         onView(withId(R.id.postButton)).perform(click());
         onView(withId(R.id.errorMessage)).check(matches(withText("Urgency cannot be blank")));
@@ -83,7 +99,8 @@ public class JobPostingEspressoTest {
     public void checkIfSalaryIsEmpty() {
         onView(withId(R.id.jobName)).perform(typeText("Software Engineer"), closeSoftKeyboard());
         onView(withId(R.id.location)).perform(typeText("Halifax"), closeSoftKeyboard());
-        onView(withId(R.id.duration)).perform(typeText("6 months"), closeSoftKeyboard());
+        onView(withId(R.id.postalCode)).perform(typeText("B3L2A4"), closeSoftKeyboard());
+        onView(withId(R.id.duration)).perform(typeText("6"), closeSoftKeyboard());
         onView(withId(R.id.urgency)).perform(typeText("High"), closeSoftKeyboard());
         onView(withId(R.id.postButton)).perform(click());
         onView(withId(R.id.errorMessage)).check(matches(withText("Salary cannot be blank")));
@@ -93,8 +110,9 @@ public class JobPostingEspressoTest {
     public void testSuccessfulJobPosting() {
         onView(withId(R.id.jobName)).perform(typeText("Software Engineer"), closeSoftKeyboard());
         onView(withId(R.id.location)).perform(typeText("Halifax"), closeSoftKeyboard());
-        onView(withId(R.id.duration)).perform(typeText("6 months"), closeSoftKeyboard());
+        onView(withId(R.id.duration)).perform(typeText("6"), closeSoftKeyboard());
         onView(withId(R.id.urgency)).perform(typeText("High"), closeSoftKeyboard());
+        onView(withId(R.id.postalCode)).perform(typeText("B3L2A4"), closeSoftKeyboard());
         onView(withId(R.id.salary)).perform(typeText("50000"), closeSoftKeyboard());
         onView(withId(R.id.postButton)).perform(click());
         onView(withId(R.id.errorMessage)).check(matches(withText("Successful")));
