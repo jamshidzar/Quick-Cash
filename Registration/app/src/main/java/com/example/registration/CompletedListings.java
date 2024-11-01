@@ -100,84 +100,37 @@ public class CompletedListings extends AppCompatActivity {
             db.collection("jobSeekers")
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                       @Override
-                       public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                           if (task.isSuccessful()) {
-                               Map<String, Object> allCompletedJobs = new HashMap<>();
-                               for (QueryDocumentSnapshot document : task.getResult()) {
-                                   String jobSeekerID = document.getId();
-                                   db.collection("jobSeekers").document(jobSeekerID).collection("completedJobs")
-                                           .whereEqualTo("employerID", userID)
-                                           .get()
-                                           .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                               @Override
-                                               public void onComplete(@NonNull Task<QuerySnapshot> completedTask) {
-                                                   if (completedTask.isSuccessful()) {
-                                                        for (QueryDocumentSnapshot completedDoc : completedTask.getResult()){
-                                                            Map<String, Object> jobData = completedDoc.getData();
-
-                                                        }
+                           @Override
+                           public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                               if (task.isSuccessful()) {
+                                   Map<String, Object> allCompletedJobs = new HashMap<>();
+                                   for (QueryDocumentSnapshot document : task.getResult()) {
+                                       String jobSeekerID = document.getId();
+                                       db.collection("jobSeekers").document(jobSeekerID).collection("completedJobs").document(jobId)
+                                               .get()
+                                               .addOnSuccessListener(documentSnapshot -> {
+                                                   if (documentSnapshot.exists()){
+                                                       Map<String, Object> jobData = documentSnapshot.getData();
+                                                       if (jobData.containsValue(userID)){
+                                                           db.collection("jobSeekers").document(jobSeekerID).collection("completedJobs").document(jobId)
+                                                                   .delete()
+                                                                   .addOnSuccessListener(deleteFile -> {
+                                                                       completedJobsList.remove(job);
+                                                                       completedJobsAdapter.notifyDataSetChanged();
+                                                                       Toast.makeText(CompletedListings.this, "Payment made", Toast.LENGTH_SHORT).show();
+                                                                   }).addOnFailureListener(e -> {
+                                                                       Toast.makeText(CompletedListings.this, "Failed", Toast.LENGTH_SHORT).show();
+                                                                   });
+                                                       }
                                                    }
-                                               }
-                                           });
+                                               });
+
+                                   }
+                               } else {
+                                   Log.d("Firestore error", "Error getting documents", task.getException());
                                }
-                           } else {
-                               Log.d("Firestore error", "errror geetting documents", task.getException());
                            }
-                       }
-
-
-
-
-            // Reference to the applied job document
-            DocumentReference appliedJobRef = db.collection("jobSeekers").document()
-                    .collection("appliedJobs").document(jobId);
-
-            // Reference to the completed job collection
-            CollectionReference completedJobsRef = db.collection("jobSeekers").document(userID)
-                    .collection("completedJobs");
-
-            // Fetch the job document, add it to completedJobs, and delete from appliedJobs
-            appliedJobRef.get().addOnSuccessListener(documentSnapshot -> {
-                if (documentSnapshot.exists()) {
-                    // Copy the document data and add completion fields
-                    Map<String, Object> jobData = documentSnapshot.getData();
-                    if (jobData != null) {
-                        jobData.put("status", "completed");
-                        jobData.put("paymentStatus", "awaiting payment");
-
-                        // Add the document to completedJobs
-                        completedJobsRef.document(jobId).set(jobData)
-                                .addOnSuccessListener(aVoid -> {
-                                    // Remove the job from appliedJobs after successful addition to completedJobs
-                                    appliedJobRef.delete().addOnSuccessListener(deleteVoid -> {
-                                        // Update the UI
-                                        completedJobsList.remove(job);
-                                        completedJobsAdapter.notifyDataSetChanged();
-                                        Toast.makeText(this, "Job marked as complete and moved to Completed Jobs.", Toast.LENGTH_SHORT).show();
-
-                                        // Check if appliedJobsList is empty, and if so, navigate back to JobListActivity
-                                        if (completedJobsList.isEmpty()) {
-                                            Toast.makeText(this, "All jobs completed. Returning to Job List.", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(this, Employer.class);
-                                            startActivity(intent);
-                                            finish(); // Close the current activity
-                                        }
-                                    }).addOnFailureListener(e -> {
-                                        Toast.makeText(this, "Failed to delete job from Applied Jobs.", Toast.LENGTH_SHORT).show();
-                                    });
-                                })
-                                .addOnFailureListener(e -> {
-                                    Toast.makeText(this, "Failed to add job to Completed Jobs.", Toast.LENGTH_SHORT).show();
-                                });
-                    }
-                }
-            }).addOnFailureListener(e -> {
-                Toast.makeText(this, "Failed to fetch job details.", Toast.LENGTH_SHORT).show();
-            });
-        } else {
-            Toast.makeText(this, "User not signed in.", Toast.LENGTH_SHORT).show();
-        }
+                       });
     }
 
     protected void getUserID(JobPosting.FirestoreCallBack callback){
