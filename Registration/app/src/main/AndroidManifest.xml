@@ -46,6 +46,14 @@
             android:name=".CompletedListings"
             android:exported="true"/>
 
+        <activity android:name=".JobListActivity"
+                  android:exported="true"/>
+
+        <activity android:name=".AppliedJobsActivity"
+                  android:exported="true"/>
+
+        <activity android:name=".FilteredJobListActivity"
+                  android:exported="true"/>
 
     </application>
 
