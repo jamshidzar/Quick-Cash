@@ -27,81 +27,57 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class notificationListActivity extends AppCompatActivity {
-    private TextView jobTitle;
-    private TextView company;
-    private Button apply;
-    protected List<Job> jobs;
-    protected  List<Job> preferredJobs;
-    protected notificationAdapter notifyAdapter;
-    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+
+    private RecyclerView notificationRecyclerView;
+    private notificationAdapter adapter;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notification_list);
-        init();
-        jobs = new ArrayList<>();
-        preferredJobs = new ArrayList<>();
-        notifyAdapter = new notificationAdapter(jobs, preferredJobs)
-        getJobPosting();
-        getPreferredJobs();
+
+        notificationRecyclerView = findViewById(R.id.notificationRecyclerView);
+        adapter = new notificationAdapter(getApplicationContext(), new ArrayList<>());
+        notificationRecyclerView.setAdapter(adapter);
+
+        fetchNotifications();
     }
-    private void init(){
-        jobTitle = findViewById(R.id.jobTitleNotification);
-        company = findViewById(R.id.companyNameNotification);
-        apply = findViewById(R.id.applyButtonNotification);
-    }
-    protected void getJobPosting() {
-        firestore.collection("job").get()
-        .addOnCompleteListener(task -> {
-            if (task.isSuccessful() && task.getResult() != null) {
-                jobs.clear();  // Clear the list to prevent duplicates
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    Job job = document.toObject(Job.class);
-                    job.setId(document.getId()); // Optionally set document ID in the Job object
-                    jobs.add(job); // Add the Job object to the list
-                }
-            } else {
-                Log.e("FirestoreError", "Error fetching jobs: " +
-                        (task.getException() != null ? task.getException().getMessage() : "Unknown error"));
-            }
-        });
-    }
-    protected void getPreferredJobs(){
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+    private void fetchNotifications() {
         if (currentUser != null) {
             String userId = currentUser.getUid();
-            firestore.collection("jobSeekers").document(userId)
-                    .collection("favourites")
-                    .get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> {
-                        preferredJobs.clear();
-                        for (DocumentSnapshot document : queryDocumentSnapshots) {
-                            Job job = document.toObject(Job.class);
-                            preferredJobs.add(job);
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(this, "Failed to load applied jobs.", Toast.LENGTH_SHORT).show();
-                    });
-        } else {
-            Toast.makeText(this, "User not signed in.", Toast.LENGTH_SHORT).show();
-        }
-    }
-    protected void notifyUser(List<Job> jobs,List<Job> preferredJobs){
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        for(int i = 0; i < jobs.size(); i++){
-            for(int j = 0; j < preferredJobs.size(); j++){
-                if(jobs.get(i).getJobName().equals(preferredJobs.get(j).getJobName())){
-                    //notify user
 
-                }
-                if(jobs.get(i).getSalary().equals(preferredJobs.get(j).getSalary())){
-                    //notify user
-                }
-                if(jobs.get(i).getDuration().equals(preferredJobs.get(j).getSalary())){
-                    //notify user
-                }
-            }
+            // Query for new and current jobs that the user has favorited
+            db.collection("favorites")
+                    .whereEqualTo("userId", userId)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            List<DocumentSnapshot> documents = task.getResult().getDocuments();
+                            List<Job> notifications = new ArrayList<>();
+
+                            for (DocumentSnapshot document : documents) {
+                                String jobId = document.getString("jobId");
+                                db.collection("jobs")
+                                        .document(jobId)
+                                        .get()
+                                        .addOnCompleteListener(jobTask -> {
+                                            if (jobTask.isSuccessful()) {
+                                                Job job = jobTask.getResult().toObject(Job.class);
+                                                /*if (job.getStatus().equals("new") || job.getStatus().equals("current")) {
+
+                                                }*/
+                                                notifications.add(job);
+                                                adapter.notifyDataSetChanged();
+                                            }
+                                        });
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "could not send notification", Toast.LENGTH_SHORT).show();
+                        }
+                    });
         }
     }
 }

@@ -29,20 +29,20 @@
 
 
     <TextView
-        android:id="@+id/companyNameNotification"
+        android:id="@+id/SalaryNotification"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Company Name"
+        android:text="Salary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/jobTitleNotification"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="8dp"/>
 
-    <Button
+    <!--<Button
         android:id="@+id/applyButtonNotification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Apply"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"/>-->
 </androidx.constraintlayout.widget.ConstraintLayout>

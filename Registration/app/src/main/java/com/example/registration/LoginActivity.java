@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+
     /**
      * This method is called when the activity is created.
      * It initializes Firestore and the UI elements (email, password fields, and buttons),
