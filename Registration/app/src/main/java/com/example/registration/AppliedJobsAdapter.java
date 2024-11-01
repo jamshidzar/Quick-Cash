@@ -1,5 +1,4 @@
 package com.example.registration;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,15 +25,24 @@ public class AppliedJobsAdapter extends RecyclerView.Adapter<AppliedJobsAdapter.
         return new AppliedJobViewHolder(view);
     }
 
+
+
     @Override
     public void onBindViewHolder(@NonNull AppliedJobViewHolder holder, int position) {
         Job job = appliedJobsList.get(position);
-        holder.jobTitle.setText(job.getJobTitle());
-        holder.companyName.setText(job.getCompany());
+
+        // Adding labels to each field for clarity
+        holder.jobTitle.setText("Job Title: " + job.getJobName());
+        holder.companyName.setText("CompanyID: " + job.getEmployerID()); // Assuming employerID represents company name
+        holder.location.setText("Location: " + job.getLocation());
+        holder.duration.setText("Duration: " + job.getDuration() + " hours");
+        holder.salary.setText("Salary: $" + job.getSalary());
+        holder.urgency.setText("Urgency: " + job.getUrgency());
 
         // Handle "Complete" button click
         holder.completeButton.setOnClickListener(v -> onCompleteJobListener.onCompleteJob(job));
     }
+
 
     @Override
     public int getItemCount() {
@@ -42,13 +50,17 @@ public class AppliedJobsAdapter extends RecyclerView.Adapter<AppliedJobsAdapter.
     }
 
     public static class AppliedJobViewHolder extends RecyclerView.ViewHolder {
-        TextView jobTitle, companyName;
+        TextView jobTitle, companyName, location, duration, salary, urgency;
         Button completeButton;
 
         public AppliedJobViewHolder(@NonNull View itemView) {
             super(itemView);
             jobTitle = itemView.findViewById(R.id.jobTitle);
             companyName = itemView.findViewById(R.id.companyName);
+            location = itemView.findViewById(R.id.location);
+            duration = itemView.findViewById(R.id.duration);
+            salary = itemView.findViewById(R.id.salary);
+            urgency = itemView.findViewById(R.id.urgency);
             completeButton = itemView.findViewById(R.id.completeButton);
         }
     }
@@ -58,4 +70,3 @@ public class AppliedJobsAdapter extends RecyclerView.Adapter<AppliedJobsAdapter.
         void onCompleteJob(Job job);
     }
 }
-
