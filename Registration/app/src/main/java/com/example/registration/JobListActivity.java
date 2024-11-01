@@ -61,9 +61,6 @@ public class JobListActivity extends AppCompatActivity implements JobAdapter.OnS
         });
     }
 
-
-
-
     @Override
     public void onApplyJob(Job job) {
         // Initialize Firestore and get the current user

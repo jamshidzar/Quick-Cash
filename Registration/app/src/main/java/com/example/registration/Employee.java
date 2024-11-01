@@ -27,6 +27,16 @@ public class Employee extends AppCompatActivity {
                 startActivityForResult(intent, APPLY_JOB_REQUEST); // Start JobListActivity for job listing
             }
         });
+        enableJobAlerts();
+        Button notifications = findViewById(R.id.notificationButton);
+        notifications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Employee.this, notificationListActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
     // Handle the result of job application (if you still need to pass data back to this page)
     @Override

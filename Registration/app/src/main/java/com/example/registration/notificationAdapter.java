@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 
-
+//link favorites and jobs
 public class notificationAdapter extends RecyclerView.Adapter<notificationAdapter.notificationViewHolder>{
     private List<Job> jobList;
     private List<Job> preferredJobsList;
@@ -32,8 +32,6 @@ public class notificationAdapter extends RecyclerView.Adapter<notificationAdapte
     @Override
     public void onBindViewHolder(@NonNull notificationViewHolder holder, int position) {
         Job job = jobList.get(position);
-        holder.jobTitle.setText(job.getJobTitle());
-        holder.companyName.setText(job.getCompany());
 
         // Handle "Apply" button click
         holder.applyButton.setOnClickListener(v -> onApplyJobListener.onApplyJob(job));
