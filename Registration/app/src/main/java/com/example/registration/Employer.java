@@ -70,7 +70,6 @@ public class Employer extends AppCompatActivity {
         jobPosting = findViewById(R.id.button2);
         jobPosting.setOnClickListener(v -> onJobPostClick());
         payEmployee = findViewById(R.id.payEmployeeBtn);
-        paymentStatusTV = findViewById(R.id.paymentStatus);
         paymentAmount = findViewById(R.id.payAmt);
         configPayPal();
         initActivityLauncher();
