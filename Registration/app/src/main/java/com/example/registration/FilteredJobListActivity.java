@@ -75,7 +75,7 @@ public class FilteredJobListActivity extends AppCompatActivity implements JobAda
     @Override
     public void onApplyJob(Job job) {
         // Initialize Firestore and get the current user
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db =   FirebaseFirestore.getInstance();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (currentUser != null) {
