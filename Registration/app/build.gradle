@@ -1,13 +1,81 @@
+////plugins {
+////    alias(libs.plugins.android.application)
+//////    id 'com.android.application'
+////    id 'com.google.gms.google-services'
+////    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
+////}
+//
+//plugins {
+//    alias(libs.plugins.android.application) apply false
+//    alias(libs.plugins.google.services) apply false
+//    alias(libs.plugins.secrets.gradle.plugin) apply false
+//}
+//
+//
+//android {
+//    namespace 'com.example.registration'
+//    compileSdk 34
+//
+//    defaultConfig {
+//        applicationId "com.example.registration"
+//        minSdk 30
+//        targetSdk 34
+//        versionCode 1
+//        versionName "1.0"
+//
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//    }
+//
+//    buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//        }
+//    }
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
+//}
+//
+//dependencies {
+//
+//
+//    implementation libs.appcompat
+//    implementation libs.material
+//    implementation libs.activity
+//    implementation libs.constraintlayout
+//    implementation libs.firebase.auth
+//    implementation libs.firebase.database
+//    implementation libs.junit.junit
+//    implementation libs.uiautomator
+//    implementation libs.recyclerview
+//    implementation libs.play.services.maps
+//    implementation libs.core
+//    implementation libs.ext.junit
+//    testImplementation 'junit:junit:4.13.2'
+//    testImplementation project(path: ':app')
+//    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+//    androidTestImplementation libs.espresso.core
+//    implementation(platform('com.google.firebase:firebase-bom:33.3.0'))
+//    implementation ('com.google.firebase:firebase-analytics')
+//    implementation ('com.google.firebase:firebase-firestore')
+//    androidTestImplementation 'androidx.test:core:1.4.0'
+//    androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.3.0'
+//    implementation 'com.google.maps.android:android-maps-utils:2.2.3'
+//}
 plugins {
     alias(libs.plugins.android.application)
-//    id 'com.android.application'
-    id 'com.google.gms.google-services'
-    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.secrets.gradle.plugin)
 }
 
 android {
     namespace 'com.example.registration'
     compileSdk 34
+    buildFeatures {
+        dataBinding true // Enable data binding
+    }
 
     defaultConfig {
         applicationId "com.example.registration"
@@ -29,9 +97,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    buildFeatures {
-        viewBinding true
-    }
 }
 
 dependencies {
@@ -41,19 +106,19 @@ dependencies {
     implementation libs.constraintlayout
     implementation libs.firebase.auth
     implementation libs.firebase.database
-    implementation libs.junit.junit
-    implementation libs.uiautomator
     implementation libs.play.services.maps
+    implementation libs.recyclerview
     implementation libs.core
-    implementation libs.ext.junit
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation project(path: ':app')
-    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    implementation libs.uiautomator
+
+    testImplementation libs.junit.junit
+    androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
-    implementation(platform('com.google.firebase:firebase-bom:33.3.0'))
-    implementation ('com.google.firebase:firebase-analytics')
-    implementation ('com.google.firebase:firebase-firestore')
+    androidTestImplementation libs.uiautomator
     androidTestImplementation 'androidx.test:core:1.4.0'
-    androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.3.0'
+    implementation 'com.google.android.gms:play-services-maps:19.0.0'
+    implementation platform('com.google.firebase:firebase-bom:33.3.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation libs.firebase.firestore
     implementation 'com.google.maps.android:android-maps-utils:2.2.3'
 }
