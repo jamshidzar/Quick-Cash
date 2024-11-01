@@ -1,5 +1,6 @@
 package com.example.registration;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -19,7 +20,7 @@ public class Employer extends AppCompatActivity {
     Intent welcome;
     Button jobPosting;
     String email;
-
+    Button back;
 // Code review by Jamshid Zar:
 // Overall, the onCreate method is well-implemented and handles Firestore queries effectively.
 // A few suggestions for improvement:
@@ -28,6 +29,7 @@ public class Employer extends AppCompatActivity {
 // - Avoid displaying sensitive information such as passwords and credit card details in a TextView for security reasons.
 // - Error handling is good, but ensure the message in the else block references the correct data (you're checking for an email, not a name, so update the error message accordingly).
 // - Good practice with logging and error handling for Firestore queries, but consider adding more robust error handling for user feedback.
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +39,8 @@ public class Employer extends AppCompatActivity {
         email = welcome.getStringExtra("Email");
         jobPosting = findViewById(R.id.button2);
         jobPosting.setOnClickListener(v -> onJobPostClick());
-
+        back = findViewById(R.id.back);
+        back.setOnClickListener(v -> goBackToHomePage());
         if (email != null && !email.isEmpty()) {
             db.collection("user").whereEqualTo("Email", email).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -74,6 +77,10 @@ public class Employer extends AppCompatActivity {
         Intent intent = new Intent(Employer.this, JobPosting.class);
         intent.putExtra("Email", email);
         startActivity(intent);
-//        jobPosting.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), JobPosting.class).putExtra("Email", email)));
+    }
+    protected void goBackToHomePage(){
+        Intent intent = new Intent(Employer.this, HomepageActivity.class);
+        intent.putExtra("Email", email);
+        startActivity(intent);
     }
 }

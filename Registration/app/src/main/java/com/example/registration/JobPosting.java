@@ -33,7 +33,6 @@ public class JobPosting extends AppCompatActivity {
     private EditText urgency;
     private EditText salary;
     private Button postButton;
-
     private FirebaseFirestore db;
 
     @Override

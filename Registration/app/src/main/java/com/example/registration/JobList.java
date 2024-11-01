@@ -1,9 +1,12 @@
 package com.example.registration;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,14 +32,15 @@ public class JobList extends AppCompatActivity {
     private List<String> jobList;
     private FirebaseFirestore db;
     Intent jobListView;
+    Button back;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_list);
         jobListView = getIntent();
         email = jobListView.getStringExtra("Email");
-
         listView = findViewById(R.id.list_view);
         jobList = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, jobList);
@@ -53,6 +57,16 @@ public class JobList extends AppCompatActivity {
                 Log.d("Firestore", "User not found.");
             }
         });
+        back = findViewById(R.id.buttonBack);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent back = new Intent(JobList.this , Employer.class);
+                back.putExtra("Email" , email);
+                startActivity(back);
+            }
+        });
+
 
 
     }
