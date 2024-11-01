@@ -66,9 +66,6 @@ public class JobList extends AppCompatActivity {
                 startActivity(back);
             }
         });
-
-
-
     }
 
     private void loadJobs() {

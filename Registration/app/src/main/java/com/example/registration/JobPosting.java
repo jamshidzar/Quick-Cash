@@ -3,6 +3,7 @@ package com.example.registration;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -26,7 +27,7 @@ import java.util.Map;
 public class JobPosting extends AppCompatActivity {
     private String email;
     private String userID;
-
+    private String errorMessage;
     private EditText jobName;
     private EditText location;
     private EditText duration;
@@ -106,30 +107,38 @@ public class JobPosting extends AppCompatActivity {
 
 
         if (jobNameText.isEmpty()) {
-            jobName.setError("Job name cannot be blank");
+            errorMessage = "Job name cannot be blank";
+            setStatusMessage(errorMessage); // Display error message
             return;
         }
 
-        if (locationText.isEmpty()) {
-            location.setError("Location cannot be blank");
+        else if (locationText.isEmpty()) {
+            errorMessage = "Location cannot be blank";
+            setStatusMessage(errorMessage); // Display error message
             return;
         }
 
-        if (durationText.isEmpty()) {
-            duration.setError("Duration cannot be blank");
+        else if (durationText.isEmpty()) {
+            errorMessage = "Duration cannot be blank";
+            setStatusMessage(errorMessage); // Display error message
             return;
         }
 
-        if (urgencyText.isEmpty()) {
-            urgency.setError("Urgency cannot be blank");
+        else if (urgencyText.isEmpty()) {
+            errorMessage = "Urgency cannot be blank";
+            setStatusMessage(errorMessage); // Display error message
             return;
         }
 
-        if (salaryText.isEmpty()) {
-            salary.setError("Salary cannot be blank");
+        else if (salaryText.isEmpty()) {
+            errorMessage = "Salary cannot be blank";
+            setStatusMessage(errorMessage); // Display error message
             return;
-        }
 
+        }else{
+            errorMessage = "Successful";
+            setStatusMessage(errorMessage);
+        }
 
         db.collection("job").add(job)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -147,4 +156,12 @@ public class JobPosting extends AppCompatActivity {
                     }
                 });
     }
+    private void setStatusMessage(String message) {
+        TextView errorMSG = findViewById(R.id.errorMessage); // Assuming errorMSG is your TextView ID
+        errorMSG.setVisibility(View.VISIBLE);
+        errorMSG.setText(message);
+    }
+
 }
+
+
