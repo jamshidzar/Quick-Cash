@@ -32,6 +32,7 @@ public class notificationListActivity extends AppCompatActivity {
     private Button apply;
     protected List<Job> jobs;
     protected  List<Job> preferredJobs;
+    protected notificationAdapter notifyAdapter;
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class notificationListActivity extends AppCompatActivity {
         init();
         jobs = new ArrayList<>();
         preferredJobs = new ArrayList<>();
+        notifyAdapter = new notificationAdapter(jobs, preferredJobs)
         getJobPosting();
         getPreferredJobs();
     }
@@ -85,12 +87,21 @@ public class notificationListActivity extends AppCompatActivity {
             Toast.makeText(this, "User not signed in.", Toast.LENGTH_SHORT).show();
         }
     }
-    /*protected void notifyUser(List<Job> jobs,List<Job> preferredJobs){
+    protected void notifyUser(List<Job> jobs,List<Job> preferredJobs){
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         for(int i = 0; i < jobs.size(); i++){
             for(int j = 0; j < preferredJobs.size(); j++){
-                if(jobs.get(i).getLocation().matches())
+                if(jobs.get(i).getJobName().equals(preferredJobs.get(j).getJobName())){
+                    //notify user
+
+                }
+                if(jobs.get(i).getSalary().equals(preferredJobs.get(j).getSalary())){
+                    //notify user
+                }
+                if(jobs.get(i).getDuration().equals(preferredJobs.get(j).getSalary())){
+                    //notify user
+                }
             }
         }
-    }*/
+    }
 }
