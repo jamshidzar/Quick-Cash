@@ -46,7 +46,7 @@ public class Employer extends AppCompatActivity {
     Button jobPosting;
     String email;
     Button payEmployee;
-    TextView paymentStatusTV;
+    Button completedListingsBtn;
     EditText paymentAmount;
 
     private ActivityResultLauncher<Intent> activityResultLauncher;
@@ -64,13 +64,19 @@ public class Employer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.empolyer);
+
         db = FirebaseFirestore.getInstance();
         welcome = getIntent();
         email = welcome.getStringExtra("Email");
+
         jobPosting = findViewById(R.id.button2);
-        jobPosting.setOnClickListener(v -> onJobPostClick());
         payEmployee = findViewById(R.id.payEmployeeBtn);
         paymentAmount = findViewById(R.id.payAmt);
+        completedListingsBtn = findViewById(R.id.completedListings);
+
+        jobPosting.setOnClickListener(v -> onJobPostClick());
+        completedListingsBtn.setOnClickListener(v-> goToCompletedListings());
+
         configPayPal();
         initActivityLauncher();
         setPaymentListener();
@@ -113,6 +119,12 @@ public class Employer extends AppCompatActivity {
         intent.putExtra("Email", email);
         startActivity(intent);
 //        jobPosting.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), JobPosting.class).putExtra("Email", email)));
+    }
+
+    protected void goToCompletedListings(){
+        Intent intent = new Intent(Employer.this, CompletedListings.class);
+        intent.putExtra("Email", email);
+        startActivity(intent);
     }
 
     private void configPayPal(){
