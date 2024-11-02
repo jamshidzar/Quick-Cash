@@ -48,6 +48,7 @@ public class Employer extends AppCompatActivity {
     Button payEmployee;
     Button completedListingsBtn;
     EditText paymentAmount;
+    String userID;
 
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private PayPalConfiguration payPalConfig;
@@ -112,6 +113,16 @@ public class Employer extends AppCompatActivity {
             TextView tv = findViewById(R.id.employerText);
             tv.setText("No name passed to the Employer activity.");
         }
+
+        getUserID(id -> {
+            if (id != null){
+                userID = id;
+                Log.d("JobPosting", "User ID retrieved: " + userID);
+            }
+            else{
+                Log.d("Firestore", "User not found.");
+            }
+        });
     }
 
     protected void onJobPostClick(){
@@ -124,6 +135,7 @@ public class Employer extends AppCompatActivity {
     protected void goToCompletedListings(){
         Intent intent = new Intent(Employer.this, CompletedListings.class);
         intent.putExtra("Email", email);
+        intent.putExtra("userID", userID);
         startActivity(intent);
     }
 
@@ -171,5 +183,29 @@ public class Employer extends AppCompatActivity {
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, payPalConfig);
         intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payPalPayment);
         activityResultLauncher.launch(intent);
+    }
+
+    protected void getUserID(JobPosting.FirestoreCallBack callback){
+
+        db.collection("user").whereEqualTo("Email", email).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                            QuerySnapshot querySnapshot = task.getResult();
+                            if (!querySnapshot.isEmpty()) {
+                                DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
+                                String userID = documentSnapshot.getId();
+                                callback.onCallBack(userID);
+                            } else {
+                                callback.onCallBack(null);
+                            }
+                        }
+                    }
+                });
+    }
+
+    public interface FirestoreCallBack{
+        void onCallBack(String userID);
     }
 }

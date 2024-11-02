@@ -33,7 +33,7 @@ public class JobList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_job_list);
+        setContentView(R.layout.employer_job_list);
         jobListView = getIntent();
         email = jobListView.getStringExtra("Email");
 

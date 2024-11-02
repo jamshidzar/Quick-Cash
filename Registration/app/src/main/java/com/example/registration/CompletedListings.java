@@ -19,6 +19,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -32,7 +33,7 @@ public class CompletedListings extends AppCompatActivity {
 
     private RecyclerView completedListingsRecyclerView;
     private CompletedJobsAdapter completedJobsAdapter;
-    private List<Job> completedJobsList;
+    private List<CompletedListing> completedJobsList;
 
     private String email;
     private String userID;
@@ -44,58 +45,46 @@ public class CompletedListings extends AppCompatActivity {
         setContentView(R.layout.completed_listings);
         Intent intent = getIntent();
         email = intent.getStringExtra("Email");
+        userID = intent.getStringExtra("userID");
+        db = FirebaseFirestore.getInstance();
 
-        getUserID(id -> {
-            if (id != null){
-                userID = id;
-                Log.d("JobPosting", "User ID retrieved: " + userID);
-            }
-            else{
-                Log.d("Firestore", "User not found.");
-            }
-        });
-
-        completedListingsRecyclerView = findViewById(R.id.completedListingRecyclerView);
-        completedListingsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        backBtn = findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(v -> goToEmployerPage());
 
         completedJobsList = new ArrayList<>();
-        loadCompletedJobs();
-
         completedJobsAdapter = new CompletedJobsAdapter(completedJobsList, this::onPayment);
+        completedListingsRecyclerView = findViewById(R.id.completedListingRecyclerView);
+        completedListingsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         completedListingsRecyclerView.setAdapter(completedJobsAdapter);
+
+        loadCompletedJobs();
     }
 
     private void loadCompletedJobs(){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        // Reference to the jobSeekers collection
 
-        if (currentUser != null) {
-            String userId = currentUser.getUid();
 
-            // Fetch applied jobs for the user from Firestore
-            db.collection("jobSeekers").document(userId)
-                    .collection("completed")
-                    .get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> {
-                        completedJobsList.clear();
-                        for (DocumentSnapshot document : queryDocumentSnapshots) {
-                            Job job = document.toObject(Job.class);
-                            completedJobsList.add(job);
-                        }
-                        completedJobsAdapter.notifyDataSetChanged();
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(this, "Failed to load completed jobs.", Toast.LENGTH_SHORT).show();
-                    });
-        } else {
-            Toast.makeText(this, "User not signed in.", Toast.LENGTH_SHORT).show();
-        }
+        db.collectionGroup("jobSeekers").get().addOnSuccessListener(queryDocumentSnapshots -> {
+            List<String> jobSeekersIDs = new ArrayList<>();
+            for (QueryDocumentSnapshot document : queryDocumentSnapshots){
+                jobSeekersIDs.add(document.getId());
+            }
+        }).addOnFailureListener(e -> {
+            Log.e("FireStore", "Error getting ids");
+        });
+//        jobSeekersRef.document("Eu8s8XbK4ZYVnsLUmmr5SOrr7w22").get()
+//                .addOnSuccessListener(documentSnapshot -> {
+//                    Log.d("Firestore", "Document exists: " + documentSnapshot.exists());
+//                })
+//                .addOnFailureListener(e -> {
+//                    Log.e("Firestore", "Error getting document", e);
+//                });
 
     }
 
-    private void onPayment(Job job){
+    private void onPayment(CompletedListing completedListing){
 
-            String jobId = job.getId();
+            String listingId = completedListing.getId();
 
             db.collection("jobSeekers")
                     .get()
@@ -106,16 +95,16 @@ public class CompletedListings extends AppCompatActivity {
                                    Map<String, Object> allCompletedJobs = new HashMap<>();
                                    for (QueryDocumentSnapshot document : task.getResult()) {
                                        String jobSeekerID = document.getId();
-                                       db.collection("jobSeekers").document(jobSeekerID).collection("completedJobs").document(jobId)
+                                       db.collection("jobSeekers").document(jobSeekerID).collection("completedJobs").document(listingId)
                                                .get()
                                                .addOnSuccessListener(documentSnapshot -> {
                                                    if (documentSnapshot.exists()){
                                                        Map<String, Object> jobData = documentSnapshot.getData();
                                                        if (jobData.containsValue(userID)){
-                                                           db.collection("jobSeekers").document(jobSeekerID).collection("completedJobs").document(jobId)
+                                                           db.collection("jobSeekers").document(jobSeekerID).collection("completedJobs").document(listingId)
                                                                    .delete()
                                                                    .addOnSuccessListener(deleteFile -> {
-                                                                       completedJobsList.remove(job);
+                                                                       completedJobsList.remove(completedListing);
                                                                        completedJobsAdapter.notifyDataSetChanged();
                                                                        Toast.makeText(CompletedListings.this, "Payment made", Toast.LENGTH_SHORT).show();
                                                                    }).addOnFailureListener(e -> {
@@ -133,26 +122,10 @@ public class CompletedListings extends AppCompatActivity {
                        });
     }
 
-    protected void getUserID(JobPosting.FirestoreCallBack callback){
-
-        db.collection("user").whereEqualTo("Email", email).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                            QuerySnapshot querySnapshot = task.getResult();
-                            if (!querySnapshot.isEmpty()) {
-                                DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
-                                String userID = documentSnapshot.getId();
-                                callback.onCallBack(userID);
-                            } else {
-                                callback.onCallBack(null);
-                            }
-                        }
-                    }
-                });
+    protected void goToEmployerPage(){
+        Intent intent = new Intent(CompletedListings.this, Employer.class);
+        intent.putExtra("Email", email);
+        startActivity(intent);
     }
-
-
 }
 
