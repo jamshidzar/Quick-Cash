@@ -1,5 +1,4 @@
 package com.example.registration;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -115,8 +114,7 @@ public class MainActivity extends AppCompatActivity {
                         validRegistration = false;
                         errorMessage = getResources().getString(R.string.INVALID_NAME).trim();
                     }
-                }
-                else{
+                } else {
                     validRegistration = false;
                     errorMessage = getResources().getString(R.string.EMPTY_NAME).trim();
                 }
@@ -126,8 +124,7 @@ public class MainActivity extends AppCompatActivity {
                         validRegistration = false;
                         errorMessage = getResources().getString(R.string.INVALID_EMAIL).trim();
                     }
-                }
-                else{
+                } else {
                     validRegistration = false;
                     errorMessage = getResources().getString(R.string.EMPTY_EMAIL).trim();
                 }
@@ -137,8 +134,7 @@ public class MainActivity extends AppCompatActivity {
                         validRegistration = false;
                         errorMessage = getResources().getString(R.string.INVALID_PASSWORD).trim();
                     }
-                }
-                else{
+                } else {
                     validRegistration = false;
                     errorMessage = getResources().getString(R.string.EMPTY_PASSWORD).trim();
                 }
@@ -148,8 +144,7 @@ public class MainActivity extends AppCompatActivity {
                         validRegistration = false;
                         errorMessage = getResources().getString(R.string.INVALID_CREDIT_CARD).trim();
                     }
-                }
-                else{
+                } else {
                     validRegistration = false;
                     errorMessage = getResources().getString(R.string.EMPTY_CREDITCARD).trim();
                 }
@@ -188,10 +183,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-
-
-
 
 
 // Code review by Jamshid Zar:
