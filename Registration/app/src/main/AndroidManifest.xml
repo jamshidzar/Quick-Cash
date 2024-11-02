@@ -42,9 +42,10 @@
         <activity android:name=".AppliedJobsActivity"
                   android:exported="true"/>
 
+        <activity android:name=".JobFilter"
+                  android:exported="true"/>
         <activity android:name=".FilteredJobListActivity"
                   android:exported="true"/>
-
     </application>
 
 </manifest>

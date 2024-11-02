@@ -80,7 +80,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
             duration = itemView.findViewById(R.id.duration);
             salary = itemView.findViewById(R.id.salary);
             urgency = itemView.findViewById(R.id.urgency);
-            applyButton = itemView.findViewById(R.id.applyButton);
+            applyButton = itemView.findViewById(R.id.searchButton);
             saveToFavoritesButton = itemView.findViewById(R.id.saveToFavoritesButton); // New button for "Save to Favorites"
         }
     }

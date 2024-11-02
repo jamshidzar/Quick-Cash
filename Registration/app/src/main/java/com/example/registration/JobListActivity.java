@@ -39,27 +39,60 @@ public class JobListActivity extends AppCompatActivity implements JobAdapter.OnS
         availableJobsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         availableJobsRecyclerView.setAdapter(jobAdapter);
 
-        // Load jobs from Firestore
-        loadJobsFromFirestore();
-    }
+        // Retrieve search criteria from Intent
+        Intent intent = getIntent();
+        String jobName = intent.getStringExtra("jobName");
+        String location = intent.getStringExtra("location");
 
-    private void loadJobsFromFirestore() {
-        CollectionReference jobsRef = firestore.collection("job");
+        // Load jobs from Firestore with the search criteria
+        loadJobsFromFirestore(jobName, location);
 
-        jobsRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful() && task.getResult() != null) {
-                availableJobsList.clear();
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    Job job = document.toObject(Job.class);
-                    job.setId(document.getId()); // Set the document ID
-                    availableJobsList.add(job);
-                }
-                jobAdapter.notifyDataSetChanged();
-            } else {
-                Log.e("FirestoreError", "Error fetching jobs: " + (task.getException() != null ? task.getException().getMessage() : "Unknown error"));
-            }
+        findViewById(R.id.button3).setOnClickListener(v -> {
+            Intent searchIntent = new Intent(JobListActivity.this, JobFilter.class);
+            startActivity(searchIntent);
         });
     }
+
+    private void loadJobsFromFirestore(String jobName, String location) {
+        CollectionReference jobsRef = firestore.collection("job");
+
+        // Apply filters only if jobName and location are not null
+        if (jobName != null && location != null) {
+            jobsRef.whereEqualTo("jobName", jobName)
+                    .whereEqualTo("location", location)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            availableJobsList.clear();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Job job = document.toObject(Job.class);
+                                job.setId(document.getId());
+                                availableJobsList.add(job);
+                            }
+                            jobAdapter.notifyDataSetChanged();
+                        } else {
+                            Log.e("FirestoreError", "Error fetching jobs: " + (task.getException() != null ? task.getException().getMessage() : "Unknown error"));
+                        }
+                    });
+        } else {
+            // If no filters, load all jobs
+            jobsRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful() && task.getResult() != null) {
+                    availableJobsList.clear();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Job job = document.toObject(Job.class);
+                        job.setId(document.getId());
+                        availableJobsList.add(job);
+                    }
+                    jobAdapter.notifyDataSetChanged();
+                } else {
+                    Log.e("FirestoreError", "Error fetching jobs: " + (task.getException() != null ? task.getException().getMessage() : "Unknown error"));
+                }
+            });
+        }
+    }
+
+
 
 
 
