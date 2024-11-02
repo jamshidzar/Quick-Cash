@@ -1,5 +1,4 @@
 package com.example.registration;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,9 +10,9 @@ import android.widget.Button;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
 
-
-
+import java.util.jar.Attributes;
 
 public class HomepageActivity extends AppCompatActivity {
     Intent welcome;
