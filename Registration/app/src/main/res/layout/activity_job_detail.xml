@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- Job Name -->
+        <TextView
+            android:id="@+id/job_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Job Title"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/job_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"/>
+
+        <!-- Employer ID -->
+        <TextView
+            android:id="@+id/employer_id_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Employer ID"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/employer_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"/>
+
+        <!-- Location -->
+        <TextView
+            android:id="@+id/location_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Location"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"/>
+
+        <!-- Duration -->
+        <TextView
+            android:id="@+id/duration_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Duration"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"/>
+
+        <!-- Salary -->
+        <TextView
+            android:id="@+id/salary_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Salary"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/salary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"/>
+
+        <!-- Urgency -->
+        <TextView
+            android:id="@+id/urgency_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Urgency"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/urgency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"/>
+
+    </LinearLayout>
+</ScrollView>

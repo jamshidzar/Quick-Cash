@@ -1,4 +1,5 @@
 package com.example.registration;
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
 //        holder.saveToFavoritesButton.setOnClickListener(v -> onSaveToFavoritesListener.onSaveToFavorites(job));
 //    }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull JobViewHolder holder, int position) {
         Job job = jobList.get(position);
@@ -54,7 +56,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
         holder.duration.setText("Duration: " + job.getDuration() + " hours");
         holder.salary.setText("Salary: $" + job.getSalary());
         holder.urgency.setText("Urgency: " + job.getUrgency());
-
+        holder.postalCode.setText("Postal Code: "+ job.getPostalCode());
         // Apply button click
         holder.applyButton.setOnClickListener(v -> onApplyJobListener.onApplyJob(job));
 
@@ -69,7 +71,8 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
     }
 
     public static class JobViewHolder extends RecyclerView.ViewHolder {
-        TextView jobTitle, companyName, location, duration, salary, urgency;
+
+        TextView jobTitle, companyName, location, duration, salary, urgency, postalCode;;
         Button applyButton, saveToFavoritesButton;
 
         public JobViewHolder(@NonNull View itemView) {
@@ -80,6 +83,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
             duration = itemView.findViewById(R.id.duration);
             salary = itemView.findViewById(R.id.salary);
             urgency = itemView.findViewById(R.id.urgency);
+            postalCode = itemView.findViewById(R.id.postalCode);
             applyButton = itemView.findViewById(R.id.applyButton);
             saveToFavoritesButton = itemView.findViewById(R.id.saveToFavoritesButton); // New button for "Save to Favorites"
         }

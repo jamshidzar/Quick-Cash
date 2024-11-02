@@ -1,6 +1,8 @@
 package com.example.registration;
 
-public class Job {
+import java.io.Serializable;
+
+public class Job implements Serializable {
     private String id;           // Firestore document ID
     private String jobName;      // Job title
     private String employerID;   // Employer ID
@@ -8,18 +10,22 @@ public class Job {
     private String duration;     // Job duration
     private String salary;       // Job salary
     private String urgency;      // Job urgency
+    private String postalCode;
 
     // Default constructor (required for Firestore)
     public Job() {}
 
     // Constructor with parameters (without ID)
-    public Job(String jobName, String employerID, String location, String duration, String salary, String urgency) {
+    public Job(String jobName, String employerID, String location, String duration, String salary, String urgency,String postalCode) {
         this.jobName = jobName;
         this.employerID = employerID;
         this.location = location;
+
         this.duration = duration;
         this.salary = salary;
         this.urgency = urgency;
+
+        this.postalCode = postalCode;
     }
 
     // Getters and Setters for each field, including ID
@@ -43,4 +49,9 @@ public class Job {
 
     public String getUrgency() { return urgency; }
     public void setUrgency(String urgency) { this.urgency = urgency; }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+    public void setPostalCode(String postalCode) { this.postalCode = postalCode; }
 }

@@ -2,6 +2,7 @@ package com.example.registration;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +42,10 @@ public class JobListActivity extends AppCompatActivity implements JobAdapter.OnS
 
         // Load jobs from Firestore
         loadJobsFromFirestore();
+
+        //
+        Button viewMapButton = findViewById(R.id.ViewMap);
+        viewMapButton.setOnClickListener(v -> openMapView(availableJobsList));
     }
 
     private void loadJobsFromFirestore() {
@@ -90,10 +95,11 @@ public class JobListActivity extends AppCompatActivity implements JobAdapter.OnS
         } else {
             Toast.makeText(JobListActivity.this, "User not signed in.", Toast.LENGTH_SHORT).show();
         }
+
+        Intent intent = new Intent(JobListActivity.this, MapViewActivity.class);
+        intent.putExtra("jobs", (ArrayList<Job>) availableJobsList); // Cast to ArrayList
+        startActivity(intent);
     }
-
-
-
 
 
     @Override
@@ -131,6 +137,9 @@ public class JobListActivity extends AppCompatActivity implements JobAdapter.OnS
                     Toast.makeText(this, "Failed to add job to favorites: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
-
-
+    private void openMapView(List<Job> jobs) {
+        Intent intent = new Intent(this, MapViewActivity.class);
+        intent.putExtra("jobs", (ArrayList<Job>) jobs);
+        startActivity(intent);
+    }
 }
