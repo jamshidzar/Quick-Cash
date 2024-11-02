@@ -26,7 +26,6 @@ public class AppliedJobsAdapter extends RecyclerView.Adapter<AppliedJobsAdapter.
     }
 
 
-
     @Override
     public void onBindViewHolder(@NonNull AppliedJobViewHolder holder, int position) {
         Job job = appliedJobsList.get(position);
@@ -42,7 +41,6 @@ public class AppliedJobsAdapter extends RecyclerView.Adapter<AppliedJobsAdapter.
         // Handle "Complete" button click
         holder.completeButton.setOnClickListener(v -> onCompleteJobListener.onCompleteJob(job));
     }
-
 
     @Override
     public int getItemCount() {

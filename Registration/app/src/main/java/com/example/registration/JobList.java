@@ -36,7 +36,7 @@ public class JobList extends AppCompatActivity {
         setContentView(R.layout.activity_job_list);
         jobListView = getIntent();
         email = jobListView.getStringExtra("Email");
-        listView = findViewById(R.id.list_view);
+        listView = findViewById(R.id.availableJobsRecyclerView);
         jobList = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, jobList);
         listView.setAdapter(adapter);

@@ -161,12 +161,13 @@ public class MainActivity extends AppCompatActivity {
                 if (validRegistration) {
                     setErrorMessage(errorMessage);
                     errMSG.setVisibility(View.INVISIBLE);
-
+                    boolean enableNotification = false;
                     Map<String, Object> user = new HashMap<>();
                     user.put("Name", Name);
                     user.put("Email", Email);
                     user.put("Password", Password);
                     user.put("Credit Card", CreditCard);
+                    user.put("enable notification", enableNotification);
 
                     db.collection("user").add(user)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

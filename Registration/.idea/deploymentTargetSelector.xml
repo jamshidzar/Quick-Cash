@@ -12,8 +12,6 @@
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
       <SelectionState runConfigName="MainActivity">
-      <SelectionState runConfigName="checkIfMoveToEmployee()">
-      <SelectionState runConfigName="Employee">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
       <SelectionState runConfigName="LoginActivity">

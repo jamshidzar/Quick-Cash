@@ -69,7 +69,6 @@ public class JobListActivity extends AppCompatActivity implements JobAdapter.OnS
 
         if (currentUser != null) {
             String userId = currentUser.getUid();
-
             // Reference to the user's applied jobs collection
             db.collection("jobSeekers").document(userId)
                     .collection("appliedJobs").document(job.getId()) // Use job ID as the document ID
