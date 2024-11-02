@@ -50,6 +50,17 @@
         <activity
             android:name=".Employer"
             android:exported="true" />
+            android:exported="true"/>
+        <activity
+            android:name=".JobPosting"
+            android:exported="true"/>
+        <activity
+            android:name=".JobList"
+            android:exported="true" />
+        <activity
+            android:name=".CompletedListings"
+            android:exported="true"/>
+
         <activity android:name=".JobListActivity"
                   android:exported="true"/>
         <activity android:name=".notificationListActivity"

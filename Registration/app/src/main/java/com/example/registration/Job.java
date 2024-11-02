@@ -44,3 +44,4 @@ public class Job {
     public String getUrgency() { return urgency; }
     public void setUrgency(String urgency) { this.urgency = urgency; }
 }
+

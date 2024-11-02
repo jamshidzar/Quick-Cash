@@ -5,12 +5,12 @@
     <string name="EMPTY_EMAIL">Email cannot be empty</string>
     <string name="EMPTY_PASSWORD">Password cannot be empty</string>
     <string name="EMPTY_CREDITCARD">Credit Card cannot be empty</string>
-    <string name="INVALID_NAME">Invalid Name</string>
-    <string name="INVALID_EMAIL">Invalid Email</string>
-    <string name="INVALID_PASSWORD">Invalid Password</string>
-    <string name="INVALID_CREDIT_CARD">Invalid Credit Card</string>
-    <string name="EMPTY_STRING"></string>
-    <string name="MISSING_INFO">Missing Information</string>
-    <string name="title_activity_maps">MapsActivity</string>
+    <string name = "INVALID_NAME">Invalid Name</string>
+    <string name = "INVALID_EMAIL">Invalid Email</string>
+    <string name = "INVALID_PASSWORD">Invalid Password</string>
+    <string name = "INVALID_CREDIT_CARD">Invalid Credit Card</string>
+    <string name = "EMPTY_STRING"></string>
+    <string name = "MISSING_INFO">Missing Information</string>
+    <string name="PAYPAL_ID">AWZWefGeSuO9Zik1irK7Sdxtd3izskOJKkhDF70aGmodAz76oWK_UI3jOaqTal-MdgHlZgnfwhoXihDb</string>
 
 </resources>

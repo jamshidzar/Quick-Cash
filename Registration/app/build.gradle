@@ -34,8 +34,6 @@ android {
     }
 }
 
-
-
 dependencies {
 
 
@@ -47,7 +45,6 @@ dependencies {
     implementation libs.firebase.database
     implementation libs.junit.junit
     implementation libs.uiautomator
-    implementation libs.play.services.maps
     implementation libs.recyclerview
     testImplementation 'junit:junit:4.13.2'
     testImplementation project(path: ':app')
@@ -66,4 +63,5 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:21.3.0'
     implementation 'com.google.maps.android:android-maps-utils:0.4'
 
+    implementation 'com.paypal.sdk:paypal-android-sdk:2.16.0'
 }
