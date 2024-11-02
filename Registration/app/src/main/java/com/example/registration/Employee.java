@@ -15,10 +15,17 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.Collection;
 
 public class Employee extends AppCompatActivity {
     private Button jobApplyingButton;
@@ -45,7 +52,7 @@ public class Employee extends AppCompatActivity {
             finish();
             return;
         }
-
+        enableJobAlerts();
         // Initialize "Job Listing" button and set it to start JobListActivity
         jobApplyingButton = findViewById(R.id.jobApplyingButton);
         jobApplyingButton.setOnClickListener(new View.OnClickListener() {
@@ -88,28 +95,34 @@ public class Employee extends AppCompatActivity {
     }
     // Method to update "Enable Notifications" to true
     public void updateNotificationPreference() {
-        // Reference to the specific user document by userId
-        firestore = FirebaseFirestore.getInstance();
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            final String userId = currentUser.getUid();
+        SharedPreferences sh = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        String userId = sh.getString("userId", "");
             Log.d("UserId", "User ID: " + userId);
-            DocumentReference userDocRef = firestore.collection("user").document(userId);
-            // Update the "Enable Notifications" field to true
-            userDocRef.update("enable notification", true)
-                    .addOnSuccessListener(aVoid -> {
-                        // Successfully updated document
-                        Log.d("FirestoreHelper", "Notification preference updated successfully for userId: " + userId);
-                    })
-                    .addOnFailureListener(e -> {
-                        // Handle any errors
-                        Log.e("FirestoreHelper", "Error updating notification preference for userId: " + userId, e);
-                    });
-        } else {
-            // Handle user not logged in (e.g., redirect to login screen)
-            Log.d("UserId", "No user is currently signed in.");
-        }
-
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("user")  // Replace with your collection name
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // Get document reference
+                                if(document.getId().equals(userId)){
+                                    DocumentReference userRef = document.getReference();
+                                    Log.d("UserRef", "User Document Reference: " + userRef.getPath());
+                                    // Do something with userRef
+                                    userRef.update("isNotificationEnabled", true);
+                                    break;
+                                }
+                                else{
+                                    Log.d("UserRef", "No matching document ID found for userId: " + userId);
+                                }
+                            }
+                        } else {
+                            Log.d("UserRef", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 }
 

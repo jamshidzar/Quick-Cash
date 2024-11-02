@@ -8,17 +8,20 @@
       <SelectionState runConfigName="notificationList">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="Employee">
+      <SelectionState runConfigName="Employee"/>
       <SelectionState runConfigName="AppliedJobsActivity">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="JobListActivity">
+      <SelectionState runConfigName="JobListActivity"/>
+      <option name="selectionMode" value="DROPDOWN" />
       <SelectionState runConfigName="MainActivity">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="MainActivity">
+      <SelectionState runConfigName="MainActivity"/>
+        <option name="selectionMode" value="DROPDOWN" />
       <SelectionState runConfigName="LoginActivity">
         <option name="selectionMode" value="DROPDOWN" />
+
       </SelectionState>
       <SelectionState runConfigName="NotificationListActivity">
         <option name="selectionMode" value="DROPDOWN" />

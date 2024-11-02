@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
                     user.put("Email", Email);
                     user.put("Password", Password);
                     user.put("Credit Card", CreditCard);
-                    user.put("enable notification", enableNotification);
+                    user.put("isNotificationEnabled", enableNotification);
 
                     db.collection("user").add(user)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
