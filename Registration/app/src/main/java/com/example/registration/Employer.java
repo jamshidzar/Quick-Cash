@@ -114,6 +114,7 @@ public class Employer extends AppCompatActivity {
     protected void onJobPostClick(){
         Intent intent = new Intent(Employer.this, JobPosting.class);
         intent.putExtra("Email", email);
+        intent.putExtra("userID", userID);
         startActivity(intent);
     }
 

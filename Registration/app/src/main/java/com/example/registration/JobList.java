@@ -36,6 +36,7 @@ public class JobList extends AppCompatActivity {
         setContentView(R.layout.employer_job_list);
         jobListView = getIntent();
         email = jobListView.getStringExtra("Email");
+        userID = jobListView.getStringExtra("userID");
 
         listView = findViewById(R.id.list_view);
         jobList = new ArrayList<>();
@@ -43,16 +44,7 @@ public class JobList extends AppCompatActivity {
         listView.setAdapter(adapter);
         db = FirebaseFirestore.getInstance();
 
-        getUserID(id -> {
-            if (id != null){
-                userID = id;
-                Log.d("JobList", "User ID retrieved: " + userID);
-                loadJobs();
-            }
-            else{
-                Log.d("Firestore", "User not found.");
-            }
-        });
+        loadJobs();
 
 
     }
@@ -87,27 +79,5 @@ public class JobList extends AppCompatActivity {
         } else {
             Toast.makeText(JobList.this, "Not found", Toast.LENGTH_SHORT).show();
         }
-    }
-    protected void getUserID(JobPosting.FirestoreCallBack callback){
-
-        db.collection("user").whereEqualTo("Email", email).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                            QuerySnapshot querySnapshot = task.getResult();
-                            if (!querySnapshot.isEmpty()) {
-                                DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
-                                String userID = documentSnapshot.getId();
-                                callback.onCallBack(userID);
-                            } else {
-                                callback.onCallBack(null);
-                            }
-                        }
-                    }
-                });
-    }
-    public interface FirestoreCallBack{
-        void onCallBack(String userID);
     }
 }

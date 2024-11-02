@@ -33,6 +33,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * This class is used such that employers can view all of the listings their employees have
+ * completed. Additionally, it allows the employers to directly pay their employees for each listing
+ * using PayPal.
+ */
 public class CompletedListingsActivity extends AppCompatActivity {
     private FirebaseFirestore db;
 
@@ -47,6 +52,15 @@ public class CompletedListingsActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private PayPalConfiguration payPalConfig;
 
+    /**
+     * This method is called when the activity is created. It initializes the database and all UI
+     * elements, as well as the PayPal integration.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -72,6 +86,10 @@ public class CompletedListingsActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This method loads all of the completed jobs associated with the employer currently logged in,
+     * making them visible on the page.
+     */
     private void loadCompletedJobs(){
         db.collection("completedJobs").whereEqualTo("employerID", userID).get()
                 .addOnSuccessListener(querySnapshot -> {
@@ -99,6 +117,13 @@ public class CompletedListingsActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This method is called when an Employer wants to pay on employee for their completed
+     * listing. It extracts the total amount needed to be paid from the listing then
+     * initiates the PayPal activity.
+     *
+     * @param completedListing this is the completed listing that the employer will be paying for
+     */
     private void onPayment(CompletedListing completedListing){
 
         String listingId = completedListing.getId();
@@ -124,18 +149,28 @@ public class CompletedListingsActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     *
+     */
     protected void goToEmployerPage(){
         Intent intent = new Intent(CompletedListingsActivity.this, Employer.class);
         intent.putExtra("Email", email);
         startActivity(intent);
     }
 
+    /**
+     * Configures the PayPal. I.e. we are defining that we are using the SANDBOX environment
+     * and then setting the PayPal client ID
+     */
     private void configPayPal(){
         payPalConfig = new PayPalConfiguration()
                 .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
                 .clientId(getResources().getString(R.string.PAYPAL_ID).trim());
     }
 
+    /**
+     * Creating the activity launcher for PayPal
+     */
     private void initActivityLauncher(){
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK){
