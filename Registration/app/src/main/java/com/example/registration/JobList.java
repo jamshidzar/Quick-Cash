@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,7 +37,7 @@ public class JobList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_job_list);
+        setContentView(R.layout.employer_job_list);
         jobListView = getIntent();
         email = jobListView.getStringExtra("Email");
         listView = findViewById(R.id.list_view);
@@ -78,12 +77,12 @@ public class JobList extends AppCompatActivity {
                                 for (DocumentSnapshot document : task.getResult()) {
                                     String jobName = document.getString("jobName");
                                     String location = document.getString("location");
-                                    String postalCode = document.getString("PostalCode");
+                                    String postalCode = document.getString("postalCode");
                                     String duration = document.getString("duration");
                                     String urgency = document.getString("urgency");
                                     String salary = document.getString("salary");
 
-                                    String jobDetails = "Job: " + jobName + "\nLocation: " + location + "\nLocation: " +  "\nPostal Code:  " + postalCode
+                                    String jobDetails = "Job: " + jobName + "\nLocation: " + location +  "\nPostal Code:  " + postalCode
                                             + "\nDuration: " + duration + "\nUrgency: " + urgency
                                             + "\nSalary: " + salary;
 

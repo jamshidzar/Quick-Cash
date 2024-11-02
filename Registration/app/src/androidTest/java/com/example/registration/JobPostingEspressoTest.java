@@ -80,7 +80,6 @@ public class JobPostingEspressoTest {
         onView(withId(R.id.duration)).perform(typeText("6"), closeSoftKeyboard());
         onView(withId(R.id.postButton)).perform(click());
         onView(withId(R.id.errorMessage)).check(matches(withText("Postal Code cannot be blank")));
-
     }
 
 

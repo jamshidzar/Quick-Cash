@@ -104,7 +104,7 @@ public class JobPosting extends AppCompatActivity {
         Map<String, Object> job = new HashMap<>();
         job.put("jobName", jobNameText);
         job.put("location", locationText);
-        job.put("PostalCode", postalCodeText);
+        job.put("postalCode", postalCodeText);
         job.put("duration", durationText);
         job.put("urgency", urgencyText);
         job.put("salary", salaryText);
