@@ -51,6 +51,14 @@
         android:textSize="14sp" />
     <!-- Save to Favorites Button -->
 
+    <TextView
+        android:id="@+id/postalCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PostalCode"
+        android:padding="4dp"/>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,7 +66,7 @@
         android:orientation="vertical"> <!-- Align buttons to the right -->
 
         <Button
-            android:id="@+id/searchButton"
+            android:id="@+id/applyButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Apply" />
