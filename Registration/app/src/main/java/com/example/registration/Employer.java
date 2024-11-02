@@ -51,6 +51,7 @@ public class Employer extends AppCompatActivity {
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private PayPalConfiguration payPalConfig;
 
+    Button back;
 // Code review by Jamshid Zar:
 // Overall, the onCreate method is well-implemented and handles Firestore queries effectively.
 // A few suggestions for improvement:
@@ -77,6 +78,9 @@ public class Employer extends AppCompatActivity {
         jobPosting.setOnClickListener(v -> onJobPostClick());
         completedListingsBtn.setOnClickListener(v-> goToCompletedListings());
 
+
+        back = findViewById(R.id.back);
+        back.setOnClickListener(v -> goBackToHomePage());
 
         if (email != null && !email.isEmpty()) {
             db.collection("user").whereEqualTo("Email", email).get()
@@ -122,6 +126,11 @@ public class Employer extends AppCompatActivity {
         Intent intent = new Intent(Employer.this, CompletedListingsActivity.class);
         intent.putExtra("Email", email);
         intent.putExtra("userID", userID);
+        startActivity(intent);
+    }
+    protected void goBackToHomePage(){
+        Intent intent = new Intent(Employer.this, HomepageActivity.class);
+        intent.putExtra("Email", email);
         startActivity(intent);
     }
 

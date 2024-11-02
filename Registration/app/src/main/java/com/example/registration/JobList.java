@@ -3,9 +3,10 @@ package com.example.registration;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,7 @@ public class JobList extends AppCompatActivity {
     private List<String> jobList;
     private FirebaseFirestore db;
     Intent jobListView;
+    Button back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,15 @@ public class JobList extends AppCompatActivity {
 
         loadJobs();
 
-
+        back = findViewById(R.id.buttonBack);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent back = new Intent(JobList.this , Employer.class);
+                back.putExtra("Email" , email);
+                startActivity(back);
+            }
+        });
     }
 
     private void loadJobs() {
@@ -59,11 +69,12 @@ public class JobList extends AppCompatActivity {
                                 for (DocumentSnapshot document : task.getResult()) {
                                     String jobName = document.getString("jobName");
                                     String location = document.getString("location");
+                                    String postalCode = document.getString("postalCode");
                                     String duration = document.getString("duration");
                                     String urgency = document.getString("urgency");
                                     String salary = document.getString("salary");
 
-                                    String jobDetails = "Job: " + jobName + "\nLocation: " + location
+                                    String jobDetails = "Job: " + jobName + "\nLocation: " + location +  "\nPostal Code:  " + postalCode
                                             + "\nDuration: " + duration + "\nUrgency: " + urgency
                                             + "\nSalary: " + salary;
 

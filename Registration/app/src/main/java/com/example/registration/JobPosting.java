@@ -3,6 +3,7 @@ package com.example.registration;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -29,14 +30,14 @@ import java.util.Map;
 public class JobPosting extends AppCompatActivity {
     private String email;
     private String userID;
-
+    private String errorMessage;
     private EditText jobName;
     private EditText location;
+    private EditText postalCode;
     private EditText duration;
     private EditText urgency;
     private EditText salary;
     private Button postButton;
-
     private FirebaseFirestore db;
 
     /**
@@ -60,6 +61,7 @@ public class JobPosting extends AppCompatActivity {
 
         jobName = findViewById(R.id.jobName);
         location = findViewById(R.id.location);
+        postalCode = findViewById(R.id.postalCode);
         duration = findViewById(R.id.duration);
         urgency = findViewById(R.id.urgency);
         salary = findViewById(R.id.salary);
@@ -74,9 +76,10 @@ public class JobPosting extends AppCompatActivity {
      * to their listings.
      */
     protected void postJob(){
-        // Get text input fields
+
         String jobNameText = jobName.getText().toString();
         String locationText = location.getText().toString();
+        String postalCodeText = postalCode.getText().toString();
         String durationText = duration.getText().toString();
         String urgencyText = urgency.getText().toString();
         String salaryText = salary.getText().toString();
@@ -84,6 +87,7 @@ public class JobPosting extends AppCompatActivity {
         Map<String, Object> job = new HashMap<>();
         job.put("jobName", jobNameText);
         job.put("location", locationText);
+        job.put("postalCode", postalCodeText);
         job.put("duration", durationText);
         job.put("urgency", urgencyText);
         job.put("salary", salaryText);
@@ -91,30 +95,39 @@ public class JobPosting extends AppCompatActivity {
 
 
         if (jobNameText.isEmpty()) {
-            jobName.setError("Job name cannot be blank");
+            errorMessage = "Job name cannot be blank";
+            setStatusMessage(errorMessage);
             return;
         }
 
-        if (locationText.isEmpty()) {
-            location.setError("Location cannot be blank");
+        else if (locationText.isEmpty()) {
+            errorMessage = "Location cannot be blank";
+            setStatusMessage(errorMessage);
             return;
         }
-
-        if (durationText.isEmpty()) {
-            duration.setError("Duration cannot be blank");
+        else if(postalCodeText.isEmpty()){
+            errorMessage = "Postal Code cannot be blank";
+            setStatusMessage(errorMessage);
             return;
         }
-
-        if (urgencyText.isEmpty()) {
-            urgency.setError("Urgency cannot be blank");
+        else if (durationText.isEmpty()) {
+            errorMessage = "Duration cannot be blank";
+            setStatusMessage(errorMessage); // Display error message
             return;
         }
-
-        if (salaryText.isEmpty()) {
-            salary.setError("Salary cannot be blank");
+        else if (urgencyText.isEmpty()) {
+            errorMessage = "Urgency cannot be blank";
+            setStatusMessage(errorMessage); // Display error message
             return;
         }
-
+        else if (salaryText.isEmpty()) {
+            errorMessage = "Salary cannot be blank";
+            setStatusMessage(errorMessage); // Display error message
+            return;
+        }else{
+            errorMessage = "Successful";
+            setStatusMessage(errorMessage);
+        }
 
         db.collection("job").add(job)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -133,4 +146,12 @@ public class JobPosting extends AppCompatActivity {
                     }
                 });
     }
+    private void setStatusMessage(String message) {
+        TextView errorMSG = findViewById(R.id.errorMessage);
+        errorMSG.setVisibility(View.VISIBLE);
+        errorMSG.setText(message);
+    }
+
 }
+
+

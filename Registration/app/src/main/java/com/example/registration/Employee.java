@@ -60,5 +60,9 @@ public class Employee extends AppCompatActivity {
             intent.putExtra("userId", userId); // Pass userId to AppliedJobsActivity
             startActivity(intent);
         }
+
     }
+
 }
+
+
