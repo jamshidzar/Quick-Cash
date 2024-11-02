@@ -43,7 +43,7 @@
             android:name=".JobList"
             android:exported="true" />
         <activity
-            android:name=".CompletedListings"
+            android:name=".CompletedListingsActivity"
             android:exported="true"/>
 
         <activity android:name=".JobListActivity"
