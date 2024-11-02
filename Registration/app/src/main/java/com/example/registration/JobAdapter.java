@@ -6,6 +6,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.text.BreakIterator;
 import java.util.List;
 
 public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
@@ -26,22 +28,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
         return new JobViewHolder(view);
     }
 
-//    @Override
-//    public void onBindViewHolder(@NonNull JobViewHolder holder, int position) {
-//        Job job = jobList.get(position);
-//        holder.jobTitle.setText(job.getJobName());
-//        holder.companyName.setText(job.getEmployerID());
-//        holder.location.setText(job.getLocation());
-//        holder.duration.setText(job.getDuration());
-//        holder.salary.setText(job.getSalary());
-//        holder.urgency.setText(job.getUrgency());
-//
-//        // Apply button click
-//        holder.applyButton.setOnClickListener(v -> onApplyJobListener.onApplyJob(job));
-//
-//        // Save to Favorites button click
-//        holder.saveToFavoritesButton.setOnClickListener(v -> onSaveToFavoritesListener.onSaveToFavorites(job));
-//    }
+
 
     @Override
     public void onBindViewHolder(@NonNull JobViewHolder holder, int position) {
@@ -54,6 +41,7 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
         holder.duration.setText("Duration: " + job.getDuration() + " hours");
         holder.salary.setText("Salary: $" + job.getSalary());
         holder.urgency.setText("Urgency: " + job.getUrgency());
+        holder.postalCode.setText("Postal Code: " + job.getPostalCode()); // Bind postal code
 
         // Apply button click
         holder.applyButton.setOnClickListener(v -> onApplyJobListener.onApplyJob(job));
@@ -63,13 +51,14 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
     }
 
 
+
     @Override
     public int getItemCount() {
         return jobList.size();
     }
 
     public static class JobViewHolder extends RecyclerView.ViewHolder {
-        TextView jobTitle, companyName, location, duration, salary, urgency;
+        TextView jobTitle, companyName, location, duration, salary, urgency, postalCode;
         Button applyButton, saveToFavoritesButton;
 
         public JobViewHolder(@NonNull View itemView) {
@@ -80,10 +69,12 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
             duration = itemView.findViewById(R.id.duration);
             salary = itemView.findViewById(R.id.salary);
             urgency = itemView.findViewById(R.id.urgency);
+            postalCode = itemView.findViewById(R.id.postalCode); // Add postal code TextView reference
             applyButton = itemView.findViewById(R.id.applyButton);
-            saveToFavoritesButton = itemView.findViewById(R.id.saveToFavoritesButton); // New button for "Save to Favorites"
+            saveToFavoritesButton = itemView.findViewById(R.id.saveToFavoritesButton);
         }
     }
+
 
     // Interface for "Apply" button click
     public interface OnApplyJobListener {

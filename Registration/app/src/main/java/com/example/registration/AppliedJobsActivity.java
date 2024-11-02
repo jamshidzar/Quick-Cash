@@ -2,6 +2,7 @@ package com.example.registration;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -18,75 +20,76 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
 public class AppliedJobsActivity extends AppCompatActivity {
     private RecyclerView appliedJobsRecyclerView;
     private AppliedJobsAdapter appliedJobsAdapter;
     private List<Job> appliedJobsList;
+    private String userId; // To store the userId for database operations
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_applied_jobs);
+
+        // Get userId passed from the previous activity (e.g., login or main activity)
+        userId = getIntent().getStringExtra("userId");
+        if (userId == null) {
+            Toast.makeText(this, "User ID not found. Returning to login.", Toast.LENGTH_SHORT).show();
+            finish(); // Close this activity if userId is missing
+            return;
+        }
 
         appliedJobsRecyclerView = findViewById(R.id.appliedJobsRecyclerView);
         appliedJobsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         appliedJobsList = new ArrayList<>();
-        appliedJobsAdapter = new AppliedJobsAdapter(appliedJobsList, this::onCompleteJob);
+        appliedJobsAdapter = new AppliedJobsAdapter(appliedJobsList, job -> onCompleteJob(job));
         appliedJobsRecyclerView.setAdapter(appliedJobsAdapter);
 
-
-        loadAppliedJobs();
+        loadAppliedJobs(userId);
 
         // Back to Job Listing Button
         Button backToJobListingButton = findViewById(R.id.backToJobListingButton);
         backToJobListingButton.setOnClickListener(v -> {
             // Navigate back to JobListActivity
             Intent intent = new Intent(AppliedJobsActivity.this, JobListActivity.class);
+            intent.putExtra("userId", userId); // Pass userId back if needed
             startActivity(intent);
-            finish(); // Close AppliedJobsActivity if you want to remove it from the stack
+            finish(); // Close AppliedJobsActivity
         });
-
-
     }
 
 
 
-    private void loadAppliedJobs() {
+
+    private void loadAppliedJobs(String userId) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        db.collection("appliedJobs").whereEqualTo("userId", userId).get()
+                .addOnSuccessListener(querySnapshot -> {
+                    appliedJobsList.clear();
+                    for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                        Job job = new Job();
 
-        if (currentUser != null) {
-            String userId = currentUser.getUid();
+                        job.setId(document.getString("jobId"));
+                        job.setJobName(document.getString("jobName"));
+                        job.setEmployerID(document.getString("employerID"));
+                        job.setLocation(document.getString("location"));
+                        job.setDuration(document.getString("duration"));
+                        job.setSalary(document.getString("salary"));
+                        job.setUrgency(document.getString("urgency"));
+                        job.setPostalCode(document.getString("postalCode"));
 
-            // Fetch applied jobs for the user from Firestore
-            db.collection("jobSeekers").document(userId)
-                    .collection("appliedJobs")
-                    .get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> {
-                        appliedJobsList.clear();
-                        for (DocumentSnapshot document : queryDocumentSnapshots) {
-                            Job job = document.toObject(Job.class);
-                            appliedJobsList.add(job);
-                        }
-                        appliedJobsAdapter.notifyDataSetChanged();
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(this, "Failed to load applied jobs.", Toast.LENGTH_SHORT).show();
-                    });
-        } else {
-            Toast.makeText(this, "User not signed in.", Toast.LENGTH_SHORT).show();
-        }
+                        appliedJobsList.add(job);
+                    }
+                    appliedJobsAdapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to load applied jobs.", Toast.LENGTH_SHORT).show();
+                });
     }
-
-
-
-
 
 
 
@@ -94,64 +97,50 @@ public class AppliedJobsActivity extends AppCompatActivity {
 
     private void onCompleteJob(Job job) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        String jobId = job.getId();
 
-        if (currentUser != null) {
-            String userId = currentUser.getUid();
-            String jobId = job.getId();
+        // Retrieve the applied job directly from the appliedJobs collection
+        db.collection("appliedJobs")
+                .whereEqualTo("jobId", jobId)
+                .whereEqualTo("userId", userId) // Ensure the applied job is specific to the user
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (!querySnapshot.isEmpty()) {
+                        DocumentSnapshot appliedJobDoc = querySnapshot.getDocuments().get(0);
+                        Map<String, Object> completedJobData = appliedJobDoc.getData();
 
-            // Reference to the applied job document
-            DocumentReference appliedJobRef = db.collection("jobSeekers").document(userId)
-                    .collection("appliedJobs").document(jobId);
+                        if (completedJobData != null) {
+                            // Update the status and add a completion date
+                            completedJobData.put("status", "Completed");
+                            completedJobData.put("completionDate", new Timestamp(new Date()));
 
-            // Reference to the completed job collection
-            CollectionReference completedJobsRef = db.collection("jobSeekers").document(userId)
-                    .collection("completedJobs");
-
-            // Fetch the job document, add it to completedJobs, and delete from appliedJobs
-            appliedJobRef.get().addOnSuccessListener(documentSnapshot -> {
-                if (documentSnapshot.exists()) {
-                    // Copy the document data and add completion fields
-                    Map<String, Object> jobData = documentSnapshot.getData();
-                    if (jobData != null) {
-                        jobData.put("status", "completed");
-                        jobData.put("paymentStatus", "awaiting payment");
-
-                        // Add the document to completedJobs
-                        completedJobsRef.document(jobId).set(jobData)
-                                .addOnSuccessListener(aVoid -> {
-                                    // Remove the job from appliedJobs after successful addition to completedJobs
-                                    appliedJobRef.delete().addOnSuccessListener(deleteVoid -> {
-                                        // Update the UI
-                                        appliedJobsList.remove(job);
-                                        appliedJobsAdapter.notifyDataSetChanged();
-                                        Toast.makeText(this, "Job marked as complete and moved to Completed Jobs.", Toast.LENGTH_SHORT).show();
-
-                                        // Check if appliedJobsList is empty, and if so, navigate back to JobListActivity
-                                        if (appliedJobsList.isEmpty()) {
-                                            Toast.makeText(this, "All jobs completed. Returning to Job List.", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(this, JobListActivity.class);
-                                            startActivity(intent);
-                                            finish(); // Close the current activity
-                                        }
-                                    }).addOnFailureListener(e -> {
-                                        Toast.makeText(this, "Failed to delete job from Applied Jobs.", Toast.LENGTH_SHORT).show();
+                            // Add to completedJobs collection
+                            db.collection("completedJobs").add(completedJobData)
+                                    .addOnSuccessListener(aVoid -> {
+                                        // After successfully adding to completedJobs, delete from appliedJobs
+                                        appliedJobDoc.getReference().delete()
+                                                .addOnSuccessListener(deleteVoid -> {
+                                                    // Update the UI by removing the job from the list
+                                                    appliedJobsList.remove(job);
+                                                    appliedJobsAdapter.notifyDataSetChanged();
+                                                    Toast.makeText(this, "Job marked as complete and moved to Completed Jobs.", Toast.LENGTH_SHORT).show();
+                                                })
+                                                .addOnFailureListener(e -> {
+                                                    Toast.makeText(this, "Failed to delete job from Applied Jobs.", Toast.LENGTH_SHORT).show();
+                                                });
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(this, "Failed to add job to Completed Jobs.", Toast.LENGTH_SHORT).show();
                                     });
-                                })
-                                .addOnFailureListener(e -> {
-                                    Toast.makeText(this, "Failed to add job to Completed Jobs.", Toast.LENGTH_SHORT).show();
-                                });
+                        }
+                    } else {
+                        Toast.makeText(this, "No matching job found in appliedJobs.", Toast.LENGTH_SHORT).show();
                     }
-                }
-            }).addOnFailureListener(e -> {
-                Toast.makeText(this, "Failed to fetch job details.", Toast.LENGTH_SHORT).show();
-            });
-        } else {
-            Toast.makeText(this, "User not signed in.", Toast.LENGTH_SHORT).show();
-        }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to retrieve job for completion.", Toast.LENGTH_SHORT).show();
+                });
     }
 
 
-
 }
-
