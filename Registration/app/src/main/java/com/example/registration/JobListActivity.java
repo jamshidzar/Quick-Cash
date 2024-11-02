@@ -55,6 +55,11 @@ public class JobListActivity extends AppCompatActivity implements JobAdapter.OnS
 
         // Load jobs from Firestore
         loadJobsFromFirestore();
+
+        findViewById(R.id.button3).setOnClickListener(v -> {
+            Intent searchIntent = new Intent(JobListActivity.this, JobFilter.class);
+            startActivity(searchIntent);
+        });
     }
 
     private void loadJobsFromFirestore() {
@@ -82,8 +87,6 @@ public class JobListActivity extends AppCompatActivity implements JobAdapter.OnS
             }
         });
     }
-
-
 
 
     @Override
@@ -121,9 +124,6 @@ public class JobListActivity extends AppCompatActivity implements JobAdapter.OnS
                     Toast.makeText(this, "Failed to apply for job.", Toast.LENGTH_SHORT).show();
                 });
     }
-
-
-
 
 
     @Override

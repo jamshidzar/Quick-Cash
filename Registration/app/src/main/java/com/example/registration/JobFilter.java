@@ -1,5 +1,6 @@
 package com.example.registration;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,41 +27,16 @@ public class JobFilter extends AppCompatActivity {
         setContentView(R.layout.activity_job_filter);
 
         db = FirebaseFirestore.getInstance();
-        Intent intent = getIntent();
-        email = intent.getStringExtra("Email");
+        SharedPreferences sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        userID = sharedPref.getString("userId", null);
+        email = sharedPref.getString("Email", null);
 
         jobName = findViewById(R.id.jobName);
         location = findViewById(R.id.location);
         searchButton = findViewById(R.id.applyButton);
 
-        getUserID(id -> {
-            if (id != null){
-                userID = id;
-            }
-        });
         searchButton.setOnClickListener(v -> filterJobs());
     }
-
-    protected void getUserID(JobFilter.FirestoreCallBack callback) {
-        db.collection("user").whereEqualTo("Email", email).get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                        QuerySnapshot querySnapshot = task.getResult();
-                        if (!querySnapshot.isEmpty()) {
-                            DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
-                            String userID = documentSnapshot.getId();
-                            callback.onCallBack(userID);
-                        } else {
-                            callback.onCallBack(null);
-                        }
-                    }
-                });
-    }
-
-    public interface FirestoreCallBack {
-        void onCallBack(String userID);
-    }
-
 
     protected void filterJobs() {
         String jobNameText = jobName.getText().toString();
@@ -77,7 +53,7 @@ public class JobFilter extends AppCompatActivity {
         }
 
 
-        Intent intent = new Intent(JobFilter.this, JobListActivity.class);
+        Intent intent = new Intent(JobFilter.this, FilteredJobListActivity.class);
         intent.putExtra("jobName", jobNameText);
         intent.putExtra("location", locationText);
         startActivity(intent);
