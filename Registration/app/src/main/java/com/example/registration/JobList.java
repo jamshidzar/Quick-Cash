@@ -3,9 +3,10 @@ package com.example.registration;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,31 +30,33 @@ public class JobList extends AppCompatActivity {
     private List<String> jobList;
     private FirebaseFirestore db;
     Intent jobListView;
+    Button back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_job_list);
+        setContentView(R.layout.employer_job_list);
         jobListView = getIntent();
         email = jobListView.getStringExtra("Email");
-        listView = findViewById(R.id.availableJobsRecyclerView);
+        userID = jobListView.getStringExtra("userID");
+
+        listView = findViewById(R.id.list_view);
         jobList = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, jobList);
         listView.setAdapter(adapter);
         db = FirebaseFirestore.getInstance();
 
-        getUserID(id -> {
-            if (id != null){
-                userID = id;
-                Log.d("JobList", "User ID retrieved: " + userID);
-                loadJobs();
-            }
-            else{
-                Log.d("Firestore", "User not found.");
+        loadJobs();
+
+        back = findViewById(R.id.buttonBack);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent back = new Intent(JobList.this , Employer.class);
+                back.putExtra("Email" , email);
+                startActivity(back);
             }
         });
-
-
     }
 
     private void loadJobs() {
@@ -66,11 +69,12 @@ public class JobList extends AppCompatActivity {
                                 for (DocumentSnapshot document : task.getResult()) {
                                     String jobName = document.getString("jobName");
                                     String location = document.getString("location");
+                                    String postalCode = document.getString("postalCode");
                                     String duration = document.getString("duration");
                                     String urgency = document.getString("urgency");
                                     String salary = document.getString("salary");
 
-                                    String jobDetails = "Job: " + jobName + "\nLocation: " + location
+                                    String jobDetails = "Job: " + jobName + "\nLocation: " + location +  "\nPostal Code:  " + postalCode
                                             + "\nDuration: " + duration + "\nUrgency: " + urgency
                                             + "\nSalary: " + salary;
 
@@ -86,27 +90,5 @@ public class JobList extends AppCompatActivity {
         } else {
             Toast.makeText(JobList.this, "Not found", Toast.LENGTH_SHORT).show();
         }
-    }
-    protected void getUserID(JobPosting.FirestoreCallBack callback){
-
-        db.collection("user").whereEqualTo("Email", email).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                            QuerySnapshot querySnapshot = task.getResult();
-                            if (!querySnapshot.isEmpty()) {
-                                DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
-                                String userID = documentSnapshot.getId();
-                                callback.onCallBack(userID);
-                            } else {
-                                callback.onCallBack(null);
-                            }
-                        }
-                    }
-                });
-    }
-    public interface FirestoreCallBack{
-        void onCallBack(String userID);
     }
 }

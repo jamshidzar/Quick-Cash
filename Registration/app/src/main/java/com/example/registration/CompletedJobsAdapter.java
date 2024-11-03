@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class CompletedJobsAdapter extends RecyclerView.Adapter<CompletedJobsAdapter.AppliedJobViewHolder> {
-    private List<Job> appliedJobsList;
-    private OnCompleteJobListener onCompleteJobListener;
+    private List<CompletedListing> appliedJobsList;
+    private OnPaymentListener onPaymentListener;
 
     // Constructor
-    public CompletedJobsAdapter(List<Job> appliedJobsList, OnCompleteJobListener listener) {
+    public CompletedJobsAdapter(List<CompletedListing> appliedJobsList, OnPaymentListener listener) {
         this.appliedJobsList = appliedJobsList;
-        this.onCompleteJobListener = listener;
+        this.onPaymentListener = listener;
     }
 
     @NonNull
@@ -29,18 +29,18 @@ public class CompletedJobsAdapter extends RecyclerView.Adapter<CompletedJobsAdap
 
     @Override
     public void onBindViewHolder(@NonNull AppliedJobViewHolder holder, int position) {
-        Job job = appliedJobsList.get(position);
+        CompletedListing completedListing = appliedJobsList.get(position);
 
         // Adding labels to each field for clarity
-        holder.jobTitle.setText("Job Title: " + job.getJobName());
-        holder.companyName.setText("CompanyID: " + job.getEmployerID()); // Assuming employerID represents company name
-        holder.location.setText("Location: " + job.getLocation());
-        holder.duration.setText("Duration: " + job.getDuration() + " hours");
-        holder.salary.setText("Salary: $" + job.getSalary());
-        holder.urgency.setText("Urgency: " + job.getUrgency());
+        holder.jobTitle.setText("Job Title: " + completedListing.getJobName());
+        holder.companyName.setText("CompanyID: " + completedListing.getEmployerID()); // Assuming employerID represents company name
+        holder.location.setText("Location: " + completedListing.getLocation());
+        holder.duration.setText("Duration: " + completedListing.getDuration() + " hours");
+        holder.salary.setText("Salary: $" + completedListing.getSalary());
+        holder.urgency.setText("Urgency: " + completedListing.getUrgency());
 
         // Handle "Complete" button click
-        holder.payEmployee.setOnClickListener(v -> onCompleteJobListener.onCompleteJob(job));
+        holder.payEmployee.setOnClickListener(v -> onPaymentListener.onPayment(completedListing));
     }
 
 
@@ -66,7 +66,7 @@ public class CompletedJobsAdapter extends RecyclerView.Adapter<CompletedJobsAdap
     }
 
     // Listener interface for handling "Complete" button clicks
-    public interface OnCompleteJobListener {
-        void onCompleteJob(Job job);
+    public interface OnPaymentListener {
+        void onPayment(CompletedListing completedListing);
     }
 }

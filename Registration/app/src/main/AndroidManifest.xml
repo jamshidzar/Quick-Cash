@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <!-- permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+<!--    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"-->
+<!--        tools:ignore="CoarseFineLocation" />-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
+        tools:ignore="CoarseFineLocation" />
 
     <application
         android:allowBackup="true"
@@ -23,16 +27,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyANFSYBzM3DEF3TjirgTjAaEg6BOC41-S8" />
 
-        <!-- MainActivity Declaration -->
-        <activity
-            android:name=".CurrentLocation"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
+        <!-- MainActivity Declaration -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -42,7 +38,7 @@
             </intent-filter>
         </activity>
 
-        <!-- Additional Activity Declarations -->
+        <!-- HomepageActivity Declaration -->
         <activity
             android:name=".LoginActivity"
             android:exported="true" />
@@ -54,27 +50,37 @@
             android:exported="true" />
         <activity
             android:name=".Employer"
-            android:exported="true" />
+            android:exported="true"/>
         <activity
             android:name=".JobPosting"
             android:exported="true"/>
-        <activity
-            android:name=".JobList"
-            android:exported="true" />
-        <activity
-            android:name=".CompletedListings"
-            android:exported="true"/>
-
+        <activity android:name=".JobList"
+            android:exported="true"
+            />
         <activity android:name=".JobListActivity"
                   android:exported="true"/>
         <activity android:name=".notificationListActivity"
             android:exported="true"/>
 
+        <activity
+            android:name=".CompletedListingsActivity"
+            android:exported="true"/>
+
         <activity android:name=".AppliedJobsActivity"
                   android:exported="true"/>
+        <activity
+            android:name=".CurrentLocation"
+            android:exported="true"/>
 
+        <activity android:name=".JobFilter"
+                  android:exported="true"/>
         <activity android:name=".FilteredJobListActivity"
                   android:exported="true"/>
+
+        <activity android:name=".MapViewActivity"
+            android:exported="true"/>
+        <activity android:name=".JobDetailActivity"
+            android:exported="true"/>
 
     </application>
 

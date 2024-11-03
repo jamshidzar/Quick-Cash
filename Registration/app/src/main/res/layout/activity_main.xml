@@ -12,7 +12,7 @@
         android:id="@+id/NameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="175dp"
+        android:layout_marginTop="500dp"
         android:ems="10"
         android:hint="Full Name"
         android:inputType="text"
@@ -22,7 +22,7 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.265" />
 
     <EditText
         android:id="@+id/PasswordText"
@@ -76,6 +76,8 @@
         android:id="@+id/RegisterButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="470dp"
         android:text="Register"
         android:textColorLink="#3F51B5"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -151,6 +151,7 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("userId", userId);
+                        editor.putString("Email", email);
                         editor.apply();
 
                         // Navigate to HomepageActivity

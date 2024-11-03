@@ -3,6 +3,7 @@ package com.example.registration;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,19 +24,31 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class handles the ability for employers to post jobs and stores them in the FireBase database.
+ */
 public class JobPosting extends AppCompatActivity {
     private String email;
     private String userID;
-
+    private String errorMessage;
     private EditText jobName;
     private EditText location;
+    private EditText postalCode;
     private EditText duration;
     private EditText urgency;
     private EditText salary;
     private Button postButton;
-
     private FirebaseFirestore db;
 
+    /**
+     * This method is called when the activity is created. It initializes the database and all UI
+     * elements.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -44,55 +57,29 @@ public class JobPosting extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         Intent intent = getIntent();
         email = intent.getStringExtra("Email");
+        userID = intent.getStringExtra("userID");
 
         jobName = findViewById(R.id.jobName);
         location = findViewById(R.id.location);
+        postalCode = findViewById(R.id.postalCode);
         duration = findViewById(R.id.duration);
         urgency = findViewById(R.id.urgency);
         salary = findViewById(R.id.salary);
         postButton = findViewById(R.id.postButton);
 
-        getUserID(id -> {
-            if (id != null){
-                userID = id;
-                Log.d("JobPosting", "User ID retrieved: " + userID);
-            }
-            else{
-                Log.d("Firestore", "User not found.");
-            }
-        });
-
         postButton.setOnClickListener(v -> postJob());
     }
 
-    protected void getUserID(FirestoreCallBack callback){
-
-        db.collection("user").whereEqualTo("Email", email).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                            QuerySnapshot querySnapshot = task.getResult();
-                            if (!querySnapshot.isEmpty()) {
-                                DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
-                                String userID = documentSnapshot.getId();
-                                callback.onCallBack(userID);
-                            } else {
-                                callback.onCallBack(null);
-                            }
-                        }
-                    }
-                });
-    }
-
-    public interface FirestoreCallBack{
-        void onCallBack(String userID);
-    }
-
+    /**
+     * This method takes all of the user input for a given job and, when the user clicks on the
+     * button to post a job, it stores all of the details in the database, then takes the user
+     * to their listings.
+     */
     protected void postJob(){
-        // Get text input fields
+
         String jobNameText = jobName.getText().toString();
         String locationText = location.getText().toString();
+        String postalCodeText = postalCode.getText().toString();
         String durationText = duration.getText().toString();
         String urgencyText = urgency.getText().toString();
         String salaryText = salary.getText().toString();
@@ -100,6 +87,7 @@ public class JobPosting extends AppCompatActivity {
         Map<String, Object> job = new HashMap<>();
         job.put("jobName", jobNameText);
         job.put("location", locationText);
+        job.put("postalCode", postalCodeText);
         job.put("duration", durationText);
         job.put("urgency", urgencyText);
         job.put("salary", salaryText);
@@ -107,30 +95,39 @@ public class JobPosting extends AppCompatActivity {
 
 
         if (jobNameText.isEmpty()) {
-            jobName.setError("Job name cannot be blank");
+            errorMessage = "Job name cannot be blank";
+            setStatusMessage(errorMessage);
             return;
         }
 
-        if (locationText.isEmpty()) {
-            location.setError("Location cannot be blank");
+        else if (locationText.isEmpty()) {
+            errorMessage = "Location cannot be blank";
+            setStatusMessage(errorMessage);
             return;
         }
-
-        if (durationText.isEmpty()) {
-            duration.setError("Duration cannot be blank");
+        else if(postalCodeText.isEmpty()){
+            errorMessage = "Postal Code cannot be blank";
+            setStatusMessage(errorMessage);
             return;
         }
-
-        if (urgencyText.isEmpty()) {
-            urgency.setError("Urgency cannot be blank");
+        else if (durationText.isEmpty()) {
+            errorMessage = "Duration cannot be blank";
+            setStatusMessage(errorMessage); // Display error message
             return;
         }
-
-        if (salaryText.isEmpty()) {
-            salary.setError("Salary cannot be blank");
+        else if (urgencyText.isEmpty()) {
+            errorMessage = "Urgency cannot be blank";
+            setStatusMessage(errorMessage); // Display error message
             return;
         }
-
+        else if (salaryText.isEmpty()) {
+            errorMessage = "Salary cannot be blank";
+            setStatusMessage(errorMessage); // Display error message
+            return;
+        }else{
+            errorMessage = "Successful";
+            setStatusMessage(errorMessage);
+        }
 
         db.collection("job").add(job)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -139,6 +136,7 @@ public class JobPosting extends AppCompatActivity {
                         Toast.makeText(JobPosting.this, "Job Posting Successful", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(JobPosting.this, JobList.class);
                         intent.putExtra("Email", email);
+                        intent.putExtra("userID", userID);
                         startActivity(intent);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -148,4 +146,12 @@ public class JobPosting extends AppCompatActivity {
                     }
                 });
     }
+    private void setStatusMessage(String message) {
+        TextView errorMSG = findViewById(R.id.errorMessage);
+        errorMSG.setVisibility(View.VISIBLE);
+        errorMSG.setText(message);
+    }
+
 }
+
+
