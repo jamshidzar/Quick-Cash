@@ -28,42 +28,44 @@ public class preferredJobsUIAutomator {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
         Context context = ApplicationProvider.getApplicationContext();
         Intent launcherIntent = new Intent();
-        launcherIntent.setClassName(launcherPackageName, "com.example.registration.HompageActivity");
+        launcherIntent.setClassName(launcherPackageName, "com.example.registration.LoginActivity");
         launcherIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(launcherIntent);
         device.wait(Until.hasObject(By.pkg(launcherPackageName).depth(0)), LAUNCH_TIMEOUT);
     }
-    @Test
-    public void checkIfPreferenceIsVisible(){
-        UiObject preference = device.findObject(new UiSelector().text("job preference list"));
-        assertTrue(preference.exists());
-    }
-    @Test
-    public void checkIfMovedToPrefrenceList() throws UiObjectNotFoundException {
-        UiObject preferenceButton = device.findObject(new UiSelector().text("job preference list"));
-        preferenceButton.clickAndWaitForNewWindow();
-        UiObject preferenceList = device.findObject(new UiSelector().text("List of preferred jobs"));
-        assertTrue(preferenceButton.exists());
-    }
-    @Test
-    public void testEnableAlert() throws UiObjectNotFoundException {
-        UiObject employeeButton = device.findObject(new UiSelector().text("employee"));
-        employeeButton.clickAndWaitForNewWindow();
 
-        UiObject enableAlertSwitch = device.findObject(new UiSelector().resourceId("com.example.registration:id/alert_switch"));
-        if (!enableAlertSwitch.isChecked()) {
-            enableAlertSwitch.click();
-        }
-        assertTrue("Job alert is not enabled", enableAlertSwitch.isChecked());
+    @Test
+    public void checkIfMovedToNotificationList() throws UiObjectNotFoundException {
+        UiObject email = device.findObject(new UiSelector().text("Email"));
+        email.setText("tanishika@gmail.com");
+        UiObject password = device.findObject(new UiSelector().text("Password"));
+        password.setText("quickCash@123");
+        UiObject loginButton = device.findObject(new UiSelector().text("Login"));
+        loginButton.clickAndWaitForNewWindow();
+        UiObject dashboard = device.findObject(new UiSelector().textContains("quickCash"));
+        assertTrue(dashboard.exists());
+        UiObject employeeButton = device.findObject(new UiSelector().textContains("employee"));
+        employeeButton.clickAndWaitForNewWindow();
+        UiObject notificationsButton = device.findObject(new UiSelector().textContains("Notifications"));
+        notificationsButton.clickAndWaitForNewWindow();
+        UiObject notificationView = device.findObject(new UiSelector().textContains("Job Notifications"));
+        assertTrue(notificationView.exists());
     }
     @Test
-    public void testReceiveJobAlert() throws UiObjectNotFoundException {
-        device.openNotification();
-        device.wait(Until.hasObject(By.textContains("New job alert")), 5000);
-        UiObject jobAlertNotification = device.findObject(new UiSelector().textContains("New job alert"));
-        assertTrue("Job alert notification is not received", jobAlertNotification.exists());
-        jobAlertNotification.clickAndWaitForNewWindow();
-        UiObject jobDetailScreen = device.findObject(new UiSelector().textContains("Job Details"));
-        assertTrue("Failed to navigate to job details", jobDetailScreen.exists());
+    public void checkIfNotMovedToNotificationList() throws UiObjectNotFoundException {
+        UiObject email = device.findObject(new UiSelector().text("Email"));
+        email.setText("blueskye@gmail.com");
+        UiObject password = device.findObject(new UiSelector().text("Password"));
+        password.setText("quickCash@123");
+        UiObject loginButton = device.findObject(new UiSelector().text("Login"));
+        loginButton.clickAndWaitForNewWindow();
+        UiObject dashboard = device.findObject(new UiSelector().textContains("quickCash"));
+        assertTrue(dashboard.exists());
+        UiObject employeeButton = device.findObject(new UiSelector().textContains("employee"));
+        employeeButton.clickAndWaitForNewWindow();
+        UiObject notificationsButton = device.findObject(new UiSelector().textContains("Notifications"));
+        notificationsButton.clickAndWaitForNewWindow();
+        UiObject notificationView = device.findObject(new UiSelector().textContains("Enable Job Alerts"));
+        assertTrue(notificationView.exists());
     }
 }
