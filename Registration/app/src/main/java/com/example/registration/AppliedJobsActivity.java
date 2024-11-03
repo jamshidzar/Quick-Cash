@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.Map;
 public class AppliedJobsActivity extends AppCompatActivity {
     private RecyclerView appliedJobsRecyclerView;
-    private AppliedJobsAdapter appliedJobsAdapter;
-    private List<Job> appliedJobsList;
+    AppliedJobsAdapter appliedJobsAdapter;
+    List<Job> appliedJobsList;
     private String userId; // To store the userId for database operations
 
     @Override
@@ -95,7 +95,7 @@ public class AppliedJobsActivity extends AppCompatActivity {
 
 
 
-    private void onCompleteJob(Job job) {
+    void onCompleteJob(Job job) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String jobId = job.getId();
 
