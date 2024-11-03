@@ -21,14 +21,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
     public class JobListActivity extends AppCompatActivity implements JobAdapter.OnSaveToFavoritesListener, JobAdapter.OnApplyJobListener {
         private FirebaseFirestore firestore;
         private RecyclerView availableJobsRecyclerView;
         JobAdapter jobAdapter;
         List<Job> availableJobsList;
         private String userId; // To store the user ID passed from login
-
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
