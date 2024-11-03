@@ -22,14 +22,14 @@
       </SelectionState>
       <SelectionState runConfigName="JobListActivity"/>
       <option name="selectionMode" value="DROPDOWN" />
-      <SelectionState runConfigName="MainActivity">
+      <SelectionState runConfigName="MainActivity"/>
       <SelectionState runConfigName="checkIfMoveToEmployer()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
       <SelectionState runConfigName="checkIfListingsExist()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="CompletedListingUIAutomatorTest">
+      <SelectionState runConfigName="CompletedListingUIAutomatorTest"/>
       <SelectionState runConfigName="MainActivity"/>
         <option name="selectionMode" value="DROPDOWN" />
       <SelectionState runConfigName="LoginActivity">
