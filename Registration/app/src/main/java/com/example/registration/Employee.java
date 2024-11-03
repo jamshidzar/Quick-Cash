@@ -6,32 +6,24 @@ import android.widget.Toast;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
-
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
+import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.Collection;
 
 public class Employee extends AppCompatActivity {
     private Button jobApplyingButton;
     private FirebaseFirestore firestore;
     private String userId; // To store the user ID received from SharedPreferences
-
+    private Button notificationButton;
     private static final int APPLY_JOB_REQUEST = 1;
 
     @Override
@@ -53,6 +45,28 @@ public class Employee extends AppCompatActivity {
             return;
         }
         enableJobAlerts();
+        retrieveNotificationPreference().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                Boolean isNotificationEnabled = task.getResult();
+                if(isNotificationEnabled){
+                    notificationButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(Employee.this, notificationListActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                } else {
+                    notificationButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Toast.makeText(getApplicationContext(), "Please Enable Notifications", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
+        notificationButton = findViewById(R.id.notificationButton);
         // Initialize "Job Listing" button and set it to start JobListActivity
         jobApplyingButton = findViewById(R.id.jobApplyingButton);
         jobApplyingButton.setOnClickListener(new View.OnClickListener() {
@@ -77,23 +91,19 @@ public class Employee extends AppCompatActivity {
             startActivity(intent);
         }
     }
-
     public void enableJobAlerts() {
         CheckBox checkBox = findViewById(R.id.checkBox);
-
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     updateNotificationPreference();
                     Toast.makeText(getApplicationContext(), "Job alerts enabled", Toast.LENGTH_LONG).show();
-
                 }
             }
         });
-
     }
-    // Method to update "Enable Notifications" to true
+    // Method to update isNotificationEnabled to true
     public void updateNotificationPreference() {
         SharedPreferences sh = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         String userId = sh.getString("userId", "");
@@ -123,6 +133,42 @@ public class Employee extends AppCompatActivity {
                         }
                     }
                 });
+    }
+    public Task<Boolean> retrieveNotificationPreference() {
+        // Retrieve the userId from SharedPreferences
+        SharedPreferences sh = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        TaskCompletionSource<Boolean> taskCompletionSource = new TaskCompletionSource<>();
+        String userId = sh.getString("userId", "");
+        Log.d("UserId", "Retrieved User ID: " + userId);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Boolean notification = false;
+        db.collection("user")  // Replace with your collection name
+                .document(userId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                // Retrieve the isNotificationEnabled field
+                                Boolean isNotificationEnabled = document.getBoolean("isNotificationEnabled");
+                                if (isNotificationEnabled != null) {
+                                    taskCompletionSource.setResult(isNotificationEnabled);
+                                    Log.d("NotificationStatus", "isNotificationEnabled: " + isNotificationEnabled);
+                                }
+                            } else {
+                                taskCompletionSource.setResult(false);
+                                taskCompletionSource.setResult(false);
+                                Log.d("NotificationStatus", "No document found with ID: " + userId);
+                            }
+                        } else {
+                            taskCompletionSource.setResult(false);
+                            Log.d("NotificationStatus", "Error retrieving document: ", task.getException());
+                        }
+                    }
+                });
+        return taskCompletionSource.getTask();
     }
 }
 
