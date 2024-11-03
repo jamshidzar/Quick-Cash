@@ -54,6 +54,7 @@ public class GoogleMapsUITest {
 
         // Verify that the marker is displayed
         assertTrue("The marker for the location 'Toronto' is not displayed on the map.", marker.exists());
+        marker.click();
     }
 }
 
