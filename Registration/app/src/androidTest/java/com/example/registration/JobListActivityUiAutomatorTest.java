@@ -58,6 +58,7 @@ public class JobListActivityUiAutomatorTest {
         device.wait(Until.hasObject(By.text("Job applied successfully!")), 5000);
         UiObject2 toastMessage = device.findObject(By.text("Job applied successfully!"));
 
+
     }
 
     @Test
@@ -74,3 +75,7 @@ public class JobListActivityUiAutomatorTest {
 
     }
 }
+
+
+
+

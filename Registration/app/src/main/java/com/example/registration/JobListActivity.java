@@ -38,11 +38,11 @@ import java.util.Map;
 
             userId = getIntent().getStringExtra("userId");
             Log.d("JobListActivity", "Received userId from Employee: " + userId);
-//            if (userId == null) {
-//                Toast.makeText(this, "User ID not found. Returning to login.", Toast.LENGTH_SHORT).show();
-//                finish();
-//                return;
-//            }
+            if (userId == null) {
+                Toast.makeText(this, "User ID not found. Returning to login.", Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
 
             // Initialize Firestore instance
             firestore = FirebaseFirestore.getInstance();
