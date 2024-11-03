@@ -12,6 +12,7 @@ import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObject;
 import androidx.test.uiautomator.UiObjectNotFoundException;
 import androidx.test.uiautomator.UiSelector;
+import com.example.registration.MapsActivity;
 
 import com.example.registration.CurrentLocation;
 
