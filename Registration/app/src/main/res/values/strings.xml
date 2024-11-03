@@ -11,5 +11,8 @@
     <string name = "INVALID_CREDIT_CARD">Invalid Credit Card</string>
     <string name = "EMPTY_STRING"></string>
     <string name = "MISSING_INFO">Missing Information</string>
+    <string name="view_map_option">View map option</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="PAYPAL_ID">AWZWefGeSuO9Zik1irK7Sdxtd3izskOJKkhDF70aGmodAz76oWK_UI3jOaqTal-MdgHlZgnfwhoXihDb</string>
 
 </resources>

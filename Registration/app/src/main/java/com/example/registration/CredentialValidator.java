@@ -75,7 +75,6 @@ public class CredentialValidator {
 
         // Must only contain digits and be 16 characters in length
         String regex = "[0-9]{16}";
-
         if(Pattern.compile(regex).matcher(creditcard).matches()){
             return true;
         }

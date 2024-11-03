@@ -1,5 +1,4 @@
 package com.example.registration;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -33,7 +32,6 @@ import java.util.Map;
  * validates them and then adds the new user to the Firestore database if the
  * registration is valid.
  * If the user has an account, they can navigate to the login page.
- *
  * @author Kevin Matheson
  */
 public class MainActivity extends AppCompatActivity {
@@ -116,8 +114,7 @@ public class MainActivity extends AppCompatActivity {
                         validRegistration = false;
                         errorMessage = getResources().getString(R.string.INVALID_NAME).trim();
                     }
-                }
-                else{
+                } else {
                     validRegistration = false;
                     errorMessage = getResources().getString(R.string.EMPTY_NAME).trim();
                 }
@@ -127,8 +124,7 @@ public class MainActivity extends AppCompatActivity {
                         validRegistration = false;
                         errorMessage = getResources().getString(R.string.INVALID_EMAIL).trim();
                     }
-                }
-                else{
+                } else {
                     validRegistration = false;
                     errorMessage = getResources().getString(R.string.EMPTY_EMAIL).trim();
                 }
@@ -138,8 +134,7 @@ public class MainActivity extends AppCompatActivity {
                         validRegistration = false;
                         errorMessage = getResources().getString(R.string.INVALID_PASSWORD).trim();
                     }
-                }
-                else{
+                } else {
                     validRegistration = false;
                     errorMessage = getResources().getString(R.string.EMPTY_PASSWORD).trim();
                 }
@@ -149,8 +144,7 @@ public class MainActivity extends AppCompatActivity {
                         validRegistration = false;
                         errorMessage = getResources().getString(R.string.INVALID_CREDIT_CARD).trim();
                     }
-                }
-                else{
+                } else {
                     validRegistration = false;
                     errorMessage = getResources().getString(R.string.EMPTY_CREDITCARD).trim();
                 }
@@ -162,12 +156,13 @@ public class MainActivity extends AppCompatActivity {
                 if (validRegistration) {
                     setErrorMessage(errorMessage);
                     errMSG.setVisibility(View.INVISIBLE);
-
+                    boolean enableNotification = false;
                     Map<String, Object> user = new HashMap<>();
                     user.put("Name", Name);
                     user.put("Email", Email);
                     user.put("Password", Password);
                     user.put("Credit Card", CreditCard);
+                    user.put("isNotificationEnabled", enableNotification);
 
                     db.collection("user").add(user)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -188,10 +183,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-
-
-
 
 
 // Code review by Jamshid Zar:

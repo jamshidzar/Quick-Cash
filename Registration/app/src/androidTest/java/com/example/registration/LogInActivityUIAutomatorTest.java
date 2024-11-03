@@ -70,37 +70,23 @@ public class LogInActivityUIAutomatorTest {
     }
     @Test
     public void checkIfMovedToLoginPage() throws UiObjectNotFoundException {
-        // Input email and password and click the login button
         UiObject email = device.findObject(new UiSelector().text("Email"));
         email.setText("12@google.com");
-
         UiObject password = device.findObject(new UiSelector().text("Password"));
         password.setText("PassWo00rd!");
-
         UiObject loginButton = device.findObject(new UiSelector().text("Login"));
         loginButton.clickAndWaitForNewWindow();
-
-        // Ensure the dashboard is displayed after login
         UiObject dashboard = device.findObject(new UiSelector().textContains("quickCash"));
         assertTrue(dashboard.exists());
-
-        // Click the logout button
         UiObject logoutButton = device.findObject(new UiSelector().text("Logout"));
         logoutButton.clickAndWaitForNewWindow();
-
-        // Handle the logout confirmation dialog
-        UiObject confirmLogoutYesButton = device.findObject(new UiSelector().text("Yes"));
-        confirmLogoutYesButton.waitForExists(5000);  // Wait for the "Yes" button to appear
-        confirmLogoutYesButton.click();  // Confirm the logout
-
-        // After confirming, wait for the login page
+        UiObject confirmButton = device.findObject(new UiSelector().text("Yes"));
+        confirmButton.clickAndWaitForNewWindow();
+        UiObject email_login = device.findObject(new UiSelector().text("Email"));
+        assertTrue("Login page not visible", email_login.exists());
+        UiObject password_login = device.findObject(new UiSelector().text("Password"));
+        assertTrue(password_login.exists());
         UiObject loginButton_login = device.findObject(new UiSelector().text("Login"));
-        boolean loginButtonExists = loginButton_login.waitForExists(5000);  // Wait for the login button to appear
-        assertTrue("Login button not found after logout", loginButtonExists);
+        assertTrue(loginButton_login.exists());
     }
-
-
-
-
 }
-

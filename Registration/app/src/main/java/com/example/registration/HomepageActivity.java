@@ -1,5 +1,4 @@
 package com.example.registration;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,11 +17,9 @@ import java.util.jar.Attributes;
 public class HomepageActivity extends AppCompatActivity {
     Intent welcome;
     private String email;
-    Button employee, employer;
+    Button employeeButton, employerButton;
+    Employee employee;
     @Override
-
-
-
 // Code review by Jamshid Zar:
 // This code looks well-structured and achieves the expected functionality. A few suggestions:
 // - Good job setting up the employee and employer buttons with appropriate intents to pass the email.
@@ -30,17 +27,15 @@ public class HomepageActivity extends AppCompatActivity {
 // - The logout process is clear and well-implemented. Nice use of the confirmation dialog to ensure the user wants to log out.
 // - In the `performLogout` method, clearing user session or data like shared preferences can be added if necessary, especially if handling sensitive data.
 // - Everything else looks good and well-organized.
-
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
-        employee = findViewById(R.id.employee);
-        employer = findViewById(R.id.employer);
+        employeeButton = findViewById(R.id.employee);
+        employerButton = findViewById(R.id.employer);
         welcome = getIntent();
         email = welcome.getStringExtra("Email");
-
-        employee.setOnClickListener(new View.OnClickListener() {
+        employee = new Employee();
+        employeeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent homePage = new Intent(HomepageActivity.this , Employee.class);
@@ -49,7 +44,7 @@ public class HomepageActivity extends AppCompatActivity {
             }
         });
 
-        employer.setOnClickListener(new View.OnClickListener() {
+        employerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent homePage = new Intent(HomepageActivity.this , Employer.class);
@@ -90,8 +85,6 @@ public class HomepageActivity extends AppCompatActivity {
         AlertDialog alert = builder.create();
         alert.show();
     }
-
-
 // Code review by Jamshid Zar:
 // - This method handles the logout process effectively by clearing the activity stack with the correct `Intent` flags.
 // - You provide a useful comment on the possibility of clearing stored user data or Firebase authentication; consider implementing this if your app uses sessions or Firebase Auth to manage user sessions.
@@ -109,8 +102,5 @@ public class HomepageActivity extends AppCompatActivity {
         startActivity(intent);
         finish(); // Finish current activity so the user can't go back
     }
-
-
-
 
 }
