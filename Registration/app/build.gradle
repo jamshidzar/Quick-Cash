@@ -7,6 +7,9 @@ plugins {
 android {
     namespace 'com.example.registration'
     compileSdk 34
+    buildFeatures {
+        dataBinding true // Enable data binding
+    }
 
     defaultConfig {
         applicationId "com.example.registration"
@@ -47,10 +50,22 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     testImplementation project(path: ':app')
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    implementation libs.core
+    implementation libs.uiautomator
+
+    testImplementation libs.junit.junit
+    androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
     implementation(platform('com.google.firebase:firebase-bom:33.3.0'))
     implementation ('com.google.firebase:firebase-analytics')
     implementation ('com.google.firebase:firebase-firestore')
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    androidTestImplementation libs.uiautomator
+    androidTestImplementation 'androidx.test:core:1.4.0'
+    implementation 'com.google.android.gms:play-services-maps:19.0.0'
+    implementation platform('com.google.firebase:firebase-bom:33.3.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation libs.firebase.firestore
+    implementation 'com.google.maps.android:android-maps-utils:2.2.3'
 }
