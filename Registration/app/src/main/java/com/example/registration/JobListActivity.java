@@ -2,6 +2,7 @@ package com.example.registration;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -61,7 +62,10 @@ import java.util.Map;
                 Intent searchIntent = new Intent(JobListActivity.this, JobFilter.class);
                 startActivity(searchIntent);
             });
-    
+            Button viewMapButton = findViewById(R.id.ViewMap);
+            viewMapButton.setOnClickListener(v -> openMapView(availableJobsList));
+
+
         }
 
         private void loadJobsFromFirestore() {
@@ -129,10 +133,6 @@ import java.util.Map;
                     });
         }
 
-
-
-
-
         @Override
         public void onSaveToFavorites(Job job) {
             // Use the userId to save the job in the favorites collection
@@ -165,6 +165,11 @@ import java.util.Map;
                         Toast.makeText(this, "Failed to add job to favorites.", Toast.LENGTH_SHORT).show();
                     });
         }
-
+        private void openMapView(List<Job> jobs) {
+            Intent intent = new Intent(this, MapViewActivity.class);
+            intent.putExtra("jobs", (ArrayList<Job>) jobs);
+            startActivity(intent);
+        }
     }
+
 

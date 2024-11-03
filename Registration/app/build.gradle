@@ -46,6 +46,7 @@ dependencies {
     implementation libs.uiautomator
     implementation libs.recyclerview
     implementation libs.espresso.core
+    implementation libs.espresso.contrib
     testImplementation 'org.mockito:mockito-core:5.0.0'
     testImplementation 'junit:junit:4.13.2'
     testImplementation project(path: ':app')
@@ -68,4 +69,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation libs.firebase.firestore
     implementation 'com.google.maps.android:android-maps-utils:2.2.3'
+    // Espresso dependencies
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.4.0'
+
+    // Firebase Test dependencies (Optional for emulated database testing)
+    androidTestImplementation 'com.google.firebase:firebase-firestore'
 }
