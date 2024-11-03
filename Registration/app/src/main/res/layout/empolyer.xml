@@ -10,9 +10,8 @@
         android:id="@+id/employerText"
         android:layout_width="279dp"
         android:layout_height="123dp"
-        android:layout_marginStart="66dp"
+        android:layout_marginStart="56dp"
         android:layout_marginTop="80dp"
-        android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,11 +19,22 @@
         android:id="@+id/button2"
         android:layout_width="204dp"
         android:layout_height="93dp"
-        android:layout_marginStart="103dp"
-        android:layout_marginTop="105dp"
-        android:text="Job Posting"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="264dp"
+        android:text="Post New Job"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/employerText" />
+
+    <Button
+        android:id="@+id/completedListings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="68dp"
+        android:text="Completed Listings"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button2" />
+
 
     <Button
         android:id="@+id/back"

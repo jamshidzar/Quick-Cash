@@ -13,7 +13,17 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
+<<<<<<< HEAD
       <SelectionState runConfigName="JobListActivity">
+=======
+      <SelectionState runConfigName="checkIfMoveToEmployer()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="checkIfListingsExist()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="CompletedListingUIAutomatorTest">
+>>>>>>> d62d7b94602fa3b8c04d344276c139251d0666a2
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

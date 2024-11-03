@@ -55,3 +55,4 @@ public class Job implements Serializable {
     }
     public void setPostalCode(String postalCode) { this.postalCode = postalCode; }
 }
+
