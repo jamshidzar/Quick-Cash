@@ -5,6 +5,7 @@ package com.example.registration;
 * add string resources for error handing.
 * */
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -33,6 +34,7 @@ import com.google.firebase.firestore.QuerySnapshot;
  *
  * @author Jamshid Zar
  */
+
 public class LoginActivity extends AppCompatActivity {
 
     // Declare UI elements
@@ -136,42 +138,28 @@ public class LoginActivity extends AppCompatActivity {
      * @author Jamshid Zar
      */
     protected void loginUser(String email, String password) {
-
-        // Query Firestore collection "user" to find a document with the matching email
         db.collection("user")
                 .whereEqualTo("Email", email)
-                .whereEqualTo("Password", password) // You should hash passwords for security
+                .whereEqualTo("Password", password)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    String error = new String();
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                        String userId = task.getResult().getDocuments().get(0).getId();
+                        Log.d("LoginActivity", "User found with userId: " + userId);
 
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        // Store userId in SharedPreferences
+                        SharedPreferences sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString("userId", userId);
+                        editor.putString("Email", email);
+                        editor.apply();
 
-                        if (task.isSuccessful()) {
-                            boolean userExists = false;
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                // If document is found, user is authenticated
-                                userExists = true;
-                                break;
-                            }
-                            if (userExists) {
-                                error = "Login Successful";
-
-                                // Navigate to HomepageActivity after successful login
-                                Intent intent = new Intent(LoginActivity.this, HomepageActivity.class);
-                                intent.putExtra("Email", email); // Pass the email (or name) to HomepageActivity
-                                startActivity(intent);
-
-                            } else {
-                                error = "You don't have an account, please register.";
-                            }
-                        } else {
-                            // If task failed
-                            Log.d("Firestore", "Error getting documents: ", task.getException());
-                            error = "Authentication failed. Please try again.";
-                        }
-                        setStatusMessage(error);
+                        // Navigate to HomepageActivity
+                        Intent intent = new Intent(LoginActivity.this, HomepageActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Login failed. Please try again.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

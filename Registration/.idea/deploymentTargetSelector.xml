@@ -4,22 +4,44 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
+        <DropdownSelection timestamp="2024-10-30T14:00:17.088824Z">
+          <Target type="DEFAULT_BOOT">
+            <handle>
+              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/jamshidzar/.android/avd/Medium_Phone.avd" />
+            </handle>
+          </Target>
+        </DropdownSelection>
+        <DialogSelection />
       </SelectionState>
+
       <SelectionState runConfigName="JobPostingEspressoTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+
       <SelectionState runConfigName="JobListUiAutomatorTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+
       <SelectionState runConfigName="checkIfJobListIsVisible()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+
       <SelectionState runConfigName="checkIfPostalCodeIsEmpty()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      
       <SelectionState runConfigName="testSuccessfulJobPosting()">
+
+      <SelectionState runConfigName="MainActivity">
+
+      <SelectionState runConfigName="JobViewActivity">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      
+      <SelectionState runConfigName="JobListActivity">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+
     </selectionStates>
   </component>
 </project>

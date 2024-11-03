@@ -11,5 +11,6 @@
     <string name = "INVALID_CREDIT_CARD">Invalid Credit Card</string>
     <string name = "EMPTY_STRING"></string>
     <string name = "MISSING_INFO">Missing Information</string>
+    <string name="view_map_option">View map option</string>
 
 </resources>
