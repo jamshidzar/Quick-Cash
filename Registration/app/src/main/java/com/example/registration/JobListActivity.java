@@ -56,6 +56,12 @@ import java.util.Map;
 
             // Load jobs from Firestore
             loadJobsFromFirestore();
+
+            findViewById(R.id.button3).setOnClickListener(v -> {
+                Intent searchIntent = new Intent(JobListActivity.this, JobFilter.class);
+                startActivity(searchIntent);
+            });
+    
         }
 
         private void loadJobsFromFirestore() {

@@ -13,12 +13,17 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
+
+      <SelectionState runConfigName="MainActivity">
+
       <SelectionState runConfigName="JobViewActivity">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      
       <SelectionState runConfigName="JobListActivity">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+
     </selectionStates>
   </component>
 </project>

@@ -63,8 +63,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="end"> <!-- Align buttons to the right -->
+        android:gravity="end"
+        android:orientation="vertical"> <!-- Align buttons to the right -->
 
         <Button
             android:id="@+id/applyButton"
@@ -77,7 +77,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Save to Favorites" />
-
 
 
     </LinearLayout>

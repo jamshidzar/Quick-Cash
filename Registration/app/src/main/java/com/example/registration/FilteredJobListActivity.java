@@ -1,5 +1,6 @@
 package com.example.registration;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Filter;
@@ -15,9 +16,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FilteredJobListActivity extends AppCompatActivity implements JobAdapter.OnSaveToFavoritesListener, JobAdapter.OnApplyJobListener {
+    private String email;
+    private String userID;
+
     private FirebaseFirestore firestore;
     private FirebaseAuth auth;
     private RecyclerView availableJobsRecyclerView;
@@ -36,6 +42,10 @@ public class FilteredJobListActivity extends AppCompatActivity implements JobAda
         jobName = intent.getStringExtra("jobName");
         location = intent.getStringExtra("location");
 
+        SharedPreferences sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        userID = sharedPref.getString("userId", null);
+        email = sharedPref.getString("Email", null);
+
         // Initialize Firebase instances
         firestore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -49,17 +59,30 @@ public class FilteredJobListActivity extends AppCompatActivity implements JobAda
 
         // Load jobs from Firestore
         loadJobsFromFirestore();
+
+        findViewById(R.id.button3).setOnClickListener(v -> {
+            Intent searchIntent = new Intent(FilteredJobListActivity.this, JobFilter.class);
+            startActivity(searchIntent);
+        });
     }
 
     private void loadJobsFromFirestore() {
         CollectionReference jobsRef = firestore.collection("job");
 
-        jobsRef.whereEqualTo("jobName", jobName).whereEqualTo("location", location).get().addOnCompleteListener(task -> {
+        jobsRef.whereEqualTo("location", location).whereEqualTo("jobName", jobName).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
                 availableJobsList.clear();
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     Job job = document.toObject(Job.class);
                     job.setId(document.getId()); // Set the document ID
+
+                    // Correct the field name to match Firestore's "PostalCode"
+                    if (document.contains("postalCode")) {
+                        job.setPostalCode(document.getString("postalCode"));
+                    } else {
+                        job.setPostalCode("N/A"); // Default value if postal code is missing
+                    }
+
                     availableJobsList.add(job);
                 }
                 jobAdapter.notifyDataSetChanged();
@@ -106,37 +129,31 @@ public class FilteredJobListActivity extends AppCompatActivity implements JobAda
 
     @Override
     public void onSaveToFavorites(Job job) {
-        if (auth.getCurrentUser() == null) {
-            // If no user is signed in, sign in anonymously
-            auth.signInAnonymously().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    // After signing in anonymously, proceed to save the job
-                    saveJobToFavorites(job);
-                } else {
-                    // Handle sign-in failure
-                    Log.e("JobListActivity", "Anonymous sign-in failed", task.getException());
-                    Toast.makeText(this, "Failed to sign in. Please try again.", Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
-            // If a user is already signed in, proceed to save the job
-            saveJobToFavorites(job);
-        }
+        // Use the userId to save the job in the favorites collection
+        saveJobToFavorites(job);
     }
 
-    // Separate method to save the job to Firestore
-    private void saveJobToFavorites(Job job) {
-        String userId = auth.getCurrentUser().getUid();
-        CollectionReference favoritesRef = firestore.collection("jobSeekers").document(userId).collection("favorites");
+    public void saveJobToFavorites(Job job) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> favoriteData = new HashMap<>();
 
-        favoritesRef.document(job.getId()).set(job)
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("JobListActivity", "Job successfully added to favorites in Firestore");
+        // Add all job details to the favorite data
+        favoriteData.put("jobId", job.getId());
+        favoriteData.put("userId", userID);
+        favoriteData.put("jobName", job.getJobName());
+        favoriteData.put("employerID", job.getEmployerID());
+        favoriteData.put("location", job.getLocation());
+        favoriteData.put("duration", job.getDuration());
+        favoriteData.put("salary", job.getSalary());
+        favoriteData.put("urgency", job.getUrgency());
+        favoriteData.put("postalCode", job.getPostalCode());
+
+        db.collection("favorites").add(favoriteData)
+                .addOnSuccessListener(documentReference -> {
                     Toast.makeText(this, "Job added to favorites!", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("JobListActivity", "Failed to add job to favorites: " + e.getMessage());
-                    Toast.makeText(this, "Failed to add job to favorites: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Failed to add job to favorites.", Toast.LENGTH_SHORT).show();
                 });
     }
 
