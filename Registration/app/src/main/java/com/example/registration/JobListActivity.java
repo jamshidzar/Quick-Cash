@@ -4,14 +4,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.Timestamp;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -163,7 +160,7 @@ import java.util.Map;
                         Toast.makeText(this, "Failed to add job to favorites.", Toast.LENGTH_SHORT).show();
                     });
         }
-        private void openMapView(List<Job> jobs) {
+        public void openMapView(List<Job> jobs) {
             Intent intent = new Intent(this, MapViewActivity.class);
             intent.putExtra("jobs", (ArrayList<Job>) jobs);
             startActivity(intent);

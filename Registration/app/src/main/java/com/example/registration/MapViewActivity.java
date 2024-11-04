@@ -31,6 +31,7 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        assert mapFragment != null;
         mapFragment.getMapAsync(this);
     }
 
@@ -43,7 +44,6 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
             Geocoder geocoder = new Geocoder(this);
             LatLng firstJobLocation = null; // Variable to hold the first valid location
             boolean firstLocationSet = false; // Flag to check if the first location is set
-            boolean validLocationFound = false; // Flag to check if at least one location is valid
 
             for (Job job : jobList) {
                 try {
@@ -64,7 +64,7 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
                                 firstJobLocation = jobLocation;
                                 firstLocationSet = true;
                             }
-                            validLocationFound = true; // Mark that at least one valid location was found
+                            // Mark that at least one valid location was found
                         } else {
                             Log.e("MapViewActivity", "No address found for postal code: " + postalCode);
                         }
@@ -81,7 +81,7 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
             // Center the camera on the first job's location if it was set
             if (firstJobLocation != null) {
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(firstJobLocation, 15)); // Adjust zoom level as needed
-            } else if (!validLocationFound) {
+            } else {
                 Toast.makeText(this, "No valid locations found for the jobs.", Toast.LENGTH_SHORT).show();
             }
 

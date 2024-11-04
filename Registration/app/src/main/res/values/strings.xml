@@ -14,5 +14,8 @@
     <string name="view_map_option">View map option</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="PAYPAL_ID">AWZWefGeSuO9Zik1irK7Sdxtd3izskOJKkhDF70aGmodAz76oWK_UI3jOaqTal-MdgHlZgnfwhoXihDb</string>
+    <string name="already_registered_go_to_login_page">Already registered? Go to login page!</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
 
 </resources>
