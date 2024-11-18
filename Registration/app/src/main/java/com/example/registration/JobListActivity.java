@@ -1,14 +1,18 @@
 package com.example.registration;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -45,49 +49,22 @@ import java.util.Map;
 
             // Setup RecyclerView and Adapter
             availableJobsList = new ArrayList<>();
-            jobAdapter = new JobAdapter(availableJobsList, this, this);
+            //jobAdapter = new JobAdapter(availableJobsList, this, this);
             availableJobsRecyclerView = findViewById(R.id.availableJobsRecyclerView);
             availableJobsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             availableJobsRecyclerView.setAdapter(jobAdapter);
 
-            // Load jobs from Firestore
-            loadJobsFromFirestore();
+//            // Load jobs from Firestore
+//            loadJobsFromFirestore();
 
             findViewById(R.id.button3).setOnClickListener(v -> {
                 Intent searchIntent = new Intent(JobListActivity.this, JobFilter.class);
                 startActivity(searchIntent);
             });
-            Button viewMapButton = findViewById(R.id.ViewMap);
-            viewMapButton.setOnClickListener(v -> openMapView(availableJobsList));
 
 
         }
 
-        private void loadJobsFromFirestore() {
-            CollectionReference jobsRef = firestore.collection("job");
-
-            jobsRef.get().addOnCompleteListener(task -> {
-                if (task.isSuccessful() && task.getResult() != null) {
-                    availableJobsList.clear();
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Job job = document.toObject(Job.class);
-                        job.setId(document.getId()); // Set the document ID
-
-                        // Correct the field name to match Firestore's "PostalCode"
-                        if (document.contains("postalCode")) {
-                            job.setPostalCode(document.getString("postalCode"));
-                        } else {
-                            job.setPostalCode("N/A"); // Default value if postal code is missing
-                        }
-
-                        availableJobsList.add(job);
-                    }
-                    jobAdapter.notifyDataSetChanged();
-                } else {
-                    Log.e("FirestoreError", "Error fetching jobs: " + (task.getException() != null ? task.getException().getMessage() : "Unknown error"));
-                }
-            });
-        }
 
 
 
@@ -159,11 +136,6 @@ import java.util.Map;
                     .addOnFailureListener(e -> {
                         Toast.makeText(this, "Failed to add job to favorites.", Toast.LENGTH_SHORT).show();
                     });
-        }
-        public void openMapView(List<Job> jobs) {
-            Intent intent = new Intent(this, MapViewActivity.class);
-            intent.putExtra("jobs", (ArrayList<Job>) jobs);
-            startActivity(intent);
         }
     }
 
