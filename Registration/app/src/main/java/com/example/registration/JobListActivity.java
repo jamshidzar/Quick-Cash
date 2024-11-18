@@ -49,13 +49,13 @@ import java.util.Map;
 
             // Setup RecyclerView and Adapter
             availableJobsList = new ArrayList<>();
-            //jobAdapter = new JobAdapter(availableJobsList, this, this);
+            jobAdapter = new JobAdapter(availableJobsList, this, this);
             availableJobsRecyclerView = findViewById(R.id.availableJobsRecyclerView);
             availableJobsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             availableJobsRecyclerView.setAdapter(jobAdapter);
 
 //            // Load jobs from Firestore
-//            loadJobsFromFirestore();
+            loadJobsFromFirestore();
 
             findViewById(R.id.button3).setOnClickListener(v -> {
                 Intent searchIntent = new Intent(JobListActivity.this, JobFilter.class);
@@ -112,6 +112,29 @@ import java.util.Map;
         }
 
         // Separate method to save the job to Firestore
+        private void loadJobsFromFirestore() {
+            CollectionReference jobsRef = firestore.collection("job");
+            jobsRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful() && task.getResult() != null) {
+                    availableJobsList.clear();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Job job = document.toObject(Job.class);
+                        job.setId(document.getId()); // Setthe document ID
+
+                        // Correct the field name to match Firestore's "PostalCode"
+                        if (document.contains("postalCode")) {
+                            job.setPostalCode(document.getString("postalCode"));
+                        } else {
+                            job.setPostalCode("N/A"); // Default value if postal code is missing
+                        }
+                        availableJobsList.add(job);
+                    }
+                    jobAdapter.notifyDataSetChanged();
+                } else {
+                    Log.e("FirestoreError", "Error fetching jobs: " + (task.getException() != null ? task.getException().getMessage() : "Unknown error"));
+                }
+            });
+        }
 
 
         public void saveJobToFavorites(Job job) {
