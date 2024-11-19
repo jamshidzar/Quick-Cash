@@ -41,12 +41,12 @@
         android:elevation="4dp"/>
 
     <Button
-        android:id="@+id/MapButton"
+        android:id="@+id/ViewMap"
         android:layout_width="255dp"
         android:layout_height="69dp"
         android:layout_marginTop="542dp"
         android:layout_marginBottom="34dp"
-        android:text="Maps"
+        android:text="View Maps"
         app:layout_constraintBottom_toTopOf="@+id/jobApplyingButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -8,15 +8,21 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Employee extends AppCompatActivity {
@@ -26,6 +32,7 @@ public class Employee extends AppCompatActivity {
     private String userId; // To store the user ID received from SharedPreferences
     private Button notificationButton;
     private static final int APPLY_JOB_REQUEST = 1;
+    private List<Job> availableJobsList;
 
 
 // Code review by Jamshid Zar:
@@ -39,6 +46,9 @@ public class Employee extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.employee);
+        firestore = FirebaseFirestore.getInstance();
+        availableJobsList = new ArrayList<>();
+        //jobAdapter = new JobAdapter(availableJobsList, this, this);
 
         // Retrieve userId from SharedPreferences
         SharedPreferences sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
@@ -89,14 +99,17 @@ public class Employee extends AppCompatActivity {
             }
         });
 
-        Button mapButton = findViewById(R.id.MapButton);
-        mapButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Employee.this, CurrentLocation.class);
-                startActivity(intent);
-            }
-        });
+//        Button mapButton = findViewById(R.id.MapButton);
+//        mapButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(Employee.this, CurrentLocation.class);
+//                startActivity(intent);
+//            }
+//        });
+        loadJobsFromFirestoreForMap();
+        Button viewMapButton = findViewById(R.id.ViewMap);
+        viewMapButton.setOnClickListener(v -> openMapView(availableJobsList));
     }
 
     // Handle the result of job application
@@ -191,6 +204,34 @@ public class Employee extends AppCompatActivity {
                 });
         return taskCompletionSource.getTask();
     }
+    private void loadJobsFromFirestoreForMap() {
+        CollectionReference jobsRef = firestore.collection("job");
+        jobsRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                availableJobsList.clear();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Job job = document.toObject(Job.class);
+                    job.setId(document.getId()); // Setthe document ID
+
+                    // Correct the field name to match Firestore's "PostalCode"
+                    if (document.contains("postalCode")) {
+                        job.setPostalCode(document.getString("postalCode"));
+                    } else {
+                        job.setPostalCode("N/A"); // Default value if postal code is missing
+                    }
+                    availableJobsList.add(job);
+                }
+                    //jobAdapter.notifyDataSetChanged();
+            } else {
+                Log.e("FirestoreError", "Error fetching jobs: " + (task.getException() != null ? task.getException().getMessage() : "Unknown error"));
+            }
+        });
+    }
+    private void openMapView(List<Job> jobs) {
+         Intent intent = new Intent(this, MapViewActivity.class);
+         intent.putExtra("jobs", (ArrayList<Job>) jobs);
+         startActivity(intent);
+        }
 }
 
 
