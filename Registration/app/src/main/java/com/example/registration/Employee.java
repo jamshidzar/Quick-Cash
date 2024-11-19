@@ -107,7 +107,7 @@ public class Employee extends AppCompatActivity {
 //                startActivity(intent);
 //            }
 //        });
-        loadJobsFromFirestore();
+        loadJobsFromFirestoreForMap();
         Button viewMapButton = findViewById(R.id.ViewMap);
         viewMapButton.setOnClickListener(v -> openMapView(availableJobsList));
     }
@@ -204,7 +204,7 @@ public class Employee extends AppCompatActivity {
                 });
         return taskCompletionSource.getTask();
     }
-    private void loadJobsFromFirestore() {
+    private void loadJobsFromFirestoreForMap() {
         CollectionReference jobsRef = firestore.collection("job");
         jobsRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {

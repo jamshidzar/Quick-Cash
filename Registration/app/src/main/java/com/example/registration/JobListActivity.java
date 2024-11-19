@@ -54,7 +54,7 @@ import java.util.Map;
             availableJobsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             availableJobsRecyclerView.setAdapter(jobAdapter);
 
-//            // Load jobs from Firestore
+            // Load jobs from Firestore
             loadJobsFromFirestore();
 
             findViewById(R.id.button3).setOnClickListener(v -> {
@@ -64,11 +64,6 @@ import java.util.Map;
 
 
         }
-
-
-
-
-
 
         public void onApplyJob(Job job) {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -120,13 +115,6 @@ import java.util.Map;
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Job job = document.toObject(Job.class);
                         job.setId(document.getId()); // Setthe document ID
-
-                        // Correct the field name to match Firestore's "PostalCode"
-                        if (document.contains("postalCode")) {
-                            job.setPostalCode(document.getString("postalCode"));
-                        } else {
-                            job.setPostalCode("N/A"); // Default value if postal code is missing
-                        }
                         availableJobsList.add(job);
                     }
                     jobAdapter.notifyDataSetChanged();
