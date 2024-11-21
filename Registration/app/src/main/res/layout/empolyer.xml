@@ -6,47 +6,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/employerText"
-        android:layout_width="279dp"
-        android:layout_height="123dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="80dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="204dp"
-        android:layout_height="93dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="264dp"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="312dp"
         android:text="Post New Job"
+        app:layout_constraintBottom_toTopOf="@+id/completedListings"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/employerText" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/completedListings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="68dp"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginBottom="16dp"
         android:text="Completed Listings"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
-
+        app:layout_constraintBottom_toTopOf="@+id/myListings"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/back"
-        android:layout_width="187dp"
-        android:layout_height="75dp"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
         android:layout_marginStart="112dp"
-        android:layout_marginTop="48dp"
         android:layout_marginEnd="112dp"
-        android:layout_marginBottom="207dp"
-        android:text="Go Back"
+        android:text="Back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/myListings"
+        app:layout_constraintVertical_bias="0.636" />
+
+    <Button
+        android:id="@+id/myListings"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginBottom="104dp"
+        android:text="My Listings"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -46,6 +46,7 @@ public class Employer extends AppCompatActivity {
     Button jobPosting;
     String email;
     Button completedListingsBtn;
+    Button myListingsBtn;
     String userID;
 
     private ActivityResultLauncher<Intent> activityResultLauncher;
@@ -74,44 +75,14 @@ public class Employer extends AppCompatActivity {
 
         jobPosting = findViewById(R.id.button2);
         completedListingsBtn = findViewById(R.id.completedListings);
+        myListingsBtn = findViewById(R.id.myListings);
 
         jobPosting.setOnClickListener(v -> onJobPostClick());
         completedListingsBtn.setOnClickListener(v-> goToCompletedListings());
-
+        myListingsBtn.setOnClickListener(v-> goToMyListings());
 
         back = findViewById(R.id.back);
         back.setOnClickListener(v -> goBackToHomePage());
-
-        if (email != null && !email.isEmpty()) {
-            db.collection("user").whereEqualTo("Email", email).get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                QuerySnapshot querySnapshot = task.getResult();
-                                if (!querySnapshot.isEmpty()) {
-                                    DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
-                                    String name = documentSnapshot.getString("Name");
-                                    String password = documentSnapshot.getString("Password");
-                                    String creditCard = documentSnapshot.getString("Credit Card");
-                                    String ID = documentSnapshot.getId();
-                                    String message = "Name: " + name + "\nEmail: " + email + "\nPassword: " + password + "\nCredit Card: " + creditCard;
-                                    TextView tv = findViewById(R.id.employerText);
-                                    tv.setText(message);
-                                } else {
-                                    TextView tv = findViewById(R.id.employerText);
-                                    tv.setText("No user found with the email: " + email);
-                                }
-                            } else {
-                                TextView tv = findViewById(R.id.employerText);
-                                tv.setText("Error retrieving user data.");
-                            }
-                        }
-                    });
-        } else {
-            TextView tv = findViewById(R.id.employerText);
-            tv.setText("No name passed to the Employer activity.");
-        }
 
     }
 
@@ -124,6 +95,13 @@ public class Employer extends AppCompatActivity {
 
     protected void goToCompletedListings(){
         Intent intent = new Intent(Employer.this, CompletedListingsActivity.class);
+        intent.putExtra("Email", email);
+        intent.putExtra("userID", userID);
+        startActivity(intent);
+    }
+
+    protected void goToMyListings(){
+        Intent intent = new Intent(Employer.this, JobList.class);
         intent.putExtra("Email", email);
         intent.putExtra("userID", userID);
         startActivity(intent);
