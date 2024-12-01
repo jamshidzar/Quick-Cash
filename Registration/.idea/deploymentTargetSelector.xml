@@ -13,6 +13,20 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1f95476e8ec70e57f1ef36cf5824b50b410d21ab
+=======
+>>>>>>> fb3bb94e28862249ac9cfad64294b45870f0b479
+      <SelectionState runConfigName="LoginActivity">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="Employee">
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
       <SelectionState runConfigName="notificationList">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
@@ -37,6 +51,11 @@
 
       </SelectionState>
       <SelectionState runConfigName="NotificationListActivity">
+>>>>>>> origin/recSystem
+=======
+>>>>>>> 1f95476e8ec70e57f1ef36cf5824b50b410d21ab
+=======
+>>>>>>> fb3bb94e28862249ac9cfad64294b45870f0b479
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

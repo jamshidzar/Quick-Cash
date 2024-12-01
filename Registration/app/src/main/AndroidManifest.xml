@@ -81,6 +81,14 @@
             android:exported="true"/>
         <activity android:name=".JobDetailActivity"
             android:exported="true"/>
+        <activity android:name=".FavoriteJobsActivity"
+            android:exported="true"/>
+
+        <activity android:name=".PreferredJobsActivity"
+                   android:exported="true"/>
+        <activity android:name=".EmployeeListActivity"
+            android:exported="true"/>
+
 
     </application>
 
