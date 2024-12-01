@@ -1,0 +1,65 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#F8F4FF">
+
+    <!-- Job Title Input -->
+    <EditText
+        android:id="@+id/jobTitleInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Job Title"
+        android:layout_marginBottom="8dp"
+        android:padding="10dp"
+        android:backgroundTint="#B39DDB"
+        android:inputType="text" />
+
+    <!-- Job Name Input -->
+    <EditText
+        android:id="@+id/jobNameInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Job Name"
+        android:layout_marginBottom="8dp"
+        android:padding="10dp"
+        android:backgroundTint="#B39DDB"
+        android:inputType="text" />
+
+    <!-- Salary Input -->
+    <EditText
+        android:id="@+id/salaryInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Salary"
+        android:layout_marginBottom="8dp"
+        android:padding="10dp"
+        android:backgroundTint="#B39DDB"
+        android:inputType="numberDecimal" />
+
+    <!-- Location Input -->
+    <EditText
+        android:id="@+id/locationInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Locations"
+        android:layout_marginBottom="16dp"
+        android:padding="10dp"
+        android:backgroundTint="#B39DDB"
+        android:inputType="text" />
+
+    <!-- Confirm Button -->
+    <Button
+        android:id="@+id/confirmButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirm"
+        android:layout_gravity="center"
+        android:backgroundTint="#6A4EA0"
+        android:textColor="#FFFFFF"
+        android:padding="10dp" />
+
+</LinearLayout>
+

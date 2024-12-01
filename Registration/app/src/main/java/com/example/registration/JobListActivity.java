@@ -107,9 +107,15 @@ import java.util.Map;
 
         @Override
         public void onSaveToFavorites(Job job) {
-            // Use the userId to save the job in the favorites collection
+            // Save the job to favorites
             saveJobToFavorites(job);
+
+            // Navigate to the PreferredJobsActivity to view saved jobs
+            Intent intent = new Intent(JobListActivity.this, PreferredJobsActivity.class); // Replace CurrentActivity with your current activity's class
+            intent.putExtra("userId", userId); // Pass the userId if needed
+            startActivity(intent);
         }
+
 
         // Separate method to save the job to Firestore
         private void loadJobsFromFirestore() {

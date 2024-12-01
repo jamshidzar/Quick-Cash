@@ -8,53 +8,38 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class Employee extends AppCompatActivity {
     private Button jobApplyingButton;
-    private Button mapButton; // Add this line
+    private Button mapButton; // Button to view map
+    private Button notificationButton; // Button to view notifications
+    private Button btnViewAppliedJobs; // Button to view applied jobs
+    private Button btnViewFavoriteJobs; // Button to view favorite jobs
+    private Button btnViewPreferredJobs; // Button to view preferred jobs
     private FirebaseFirestore firestore;
-    private String userId; // To store the user ID received from SharedPreferences
-    private Button notificationButton;
+    private String userId; // User ID retrieved from SharedPreferences
     private static final int APPLY_JOB_REQUEST = 1;
-    private List<Job> availableJobsList;
 
 
-// Code review by Jamshid Zar:
-// Overall, the onCreate method is well-structured, and the Firebase integration is solid.
-// A few suggestions for improvement:
-// - Consider adding null checks for the Intent to prevent potential crashes.
-// - Be cautious about displaying sensitive information such as passwords and credit card details in the UI.
-// - Ensure all user data fields are properly null-checked before using them to avoid null pointer exceptions.
-// - The error message in the else block references "name" when it should reference "email" as that is being checked.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.employee);
-        firestore = FirebaseFirestore.getInstance();
-        availableJobsList = new ArrayList<>();
-        //jobAdapter = new JobAdapter(availableJobsList, this, this);
 
         // Retrieve userId from SharedPreferences
         SharedPreferences sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         userId = sharedPref.getString("userId", null);
-
-        Log.d("EmployeeActivity", "Retrieved userId from SharedPreferences: " + userId);
 
         if (userId == null) {
             Toast.makeText(this, "User ID not found. Redirecting to login.", Toast.LENGTH_SHORT).show();
@@ -63,54 +48,65 @@ public class Employee extends AppCompatActivity {
             finish();
             return;
         }
-        enableJobAlerts();
-        retrieveNotificationPreference().addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                Boolean isNotificationEnabled = task.getResult();
-                if(isNotificationEnabled){
-                    notificationButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent intent = new Intent(Employee.this, notificationListActivity.class);
-                            startActivity(intent);
-                        }
-                    });
-                } else {
-                    notificationButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Toast.makeText(getApplicationContext(), "Please Enable Notifications", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-            }
-        });
+
+        Log.d("EmployeeActivity", "Retrieved userId from SharedPreferences: " + userId);
+
+        // Initialize buttons
         notificationButton = findViewById(R.id.notificationButton);
-        // Initialize "Job Listing" button and set it to start JobListActivity
         jobApplyingButton = findViewById(R.id.jobApplyingButton);
-        jobApplyingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("EmployeeActivity", "Passing userId to JobListActivity: " + userId);
-                // Pass userId to JobListActivity
-                Intent intent = new Intent(Employee.this, JobListActivity.class);
-                intent.putExtra("userId", userId);
-                startActivityForResult(intent, APPLY_JOB_REQUEST); // Start JobListActivity for job listing
-            }
+        mapButton = findViewById(R.id.ViewMap);
+        btnViewAppliedJobs = findViewById(R.id.btnViewAppliedJobs);
+        btnViewFavoriteJobs = findViewById(R.id.btnSavePreferredJob);
+        btnViewPreferredJobs = findViewById(R.id.btnViewPreferredJobs); // New button for preferred jobs
+
+        // Set listeners
+        jobApplyingButton.setOnClickListener(v -> {
+            Log.d("EmployeeActivity", "Passing userId to JobListActivity: " + userId);
+            Intent intent = new Intent(Employee.this, JobListActivity.class);
+            intent.putExtra("userId", userId);
+            startActivityForResult(intent, APPLY_JOB_REQUEST);
         });
 
-//        Button mapButton = findViewById(R.id.MapButton);
-//        mapButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(Employee.this, CurrentLocation.class);
-//                startActivity(intent);
-//            }
-//        });
-        loadJobsFromFirestoreForMap();
-        Button viewMapButton = findViewById(R.id.ViewMap);
-        viewMapButton.setOnClickListener(v -> openMapView(availableJobsList));
+        mapButton.setOnClickListener(v -> {
+            Intent intent = new Intent(Employee.this, CurrentLocation.class);
+            startActivity(intent);
+        });
+
+        btnViewAppliedJobs.setOnClickListener(v -> {
+            Log.d("EmployeeActivity", "Opening Applied Jobs page for userId: " + userId);
+            Intent intent = new Intent(Employee.this, AppliedJobsActivity.class);
+            intent.putExtra("userId", userId);
+            startActivity(intent);
+        });
+
+        btnViewFavoriteJobs.setOnClickListener(v -> {
+            Log.d("EmployeeActivity", "Opening Favorite Jobs page for userId: " + userId);
+            Intent intent = new Intent(Employee.this, FavoriteJobsActivity.class);
+            intent.putExtra("userId", userId); // Pass userId to FavoriteJobsActivity
+            startActivity(intent);
+        });
+
+        // New button for viewing preferred jobs
+        btnViewPreferredJobs.setOnClickListener(v -> {
+            if (userId == null || userId.isEmpty()) {
+                Log.e("EmployeeActivity", "User ID is null or empty. Cannot open PreferredJobsActivity.");
+                Toast.makeText(Employee.this, "User ID not found. Please log in again.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Log.d("EmployeeActivity", "Opening PreferredJobsActivity with userId: " + userId);
+
+            // Navigate to PreferredJobsActivity and pass the userId
+            Intent intent = new Intent(Employee.this, PreferredJobsActivity.class);
+            intent.putExtra("userId", userId);
+            startActivity(intent);
+        });
+
+        // Enable job alerts
+        enableJobAlerts();
     }
+
+
 
     // Handle the result of job application
     @Override
@@ -204,34 +200,6 @@ public class Employee extends AppCompatActivity {
                 });
         return taskCompletionSource.getTask();
     }
-    private void loadJobsFromFirestoreForMap() {
-        CollectionReference jobsRef = firestore.collection("job");
-        jobsRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful() && task.getResult() != null) {
-                availableJobsList.clear();
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    Job job = document.toObject(Job.class);
-                    job.setId(document.getId()); // Setthe document ID
-
-                    // Correct the field name to match Firestore's "PostalCode"
-                    if (document.contains("postalCode")) {
-                        job.setPostalCode(document.getString("postalCode"));
-                    } else {
-                        job.setPostalCode("N/A"); // Default value if postal code is missing
-                    }
-                    availableJobsList.add(job);
-                }
-                    //jobAdapter.notifyDataSetChanged();
-            } else {
-                Log.e("FirestoreError", "Error fetching jobs: " + (task.getException() != null ? task.getException().getMessage() : "Unknown error"));
-            }
-        });
-    }
-    private void openMapView(List<Job> jobs) {
-         Intent intent = new Intent(this, MapViewActivity.class);
-         intent.putExtra("jobs", (ArrayList<Job>) jobs);
-         startActivity(intent);
-        }
 }
 
 

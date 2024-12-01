@@ -135,11 +135,6 @@ public class CompletedListingsActivity extends AppCompatActivity {
                 .addOnSuccessListener(querySnapshot -> {
                     if (!querySnapshot.isEmpty()){
                         DocumentSnapshot completedJobListing = querySnapshot.getDocuments().get(0);
-                        completedJobListing.getReference().delete()
-                                .addOnSuccessListener(deleteVoid -> {
-                                    completedJobsList.remove(completedListing);
-                                    completedJobsAdapter.notifyDataSetChanged();
-                                });
                         Map<String, Object> completedJobData = completedJobListing.getData();
                         final String salary = (String) completedJobData.get("salary");
                         final String hours = (String) completedJobData.get("duration");
