@@ -190,10 +190,16 @@ public class Employee extends AppCompatActivity {
         });
     }
     private void openMapView(List<Job> jobs) {
-         Intent intent = new Intent(this, MapViewActivity.class);
-         intent.putExtra("jobs", (ArrayList<Job>) jobs);
-         startActivity(intent);
-        }
+    // Ensure jobs is an ArrayList
+    if (jobs instanceof ArrayList) {
+        Intent intent = new Intent(this, MapViewActivity.class);
+        intent.putParcelableArrayListExtra("jobs", (ArrayList<Job>) jobs);
+        startActivity(intent);
+    } else {
+        Log.e("EmployeeActivity", "Jobs list is not an ArrayList!");
+    }
+}
+
 
     private void openIncomeHistory(){
         Intent intent = new Intent(Employee.this, IncomeHistoryActivity.class);
