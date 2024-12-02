@@ -57,7 +57,7 @@ public class EmployeeListActivity extends AppCompatActivity {
         if (jobName != null && !jobName.isEmpty()) {
             db.collection("completedJobs")
                     // I do not know why it only works for jobId not JobName
-                    .whereEqualTo("jobName", jobID)
+                    .whereEqualTo("jobId", jobID)
                     .get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
