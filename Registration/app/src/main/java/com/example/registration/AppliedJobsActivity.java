@@ -34,6 +34,8 @@ public class AppliedJobsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_applied_jobs);
 
+
+
         // Get userId passed from the previous activity (e.g., login or main activity)
         userId = getIntent().getStringExtra("userId");
         if (userId == null) {
@@ -62,11 +64,8 @@ public class AppliedJobsActivity extends AppCompatActivity {
         });
     }
 
-
-
-
     private void loadAppliedJobs(String userId) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseSingleton.getInstance().getDb();
         db.collection("appliedJobs").whereEqualTo("userId", userId).get()
                 .addOnSuccessListener(querySnapshot -> {
                     appliedJobsList.clear();
@@ -96,7 +95,7 @@ public class AppliedJobsActivity extends AppCompatActivity {
 
 
     void onCompleteJob(Job job) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseSingleton.getInstance().getDb();
         String jobId = job.getId();
 
         // Retrieve the applied job directly from the appliedJobs collection
@@ -113,7 +112,7 @@ public class AppliedJobsActivity extends AppCompatActivity {
                             // Update the status and add a completion date
                             completedJobData.put("status", "Completed");
                             completedJobData.put("completionDate", new Timestamp(new Date()));
-
+                            completedJobData.put("paymentStatus", "Not Paid");
                             // Add to completedJobs collection
                             db.collection("completedJobs").add(completedJobData)
                                     .addOnSuccessListener(aVoid -> {

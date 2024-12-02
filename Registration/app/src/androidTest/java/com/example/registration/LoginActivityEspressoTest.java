@@ -20,6 +20,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import static org.hamcrest.Matchers.allOf;
 
+import static java.util.regex.Pattern.matches;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

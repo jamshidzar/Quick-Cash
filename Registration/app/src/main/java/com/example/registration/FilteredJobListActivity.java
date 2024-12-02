@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -16,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +50,7 @@ public class FilteredJobListActivity extends AppCompatActivity implements JobAda
         email = sharedPref.getString("Email", null);
 
         // Initialize Firebase instances
-        firestore = FirebaseFirestore.getInstance();
+        firestore = FirebaseSingleton.getInstance().getDb();
         auth = FirebaseAuth.getInstance();
 
         // Setup RecyclerView and Adapter
@@ -97,30 +100,38 @@ public class FilteredJobListActivity extends AppCompatActivity implements JobAda
 
     @Override
     public void onApplyJob(Job job) {
-        // Initialize Firestore and get the current user
-        FirebaseFirestore db =   FirebaseFirestore.getInstance();
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> applicationData = new HashMap<>();
+        Log.d("JobApplication", "Applying for job with ID: " + job.getId());
 
-        if (currentUser != null) {
-            String userId = currentUser.getUid();
+        // Add all job information to the application data
+        applicationData.put("jobId", job.getId());
+        applicationData.put("userId", userID);
+        applicationData.put("appliedDate", new Timestamp(new Date()));
+        applicationData.put("status", "Applied");
 
-            // Reference to the user's applied jobs collection
-            db.collection("jobSeekers").document(userId)
-                    .collection("appliedJobs").document(job.getId()) // Use job ID as the document ID
-                    .set(job)
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(FilteredJobListActivity.this, "Job applied successfully!", Toast.LENGTH_SHORT).show();
+        // Additional job details
+        applicationData.put("jobName", job.getJobName());
+        applicationData.put("employerID", job.getEmployerID());
+        applicationData.put("location", job.getLocation());
+        applicationData.put("duration", job.getDuration());
+        applicationData.put("salary", job.getSalary());
+        applicationData.put("urgency", job.getUrgency());
+        applicationData.put("postalCode", job.getPostalCode());
 
-                        // Navigate to AppliedJobsActivity
-                        Intent intent = new Intent(FilteredJobListActivity.this, AppliedJobsActivity.class);
-                        startActivity(intent);
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(FilteredJobListActivity.this, "Failed to apply for job.", Toast.LENGTH_SHORT).show();
-                    });
-        } else {
-            Toast.makeText(FilteredJobListActivity.this, "User not signed in.", Toast.LENGTH_SHORT).show();
-        }
+        db.collection("appliedJobs").add(applicationData)
+                .addOnSuccessListener(documentReference -> {
+                    Toast.makeText(this, "Job applied successfully!", Toast.LENGTH_SHORT).show();
+
+                    // Navigate to AppliedJobsActivity after successful application
+                    Intent intent = new Intent(this, AppliedJobsActivity.class);
+                    intent.putExtra("userId", userID); // Pass userId to AppliedJobsActivity if needed
+                    startActivity(intent);
+                    finish(); // Optionally finish this activity to prevent returning to it
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to apply for job.", Toast.LENGTH_SHORT).show();
+                });
     }
 
 

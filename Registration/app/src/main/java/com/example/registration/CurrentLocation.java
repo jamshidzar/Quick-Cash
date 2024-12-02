@@ -1,6 +1,7 @@
 package com.example.registration;
 
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -8,6 +9,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -23,9 +25,16 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.IOException;
 import java.util.List;
+
 
 public class CurrentLocation extends FragmentActivity implements OnMapReadyCallback {
     private static final int REQUEST_LOCATION_PERMISSION = 1;
@@ -33,6 +42,7 @@ public class CurrentLocation extends FragmentActivity implements OnMapReadyCallb
     private LocationManager locationManager;
     private LocationListener locationListener;
     private Marker marker;
+    private FirebaseFirestore db;
 
     private EditText locationInput;
     private Button searchButton;
@@ -61,7 +71,7 @@ public class CurrentLocation extends FragmentActivity implements OnMapReadyCallb
         });
 
         // Initialize the map fragment and set up location manager
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map2);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
@@ -82,10 +92,10 @@ public class CurrentLocation extends FragmentActivity implements OnMapReadyCallb
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
                     updateLocationOnMap(latitude, longitude);
+                    saveLastLocation(latitude, longitude);
                 }
             }
         };
-
         // Request location updates from both network and GPS providers
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
@@ -146,5 +156,40 @@ public class CurrentLocation extends FragmentActivity implements OnMapReadyCallb
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         // You can optionally set the default map position here if needed
+    }
+    protected void saveLastLocation(double latitude, double longitude){
+        //create a new field in the db
+        SharedPreferences sh = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        String userId = sh.getString("userId", "");
+        Log.d("UserId", "User ID: " + userId);
+        db = FirebaseFirestore.getInstance();
+        db.collection("user")  // Replace with your collection name
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // Get document reference
+                                if(document.getId().equals(userId)){
+                                    DocumentReference userRef = document.getReference();
+                                    Log.d("UserRef", "User Document Reference: " + userRef.getPath());
+                                    // Do something with userRef
+                                    userRef.update("latitude", latitude);
+                                    Log.d("UserRef", "onComplete: latitude updated");
+                                    userRef.update("longitude", longitude);
+                                    Log.d("UserRef", "onComplete: longitude updated");
+                                    break;
+                                }
+                                else{
+                                    Log.d("UserRef", "No matching document ID found for userId: " + userId);
+                                }
+                            }
+                        } else {
+                            Log.d("UserRef", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
     }
 }

@@ -6,8 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-<!--    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"-->
-<!--        tools:ignore="CoarseFineLocation" />-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
         tools:ignore="CoarseFineLocation" />
 
@@ -59,8 +57,7 @@
             />
         <activity android:name=".JobListActivity"
                   android:exported="true"/>
-        <activity android:name=".notificationListActivity"
-            android:exported="true"/>
+
 
         <activity
             android:name=".CompletedListingsActivity"
@@ -84,12 +81,29 @@
         <activity android:name=".FavoriteJobsActivity"
             android:exported="true"/>
 
+
+        <activity android:name=".ViewPushNotificationActivity"
+            android:exported="false"/>
+        <service android:name=".MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity android:name=".RatingActivity" />
+        <activity android:name=".ProfileActivity"
+            android:exported="true"/>
         <activity android:name=".PreferredJobsActivity"
                    android:exported="true"/>
+        <activity android:name=".IncomeHistoryActivity"
+            android:exported="true"/>
+        <activity android:name=".IncomeHistoryChartActivity"
+            android:exported="true"/>
         <activity android:name=".EmployeeListActivity"
             android:exported="true"/>
-
-
+        <activity android:name=".JobHistoryActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>

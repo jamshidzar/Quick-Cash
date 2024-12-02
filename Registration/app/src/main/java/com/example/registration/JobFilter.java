@@ -26,7 +26,7 @@ public class JobFilter extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_filter);
 
-        db = FirebaseFirestore.getInstance();
+        db = FirebaseSingleton.getInstance().getDb();
         SharedPreferences sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         userID = sharedPref.getString("userId", null);
         email = sharedPref.getString("Email", null);

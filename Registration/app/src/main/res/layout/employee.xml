@@ -1,23 +1,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
-    <!-- Notification Button (Top-Right Corner) -->
-    <Button
-        android:id="@+id/notificationButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="#6A4EA0"
-        android:text="Notifications"
-        android:textColor="#FFFFFF"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Bottom Section for Other Buttons -->
+    <!-- Bottom Button Layout -->
     <LinearLayout
         android:id="@+id/bottomButtonContainer"
         android:layout_width="match_parent"
@@ -26,6 +12,15 @@
         android:orientation="vertical"
         android:gravity="center_horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/incomeHistoryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="Income History"
+            android:backgroundTint="#6A4EA0"
+            android:textColor="#FFFFFF" />
 
         <Button
             android:id="@+id/jobHistory"
@@ -46,15 +41,6 @@
             android:textColor="#FFFFFF" />
 
         <Button
-            android:id="@+id/btnSavePreferredJob"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:backgroundTint="#6A4EA0"
-            android:text="Save Preferred Job"
-            android:textColor="#FFFFFF" />
-
-        <Button
             android:id="@+id/btnViewAppliedJobs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,13 +50,23 @@
             android:textColor="#FFFFFF" />
 
         <Button
+            android:id="@+id/ViewCurrentLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="#6A4EA0"
+            android:text="View Current Location"
+            android:textColor="#FFFFFF" />
+
+        <!-- View Map -->
+        <Button
             android:id="@+id/ViewMap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:backgroundTint="#6A4EA0"
             android:text="View Map"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"/>
 
         <Button
             android:id="@+id/jobApplyingButton"
@@ -79,6 +75,14 @@
             android:layout_marginBottom="12dp"
             android:backgroundTint="#6A4EA0"
             android:text="Job Listing"
+            android:textColor="#FFFFFF" />
+        <Button
+            android:id="@+id/Profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="#6A4EA0"
+            android:text="View Profile"
             android:textColor="#FFFFFF" />
 
         <!-- Checkbox for Job Alerts -->
@@ -89,4 +93,5 @@
             android:layout_gravity="center_horizontal"
             android:text="Enable Job Alerts" />
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

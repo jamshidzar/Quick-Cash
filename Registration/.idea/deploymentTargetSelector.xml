@@ -41,14 +41,17 @@
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
       <SelectionState runConfigName="checkIfListingsExist()">
+
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+        <SelectionState runConfigName="LoginActivity">
+            <option name="selectionMode" value="DROPDOWN" />
+        </SelectionState>
       <SelectionState runConfigName="CompletedListingUIAutomatorTest"/>
       <SelectionState runConfigName="MainActivity"/>
         <option name="selectionMode" value="DROPDOWN" />
       <SelectionState runConfigName="LoginActivity">
         <option name="selectionMode" value="DROPDOWN" />
-
       </SelectionState>
       <SelectionState runConfigName="NotificationListActivity">
 >>>>>>> origin/recSystem
@@ -58,6 +61,9 @@
 >>>>>>> fb3bb94e28862249ac9cfad64294b45870f0b479
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+        <SelectionState runConfigName="Employee">
+            <option name="selectionMode" value="DROPDOWN" />
+        </SelectionState>
     </selectionStates>
   </component>
 </project>

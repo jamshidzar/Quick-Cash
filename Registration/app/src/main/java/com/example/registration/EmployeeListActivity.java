@@ -45,7 +45,7 @@ public class EmployeeListActivity extends AppCompatActivity {
         jobName = intent.getStringExtra("jobName");
 
 
-        db = FirebaseFirestore.getInstance();
+        db = FirebaseSingleton.getInstance().getDb();
         employeeList = new ArrayList<>();
         employeeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, employeeList);
         employeeListView.setAdapter(employeeAdapter);

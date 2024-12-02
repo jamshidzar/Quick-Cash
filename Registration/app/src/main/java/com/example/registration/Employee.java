@@ -21,26 +21,36 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 
 public class Employee extends AppCompatActivity {
+    private Button incomeHistoryButton;
     private Button jobApplyingButton;
     private Button mapButton; // Button to view map
-    private Button notificationButton; // Button to view notifications
     private Button btnViewAppliedJobs; // Button to view applied jobs
     private Button btnViewFavoriteJobs; // Button to view favorite jobs
     private Button btnViewPreferredJobs; // Button to view preferred jobs
+    private Button viewMapButton;
+    private Button viewProfile;
+    private Button btnJobHistory;
     private FirebaseFirestore firestore;
-    private String userId; // User ID retrieved from SharedPreferences
+    private  String userId ;// To store the user ID received from SharedPreferences
     private static final int APPLY_JOB_REQUEST = 1;
+
+    // New button for viewing applied jobs
+    private NotificationPreferenceManager notificationManager;
+    private CheckBox checkBox;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.employee);
+        firestore = FirebaseFirestore.getInstance();
+        availableJobsList = new ArrayList<>();
+        notificationManager = new NotificationPreferenceManager(this);
 
         // Retrieve userId from SharedPreferences
         SharedPreferences sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         userId = sharedPref.getString("userId", null);
-
+        Log.d("EmployeeActivity", "Retrieved userId from SharedPreferences: " + userId);
         if (userId == null) {
             Toast.makeText(this, "User ID not found. Redirecting to login.", Toast.LENGTH_SHORT).show();
             Intent loginIntent = new Intent(Employee.this, LoginActivity.class);
@@ -49,15 +59,24 @@ public class Employee extends AppCompatActivity {
             return;
         }
 
-        Log.d("EmployeeActivity", "Retrieved userId from SharedPreferences: " + userId);
+        enableJobAlerts();
+        notificationManager.retrieveNotificationPreference(userId).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                Boolean isNotificationEnabled = task.getResult();
+                if(isNotificationEnabled){
+                    Toast.makeText(getApplicationContext(), "Notifications enabled, please select favorite jobs.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
-        // Initialize buttons
-        notificationButton = findViewById(R.id.notificationButton);
+        // Initialize "Job Listing" button and set it to start JobListActivity
         jobApplyingButton = findViewById(R.id.jobApplyingButton);
-        mapButton = findViewById(R.id.ViewMap);
+        mapButton = findViewById(R.id.ViewCurrentLocation);
         btnViewAppliedJobs = findViewById(R.id.btnViewAppliedJobs);
-        btnViewFavoriteJobs = findViewById(R.id.btnSavePreferredJob);
         btnViewPreferredJobs = findViewById(R.id.btnViewPreferredJobs); // New button for preferred jobs
+        viewMapButton = findViewById(R.id.ViewMap);
+        viewProfile = findViewById(R.id.Profile);
+        btnJobHistory = findViewById(R.id.jobHistory);
 
         // Set listeners
         jobApplyingButton.setOnClickListener(v -> {
@@ -79,13 +98,6 @@ public class Employee extends AppCompatActivity {
             startActivity(intent);
         });
 
-        btnViewFavoriteJobs.setOnClickListener(v -> {
-            Log.d("EmployeeActivity", "Opening Favorite Jobs page for userId: " + userId);
-            Intent intent = new Intent(Employee.this, FavoriteJobsActivity.class);
-            intent.putExtra("userId", userId); // Pass userId to FavoriteJobsActivity
-            startActivity(intent);
-        });
-
         // New button for viewing preferred jobs
         btnViewPreferredJobs.setOnClickListener(v -> {
             if (userId == null || userId.isEmpty()) {
@@ -101,9 +113,28 @@ public class Employee extends AppCompatActivity {
             intent.putExtra("userId", userId);
             startActivity(intent);
         });
+        btnJobHistory.setOnClickListener(v -> {
+                    Intent intent = new Intent(Employee.this, JobHistoryActivity.class);
+                    intent.putExtra("userID", userId);
+                    startActivity(intent);
+                });
 
         // Enable job alerts
         enableJobAlerts();
+
+        loadJobsFromFirestoreForMap();
+        Button viewMapButton = findViewById(R.id.ViewMap);
+        viewMapButton.setOnClickListener(v -> openMapView(availableJobsList));
+
+        incomeHistoryButton = findViewById(R.id.incomeHistoryButton);
+        incomeHistoryButton.setOnClickListener(v -> openIncomeHistory());
+
+        viewProfile.setOnClickListener(v ->{
+            Log.d("EmployeeActivity", "View profile with all the rating: " + userId);
+            Intent intent = new Intent(Employee.this, ProfileActivity.class);
+            intent.putExtra("userId", userId); // Pass userId to FavoriteJobsActivity
+            startActivity(intent);
+        });
     }
 
 
@@ -117,88 +148,57 @@ public class Employee extends AppCompatActivity {
             intent.putExtra("userId", userId); // Pass userId to AppliedJobsActivity
             startActivity(intent);
         }
-
     }
-
-
     public void enableJobAlerts() {
-        CheckBox checkBox = findViewById(R.id.checkBox);
+        checkBox = findViewById(R.id.checkBox);
+        SharedPreferences notiPref = getSharedPreferences("NotifyPref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = notiPref.edit();
+        editor.putBoolean("notification", false);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.d("UserID", "onCheckedChanged: passing userId to enable alerts "+ userId);
                 if (isChecked) {
-                    updateNotificationPreference();
+                    editor.putBoolean("notification", true);
+                    notificationManager.updateNotificationPreference(userId);
                     Toast.makeText(getApplicationContext(), "Job alerts enabled", Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
-    // Method to update isNotificationEnabled to true
-    public void updateNotificationPreference() {
-        SharedPreferences sh = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-        String userId = sh.getString("userId", "");
-            Log.d("UserId", "User ID: " + userId);
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("user")  // Replace with your collection name
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                // Get document reference
-                                if(document.getId().equals(userId)){
-                                    DocumentReference userRef = document.getReference();
-                                    Log.d("UserRef", "User Document Reference: " + userRef.getPath());
-                                    // Do something with userRef
-                                    userRef.update("isNotificationEnabled", true);
-                                    break;
-                                }
-                                else{
-                                    Log.d("UserRef", "No matching document ID found for userId: " + userId);
-                                }
-                            }
-                        } else {
-                            Log.d("UserRef", "Error getting documents: ", task.getException());
-                        }
+    private void loadJobsFromFirestoreForMap() {
+        CollectionReference jobsRef = firestore.collection("job");
+        jobsRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                availableJobsList.clear();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Job job = document.toObject(Job.class);
+                    job.setId(document.getId()); // Setthe document ID
+
+                    // Correct the field name to match Firestore's "PostalCode"
+                    if (document.contains("postalCode")) {
+                        job.setPostalCode(document.getString("postalCode"));
+                    } else {
+                        job.setPostalCode("N/A"); // Default value if postal code is missing
                     }
-                });
+                    availableJobsList.add(job);
+                }
+//                jobAdapter.notifyDataSetChanged();
+            } else {
+                Log.e("FirestoreError", "Error fetching jobs: " + (task.getException() != null ? task.getException().getMessage() : "Unknown error"));
+            }
+        });
     }
-    public Task<Boolean> retrieveNotificationPreference() {
-        // Retrieve the userId from SharedPreferences
-        SharedPreferences sh = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-        TaskCompletionSource<Boolean> taskCompletionSource = new TaskCompletionSource<>();
-        String userId = sh.getString("userId", "");
-        Log.d("UserId", "Retrieved User ID: " + userId);
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Boolean notification = false;
-        db.collection("user")  // Replace with your collection name
-                .document(userId)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                // Retrieve the isNotificationEnabled field
-                                Boolean isNotificationEnabled = document.getBoolean("isNotificationEnabled");
-                                if (isNotificationEnabled != null) {
-                                    taskCompletionSource.setResult(isNotificationEnabled);
-                                    Log.d("NotificationStatus", "isNotificationEnabled: " + isNotificationEnabled);
-                                }
-                            } else {
-                                taskCompletionSource.setResult(false);
-                                taskCompletionSource.setResult(false);
-                                Log.d("NotificationStatus", "No document found with ID: " + userId);
-                            }
-                        } else {
-                            taskCompletionSource.setResult(false);
-                            Log.d("NotificationStatus", "Error retrieving document: ", task.getException());
-                        }
-                    }
-                });
-        return taskCompletionSource.getTask();
+    private void openMapView(List<Job> jobs) {
+         Intent intent = new Intent(this, MapViewActivity.class);
+         intent.putExtra("jobs", (ArrayList<Job>) jobs);
+         startActivity(intent);
+        }
+
+    private void openIncomeHistory(){
+        Intent intent = new Intent(Employee.this, IncomeHistoryActivity.class);
+        intent.putExtra("userID", userId);
+        startActivity(intent);
     }
 }
 

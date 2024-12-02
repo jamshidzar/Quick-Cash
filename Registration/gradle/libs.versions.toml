@@ -1,5 +1,6 @@
 [versions]
 agp = "8.6.0"
+coreVersion = "1.4.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -17,8 +18,11 @@ playServicesMaps = "19.0.0"
 core = "1.6.1"
 recyclerview = "1.3.2"
 espressoContrib = "3.6.1"
+firebaseInappmessaging = "21.0.1"
+media3Common = "1.5.0"
 
 [libraries]
+core-v140 = { module = "androidx.test:core", version.ref = "coreVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -35,6 +39,8 @@ play-services-maps = { group = "com.google.android.gms", name = "play-services-m
 core = { group = "androidx.test", name = "core", version.ref = "core" }
 recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 espresso-contrib = { group = "androidx.test.espresso", name = "espresso-contrib", version.ref = "espressoContrib" }
+firebase-inappmessaging = { group = "com.google.firebase", name = "firebase-inappmessaging", version.ref = "firebaseInappmessaging" }
+media3-common = { group = "androidx.media3", name = "media3-common", version.ref = "media3Common" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

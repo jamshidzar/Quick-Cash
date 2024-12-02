@@ -62,6 +62,15 @@ android:padding="16dp">
     android:layout_gravity="end"
     android:text="Pay Employee" />
 
+    <Button
+        android:id="@+id/rateJob"
+        android:layout_width="129dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Rate Job" />
+
 
 
 </LinearLayout>

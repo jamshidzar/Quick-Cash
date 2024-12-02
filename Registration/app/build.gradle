@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     id 'com.google.gms.google-services' // Google services for Firebase
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -8,6 +9,9 @@ android {
     compileSdk 34
     buildFeatures {
         dataBinding true // Enable data binding
+    }
+    packagingOptions {
+        pickFirst 'META-INF/DEPENDENCIES'
     }
 
     defaultConfig {
@@ -40,6 +44,13 @@ dependencies {
     implementation libs.constraintlayout
     implementation libs.core
     implementation libs.recyclerview
+    //3rd party library - for network request or api request to firebase server
+    implementation 'com.android.volley:volley:1.2.1'
+    //messaging libraries
+    implementation 'com.google.firebase:firebase-messaging:24.1.0'
+
+    //for getting error messages related to firebase
+    implementation 'com.google.firebase:firebase-crashlytics:19.2.1'
 
     // Firebase BOM to manage Firebase versions
     implementation platform('com.google.firebase:firebase-bom:33.3.0')
@@ -47,8 +58,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-database'
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-firestore'
+    implementation 'com.google.auth:google-auth-library-oauth2-http:1.19.0'
     implementation 'androidx.recyclerview:recyclerview:1.3.1'
-
     // Google Maps and related libraries
     implementation 'com.google.android.gms:play-services-maps:19.0.0'
     implementation 'com.google.maps.android:android-maps-utils:2.2.3'
@@ -62,8 +73,11 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test:core:1.4.0'
-//    androidTestImplementation libs.espresso.core
-//    androidTestImplementation libs.espresso.contrib
-//    androidTestImplementation libs.uiautomator
+    androidTestImplementation libs.espresso.core
+    androidTestImplementation libs.espresso.contrib
+    androidTestImplementation libs.uiautomator
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
+
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }
+

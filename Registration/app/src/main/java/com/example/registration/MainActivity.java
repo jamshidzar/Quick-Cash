@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Initialize firestore database and UI elements
-        db = FirebaseFirestore.getInstance();
+        db = FirebaseSingleton.getInstance().getDb();
         name = findViewById(R.id.NameText);
         email = findViewById(R.id.EmailText);
         password = findViewById(R.id.PasswordText);
@@ -157,12 +157,17 @@ public class MainActivity extends AppCompatActivity {
                     setErrorMessage(errorMessage);
                     errMSG.setVisibility(View.INVISIBLE);
                     boolean enableNotification = false;
+                    double latitude = 0;
+                    double longitude = 0;
                     Map<String, Object> user = new HashMap<>();
                     user.put("Name", Name);
                     user.put("Email", Email);
                     user.put("Password", Password);
                     user.put("Credit Card", CreditCard);
+                    user.put("Total Income", "0");
                     user.put("isNotificationEnabled", enableNotification);
+                    user.put("latitude", latitude);
+                    user.put("longitude", longitude);
 
                     db.collection("user").add(user)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

@@ -39,7 +39,6 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         List<Job> jobList = (List<Job>) getIntent().getSerializableExtra("jobs");
-
         if (jobList != null && !jobList.isEmpty()) {
             Geocoder geocoder = new Geocoder(this);
             LatLng firstJobLocation = null; // Variable to hold the first valid location

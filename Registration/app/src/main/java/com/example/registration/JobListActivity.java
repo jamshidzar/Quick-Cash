@@ -1,18 +1,17 @@
 package com.example.registration;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.Timestamp;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -27,26 +26,28 @@ import java.util.Map;
         private RecyclerView availableJobsRecyclerView;
         JobAdapter jobAdapter;
         List<Job> availableJobsList;
-        private String userId; // To store the user ID passed from login
+        private String userId;// To store the user ID passed from login
+        private SendNotification sendNotification;
+        protected String userLocation;
+        protected User currUser;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_job_list);
-
+            sendNotification = new SendNotification(this);
             // Get userId from the intent (passed from login)
-
             userId = getIntent().getStringExtra("userId");
+            calculateDistance calculateDistance = new calculateDistance();
+            userLocation = calculateDistance.getUserCity();
             Log.d("JobListActivity", "Received userId from Employee: " + userId);
             if (userId == null) {
                 Toast.makeText(this, "User ID not found. Returning to login.", Toast.LENGTH_SHORT).show();
                 finish();
                 return;
             }
-
             // Initialize Firestore instance
             firestore = FirebaseFirestore.getInstance();
-
             // Setup RecyclerView and Adapter
             availableJobsList = new ArrayList<>();
             jobAdapter = new JobAdapter(availableJobsList, this, this);
@@ -54,15 +55,13 @@ import java.util.Map;
             availableJobsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             availableJobsRecyclerView.setAdapter(jobAdapter);
 
-//            // Load jobs from Firestore
+            // Load jobs from Firestore
             loadJobsFromFirestore();
-
             findViewById(R.id.button3).setOnClickListener(v -> {
                 Intent searchIntent = new Intent(JobListActivity.this, JobFilter.class);
+                searchIntent.putExtra("userId", userId);
                 startActivity(searchIntent);
             });
-
-
         }
 
 
@@ -93,7 +92,6 @@ import java.util.Map;
             db.collection("appliedJobs").add(applicationData)
                     .addOnSuccessListener(documentReference -> {
                         Toast.makeText(this, "Job applied successfully!", Toast.LENGTH_SHORT).show();
-
                         // Navigate to AppliedJobsActivity after successful application
                         Intent intent = new Intent(this, AppliedJobsActivity.class);
                         intent.putExtra("userId", userId); // Pass userId to AppliedJobsActivity if needed
@@ -104,7 +102,6 @@ import java.util.Map;
                         Toast.makeText(this, "Failed to apply for job.", Toast.LENGTH_SHORT).show();
                     });
         }
-
         @Override
         public void onSaveToFavorites(Job job) {
             // Save the job to favorites
@@ -144,6 +141,19 @@ import java.util.Map;
 
 
         public void saveJobToFavorites(Job job) {
+            NotificationPreferenceManager notificationManager = new NotificationPreferenceManager();
+            notificationManager.retrieveNotificationPreference(userId).addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    Boolean isNotificationEnabled = task.getResult();
+                    if(isNotificationEnabled){
+                        sendNotification.subscribeToTopic(job.getLocation());
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Please Enable Notifications", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            currUser = new User(job, this.userId);
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             Map<String, Object> favoriteData = new HashMap<>();
 

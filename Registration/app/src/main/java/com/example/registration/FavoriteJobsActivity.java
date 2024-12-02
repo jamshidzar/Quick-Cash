@@ -24,7 +24,7 @@ public class FavoriteJobsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favorite_jobs);
 
         // Initialize Firestore
-        firestore = FirebaseFirestore.getInstance();
+        firestore = FirebaseSingleton.getInstance().getDb();
 
         // Initialize views
         jobTitleInput = findViewById(R.id.jobTitleInput);
