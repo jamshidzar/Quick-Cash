@@ -52,6 +52,7 @@ public class HomepageActivity extends AppCompatActivity {
                 startActivity(homePage);
             }
         });
+
         Button logoutButton = findViewById(R.id.Logout);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +61,6 @@ public class HomepageActivity extends AppCompatActivity {
             }
         });
     }
-
 
 // Code review by Jamshid Zar:
 // - The use of `AlertDialog` to confirm the logout is good practice and ensures the user doesn't accidentally log out.

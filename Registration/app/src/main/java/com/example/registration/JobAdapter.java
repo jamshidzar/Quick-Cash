@@ -1,5 +1,8 @@
 package com.example.registration;
+
+
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+
 import java.util.List;
 
 public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
@@ -14,6 +19,8 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
     private OnApplyJobListener onApplyJobListener;
     private OnSaveToFavoritesListener onSaveToFavoritesListener;
 
+    TextView jobTitle, companyName, location, duration, salary, urgency, postalCode;;
+    Button applyButton, saveToFavoritesButton;
     public JobAdapter(List<Job> jobList, OnApplyJobListener applyListener, OnSaveToFavoritesListener favoritesListener) {
         this.jobList = jobList;
         this.onApplyJobListener = applyListener;
@@ -26,23 +33,6 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_job, parent, false);
         return new JobViewHolder(view);
     }
-
-//    @Override
-//    public void onBindViewHolder(@NonNull JobViewHolder holder, int position) {
-//        Job job = jobList.get(position);
-//        holder.jobTitle.setText(job.getJobName());
-//        holder.companyName.setText(job.getEmployerID());
-//        holder.location.setText(job.getLocation());
-//        holder.duration.setText(job.getDuration());
-//        holder.salary.setText(job.getSalary());
-//        holder.urgency.setText(job.getUrgency());
-//
-//        // Apply button click
-//        holder.applyButton.setOnClickListener(v -> onApplyJobListener.onApplyJob(job));
-//
-//        // Save to Favorites button click
-//        holder.saveToFavoritesButton.setOnClickListener(v -> onSaveToFavoritesListener.onSaveToFavorites(job));
-//    }
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -59,12 +49,9 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
         holder.postalCode.setText("Postal Code: "+ job.getPostalCode());
         // Apply button click
         holder.applyButton.setOnClickListener(v -> onApplyJobListener.onApplyJob(job));
-
         // Save to Favorites button click
         holder.saveToFavoritesButton.setOnClickListener(v -> onSaveToFavoritesListener.onSaveToFavorites(job));
     }
-
-
     @Override
     public int getItemCount() {
         return jobList.size();
@@ -84,8 +71,6 @@ public class JobAdapter extends RecyclerView.Adapter<JobAdapter.JobViewHolder> {
             salary = itemView.findViewById(R.id.salary);
             urgency = itemView.findViewById(R.id.urgency);
             postalCode = itemView.findViewById(R.id.postalCode);
-            applyButton = itemView.findViewById(R.id.applyButton);
-            saveToFavoritesButton = itemView.findViewById(R.id.saveToFavoritesButton);
             applyButton = itemView.findViewById(R.id.applyButton);
             saveToFavoritesButton = itemView.findViewById(R.id.saveToFavoritesButton); // New button for "Save to Favorites"
         }

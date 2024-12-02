@@ -37,7 +37,7 @@ public class JobHistoryActivity extends AppCompatActivity {
             finish();
             return;
         }
-        firestore = FirebaseFirestore.getInstance();
+        firestore = FirebaseSingleton.getInstance().getDb();
         recyclerView = findViewById(R.id.recyclerViewJobHistory);
         if (recyclerView == null) {
             Log.e("JobHistoryActivity", "RecyclerView is null!");

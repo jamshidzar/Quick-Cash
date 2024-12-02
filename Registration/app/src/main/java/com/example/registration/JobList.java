@@ -47,7 +47,7 @@ public class JobList extends AppCompatActivity {
         jobIDs = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, jobList);
         listView.setAdapter(adapter);
-        db = FirebaseFirestore.getInstance();
+        db = FirebaseSingleton.getInstance().getDb();
 
         // Set the click listener for ListView items
         listView.setOnItemClickListener((parent, view, position, id) -> {

@@ -43,11 +43,13 @@ public class CompletedListingsActivity extends AppCompatActivity {
 
     private RecyclerView completedListingsRecyclerView;
     private CompletedJobsAdapter completedJobsAdapter;
+    private CompletedJobsAdapter ratingsAdapter;
     private List<CompletedListing> completedJobsList;
 
     private String email;
     private String userID;
     private Button backBtn;
+    private String employeeID;
 
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private PayPalConfiguration payPalConfig;
@@ -68,13 +70,15 @@ public class CompletedListingsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         email = intent.getStringExtra("Email");
         userID = intent.getStringExtra("userID");
-        db = FirebaseFirestore.getInstance();
+        employeeID=intent.getStringExtra("employeeID");
+        db = FirebaseSingleton.getInstance().getDb();
+
 
         backBtn = findViewById(R.id.backBtn);
         backBtn.setOnClickListener(v -> goToEmployerPage());
 
         completedJobsList = new ArrayList<>();
-        completedJobsAdapter = new CompletedJobsAdapter(completedJobsList, this::onPayment);
+        completedJobsAdapter = new CompletedJobsAdapter(completedJobsList, this::onPayment, this::onRating,this);
         completedListingsRecyclerView = findViewById(R.id.completedListingRecyclerView);
         completedListingsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         completedListingsRecyclerView.setAdapter(completedJobsAdapter);
@@ -91,7 +95,9 @@ public class CompletedListingsActivity extends AppCompatActivity {
      * making them visible on the page.
      */
     private void loadCompletedJobs(){
-        db.collection("completedJobs").whereEqualTo("employerID", userID).get()
+        db.collection("completedJobs").whereEqualTo("employerID", userID)
+                .whereEqualTo("paymentStatus", "Not Paid")
+                .get()
                 .addOnSuccessListener(querySnapshot -> {
                     completedJobsList.clear();
                     for (DocumentSnapshot document : querySnapshot.getDocuments()) {
@@ -117,6 +123,21 @@ public class CompletedListingsActivity extends AppCompatActivity {
 
     }
 
+    private void updateEmployeeTotalIncome(String employeeID, String addToTotal){
+
+        db.collection("user").document(employeeID)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (querySnapshot.exists()){
+                        final String currIncome = (String) querySnapshot.get("Total Income");
+                        int newTotalIncome = Integer.parseInt(currIncome) + Integer.parseInt(addToTotal);
+                        db.collection("user").document(employeeID)
+                                .update("Total Income", String.valueOf(newTotalIncome))
+                                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Fields successfully updated"))
+                                .addOnFailureListener(e -> Log.e("Firestore", "Error updating fields", e));
+                    }
+                });
+    }
     /**
      * This method is called when an Employer wants to pay on employee for their completed
      * listing. It extracts the total amount needed to be paid from the listing then
@@ -135,16 +156,58 @@ public class CompletedListingsActivity extends AppCompatActivity {
                 .addOnSuccessListener(querySnapshot -> {
                     if (!querySnapshot.isEmpty()){
                         DocumentSnapshot completedJobListing = querySnapshot.getDocuments().get(0);
+                        String docID = completedJobListing.getId();
+
+                        db.collection("completedJobs")
+                                .document(docID)
+                                .update("paymentStatus", "Paid")
+                                .addOnSuccessListener(aVoid -> {
+                                    completedJobsList.remove(completedListing);
+                                    completedJobsAdapter.notifyDataSetChanged();
+                                    Log.d("FirestoreUpdate", "Field updated successfully for document: " + docID);
+                                })
+                                .addOnFailureListener(e -> {
+                                    Log.e("FirestoreUpdate", "Error updating field for document: " + docID, e);
+                                });
+//                        completedJobListing.getReference().delete()
+//                                .addOnSuccessListener(deleteVoid -> {
+//                                    completedJobsList.remove(completedListing);
+//                                    completedJobsAdapter.notifyDataSetChanged();
+//                                });
                         Map<String, Object> completedJobData = completedJobListing.getData();
+                        final String employeeID = (String) completedJobData.get("userId");
                         final String salary = (String) completedJobData.get("salary");
                         final String hours = (String) completedJobData.get("duration");
                         final int totalPay = Integer.parseInt(salary) * Integer.parseInt(hours);
                         final PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(totalPay), "CAD", "Purchase Goods", PAYMENT_INTENT_SALE);
-
+                        updateEmployeeTotalIncome(employeeID, String.valueOf(totalPay));
                         final Intent intent = new Intent(this, PaymentActivity.class);
                         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, payPalConfig);
                         intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payPalPayment);
                         activityResultLauncher.launch(intent);
+                    }
+                });
+    }
+
+    private void onRating(CompletedListing completedListing){
+        String listingID = completedListing.getId();
+
+        db.collection("completedJobs")
+                .whereEqualTo("jobId", listingID)
+                .whereEqualTo("employerID", userID)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (!querySnapshot.isEmpty()){
+                        DocumentSnapshot completedJobListing = querySnapshot.getDocuments().get(0);
+                        Map<String, Object> completedJobData = completedJobListing.getData();
+                        String employeeID = (String) completedJobData.get("userId");
+                        String jobName = (String) completedJobData.get("jobName");
+
+                        Intent intent = new Intent(CompletedListingsActivity.this, RatingActivity.class); // Navigate to RatingActivity
+                        intent.putExtra("jobName", jobName); // Pass jobId or other relevant data
+                        intent.putExtra("employeeID", employeeID);
+                        intent.putExtra("employerID", userID);
+                        startActivity(intent);
                     }
                 });
     }

@@ -30,7 +30,7 @@ public class PreferredJobsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_preferred_jobs);
 
         // Initialize Firestore
-        db = FirebaseFirestore.getInstance();
+        db = FirebaseSingleton.getInstance().getDb();
 
         // Initialize the ListView
         listViewFavorites = findViewById(R.id.ViewPreferredJobs);

@@ -66,7 +66,7 @@ public class Employer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.empolyer);
 
-        db = FirebaseFirestore.getInstance();
+        db = FirebaseSingleton.getInstance().getDb();
         welcome = getIntent();
 
         SharedPreferences sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);

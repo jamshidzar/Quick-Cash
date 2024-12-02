@@ -62,6 +62,12 @@
         android:layout_gravity="end"
         android:text="Complete" />
 
+    <Button
+        android:id="@+id/rating"
+        android:layout_width="107dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="Rate the job " />
 
 
 </LinearLayout>

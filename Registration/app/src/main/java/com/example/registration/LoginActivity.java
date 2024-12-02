@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // Initialize Firestore
-        db = FirebaseFirestore.getInstance();
+        db = FirebaseSingleton.getInstance().getDb();
 
         // Initialize the UI elements by linking them to the corresponding elements in the XML layout
         emailInput = findViewById(R.id.emailInput);        // Find the email input field by its ID
@@ -78,9 +78,6 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(v -> onLoginClick());
         registerButton.setOnClickListener(v -> onRegisterClick());
     }
-
-
-
 
 
     /**
