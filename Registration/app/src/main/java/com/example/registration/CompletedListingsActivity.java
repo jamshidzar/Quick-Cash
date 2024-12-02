@@ -71,7 +71,7 @@ public class CompletedListingsActivity extends AppCompatActivity {
         email = intent.getStringExtra("Email");
         userID = intent.getStringExtra("userID");
         employeeID=intent.getStringExtra("employeeID");
-        db = FirebaseSingleton.getInstance().getDb();
+        db = FirebaseFirestore.getInstance();
 
 
         backBtn = findViewById(R.id.backBtn);
@@ -260,4 +260,5 @@ public class CompletedListingsActivity extends AppCompatActivity {
         });
     }
 }
+
 

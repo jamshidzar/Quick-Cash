@@ -10,8 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:orientation="vertical"
-        android:gravity="center_horizontal"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:gravity="center_horizontal">
 
         <Button
             android:id="@+id/incomeHistoryButton"

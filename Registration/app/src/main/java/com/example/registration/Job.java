@@ -30,6 +30,7 @@ public class Job implements Serializable {
     public void attach(User user){
         userList.add(user);
     }
+
     public void setState(int state){
         this.state = state;
         notifyAllUsers();
